@@ -1,0 +1,62 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<html lang="en">
+	<head>
+		<BaseHead title="Search" description="Search blog posts" />
+		<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<Header />
+		<main>
+			<div class="search-container">
+				<h1>Search</h1>
+				<div id="search"></div>
+			</div>
+		</main>
+		<Footer />
+		<script is:inline type="module">
+			try {
+				const { PagefindUI } = await import('/pagefind/pagefind-ui.js');
+				new PagefindUI({
+					element: '#search',
+					showSubResults: true,
+				});
+			} catch (e) {
+				document.getElementById('search').innerHTML =
+					'<p>Search index not available. Run <code>npm run build</code> then <code>npm run preview</code> to enable search.</p>';
+			}
+		</script>
+		<style>
+			main {
+				width: 720px;
+				max-width: calc(100% - 2em);
+				margin: 0 auto;
+				padding: 1em;
+			}
+			h1 {
+				margin-bottom: 1em;
+				text-align: center;
+			}
+			:global([data-theme='dark']) .pagefind-ui {
+				--pagefind-ui-text: rgb(200, 210, 225);
+				--pagefind-ui-background: rgb(13, 17, 23);
+				--pagefind-ui-border: rgb(45, 48, 60);
+				--pagefind-ui-tag: rgb(45, 48, 60);
+				--pagefind-ui-border-radius: 8px;
+				--pagefind-ui-font: inherit;
+			}
+			:global([data-theme='dark']) .pagefind-ui input {
+				background: rgb(25, 28, 40);
+				color: rgb(200, 210, 225);
+			}
+			:global([data-theme='dark']) .pagefind-ui .pagefind-ui__result {
+				border-color: rgb(45, 48, 60);
+			}
+		</style>
+	</body>
+</html>
