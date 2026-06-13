@@ -3,7 +3,7 @@ title: '通过 Ajax 实现一个更强的天气小工具'
 description: ''
 pubDate: 2025-04-08T12:00:33.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
-tags: []
+tags: [WordPress, 天气, Ajax]
 category: ''
 ---
 

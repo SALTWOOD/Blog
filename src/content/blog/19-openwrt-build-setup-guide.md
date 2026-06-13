@@ -4,7 +4,7 @@ description: ''
 pubDate: 2025-09-30T19:52:52.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
 # heroImage: '../../assets/19.webp'
-tags: []
+tags: [OpenWrt, 路由器, 教程]
 category: ''
 ---
 

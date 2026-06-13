@@ -4,7 +4,7 @@ description: ''
 pubDate: 2025-07-13T03:12:54.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
 # heroImage: '../../assets/18.jpg'
-tags: []
+tags: [战舰世界, 游戏, 烤肉]
 category: ''
 ---
 

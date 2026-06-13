@@ -4,7 +4,7 @@ description: ''
 pubDate: 2025-03-23T17:05:46.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
 # heroImage: '../../assets/9.webp'
-tags: []
+tags: [WordPress, OpenLiteSpeed, Docker]
 category: ''
 ---
 

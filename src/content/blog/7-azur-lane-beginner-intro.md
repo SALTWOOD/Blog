@@ -4,7 +4,7 @@ description: ''
 pubDate: 2025-03-06T13:53:54.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
 # heroImage: '../../assets/7.webp'
-tags: []
+tags: [碧蓝航线, 游戏, 教程]
 category: ''
 ---
 
