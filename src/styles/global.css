@@ -66,6 +66,12 @@ body {
 	font-size: 20px;
 	line-height: 1.7;
 }
+[data-theme='dark'] body {
+	background:
+		linear-gradient(var(--gray-gradient)) no-repeat,
+		linear-gradient(rgba(0, 0, 0, 0.5)) no-repeat,
+		url('/background.webp') center center / cover fixed no-repeat;
+}
 main {
 	width: 720px;
 	max-width: calc(100% - 2em);
