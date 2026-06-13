@@ -1,0 +1,73 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+	const tags = new Set<string>();
+	posts.forEach((post) => {
+		post.data.tags.forEach((tag) => tags.add(tag));
+	});
+	return [...tags].map((tag) => ({
+		params: { tag },
+		props: {
+			tag,
+			posts: posts
+				.filter((post) => post.data.tags.includes(tag))
+				.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+		},
+	}));
+}
+
+const { tag, posts } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`#${tag} - Astro Blog`} description={`Posts tagged with ${tag}`} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>#{tag}</h1>
+			<p>{posts.length} post{posts.length !== 1 ? 's' : ''}</p>
+			<ul class="post-list">
+				{
+					posts.map((post) => (
+						<li>
+							<a href={`/blog/${post.id}/`}>{post.data.title}</a>
+							<time>
+								<FormattedDate date={post.data.pubDate} />
+							</time>
+						</li>
+					))
+				}
+			</ul>
+			<p><a href="/tags">&larr; All tags</a></p>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.post-list {
+		list-style: none;
+		padding: 0;
+	}
+	.post-list li {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		padding: 0.5em 0;
+		border-bottom: 1px solid rgb(var(--gray-light));
+	}
+	.post-list time {
+		color: rgb(var(--gray));
+		font-size: 0.85em;
+		white-space: nowrap;
+	}
+</style>

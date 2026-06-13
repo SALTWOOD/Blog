@@ -1,0 +1,64 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+
+const posts = await getCollection('blog');
+const categoryCounts = new Map<string, number>();
+posts.forEach((post) => {
+	if (post.data.category) {
+		categoryCounts.set(
+			post.data.category,
+			(categoryCounts.get(post.data.category) || 0) + 1
+		);
+	}
+});
+const categories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1]);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title="Categories - Astro Blog" description="Browse all categories" />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>Categories</h1>
+			<ul class="category-list">
+				{
+					categories.map(([category, count]) => (
+						<li>
+							<a href={`/categories/${category}`}>{category}</a>
+							<span class="count">{count}</span>
+						</li>
+					))
+				}
+			</ul>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.category-list {
+		list-style: none;
+		padding: 0;
+	}
+	.category-list li {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		padding: 0.5em 0;
+		border-bottom: 1px solid rgb(var(--gray-light));
+	}
+	.category-list a {
+		text-decoration: none;
+		font-size: 1.1em;
+	}
+	.count {
+		color: rgb(var(--gray));
+		font-size: 0.85em;
+	}
+</style>

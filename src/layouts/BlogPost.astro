@@ -8,7 +8,7 @@ import Header from '../components/Header.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, tags = [], category } = Astro.props;
 ---
 
 <html lang="en">
@@ -52,6 +52,33 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			.last-updated-on {
 				font-style: italic;
 			}
+			.post-meta {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5em;
+				justify-content: center;
+				margin-bottom: 1em;
+			}
+			.tag-list {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.3em;
+			}
+			.tag-badge,
+			.category-badge {
+				display: inline-block;
+				padding: 0.2em 0.7em;
+				border-radius: 999px;
+				font-size: 0.8em;
+				text-decoration: none;
+				background: rgb(var(--gray-light));
+				color: rgb(var(--gray-dark));
+			}
+			.tag-badge:hover,
+			.category-badge:hover {
+				background: var(--accent);
+				color: #fff;
+			}
 		</style>
 	</head>
 
@@ -76,6 +103,18 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 						</div>
 						<h1>{title}</h1>
 						<hr />
+						<div class="post-meta">
+							{category && <a href={`/categories/${category}`} class="category-badge">{category}</a>}
+							{
+								tags.length > 0 && (
+									<div class="tag-list">
+										{tags.map((tag) => (
+											<a href={`/tags/${tag}`} class="tag-badge">#{tag}</a>
+										))}
+									</div>
+								)
+							}
+						</div>
 					</div>
 					<slot />
 				</div>

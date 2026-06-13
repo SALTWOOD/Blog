@@ -1,0 +1,70 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+
+const posts = await getCollection('blog');
+const tagCounts = new Map<string, number>();
+posts.forEach((post) => {
+	post.data.tags.forEach((tag) => {
+		tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1);
+	});
+});
+const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title="Tags - Astro Blog" description="Browse all tags" />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>Tags</h1>
+			<ul class="tag-list">
+				{
+					tags.map(([tag, count]) => (
+						<li>
+							<a href={`/tags/${tag}`}>#{tag}</a>
+							<span class="count">{count}</span>
+						</li>
+					))
+				}
+			</ul>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.tag-list {
+		list-style: none;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5em;
+	}
+	.tag-list li {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3em;
+	}
+	.tag-list a {
+		display: inline-block;
+		padding: 0.3em 0.8em;
+		background: rgb(var(--gray-light));
+		border-radius: 999px;
+		text-decoration: none;
+		font-size: 0.9em;
+	}
+	.tag-list a:hover {
+		background: var(--accent);
+		color: #fff;
+	}
+	.count {
+		color: rgb(var(--gray));
+		font-size: 0.8em;
+	}
+</style>
