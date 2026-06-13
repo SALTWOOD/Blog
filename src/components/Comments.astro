@@ -1,0 +1,68 @@
+---
+// ========================================
+// GISCUS CONFIGURATION
+// Get your values at https://giscus.app
+// 1. Enable Discussions on your GitHub repo
+// 2. Install the Giscus app on the repo
+// 3. Fill in the values below
+// ========================================
+const GISCUS_REPO = 'your-username/your-repo';
+const GISCUS_REPO_ID = 'R_xxxxxxxx';
+const GISCUS_CATEGORY = 'Announcements';
+const GISCUS_CATEGORY_ID = 'DIC_xxxxxxxx';
+---
+
+<section class="comments" data-pagefind-ignore>
+	<h2 class="comments-title">Comments</h2>
+	<div class="giscus"></div>
+	<script
+		is:inline
+		src="https://giscus.app/client.js"
+		data-repo={GISCUS_REPO}
+		data-repo-id={GISCUS_REPO_ID}
+		data-category={GISCUS_CATEGORY}
+		data-category-id={GISCUS_CATEGORY_ID}
+		data-mapping="pathname"
+		data-strict="0"
+		data-reactions-enabled="1"
+		data-emit-metadata="0"
+		data-input-position="top"
+		data-theme="preferred_color_scheme"
+		data-lang="en"
+		crossorigin="anonymous"
+		async
+	>
+	</script>
+	<script is:inline>
+		function syncGiscusTheme() {
+			var currentTheme = document.documentElement.dataset.theme || 'light';
+			var iframe = document.querySelector('iframe.giscus-frame');
+			if (iframe) {
+				iframe.contentWindow.postMessage(
+					{ giscus: { setConfig: { theme: currentTheme } } },
+					'https://giscus.app'
+				);
+			}
+		}
+		window.addEventListener('theme-change', syncGiscusTheme);
+		var giscusLoaded = false;
+		window.addEventListener('message', function (e) {
+			if (e.origin === 'https://giscus.app' && !giscusLoaded) {
+				giscusLoaded = true;
+				syncGiscusTheme();
+			}
+		});
+	</script>
+</section>
+
+<style>
+	.comments {
+		margin-top: 3em;
+		padding-top: 2em;
+		border-top: 1px solid rgb(var(--gray-light));
+	}
+	.comments-title {
+		font-size: 1.5em;
+		margin-bottom: 1em;
+	}
+</style>

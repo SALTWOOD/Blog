@@ -6,6 +6,7 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import TableOfContents from '../components/TableOfContents.astro';
+import Comments from '../components/Comments.astro';
 
 interface Heading {
 	depth: number;
@@ -15,9 +16,10 @@ interface Heading {
 
 type Props = CollectionEntry<'blog'>['data'] & {
 	headings?: Heading[];
+	showComments?: boolean;
 };
 
-const { title, description, pubDate, updatedDate, heroImage, tags = [], category, headings = [] } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, tags = [], category, headings = [], showComments } = Astro.props;
 ---
 
 <html lang="en">
@@ -151,6 +153,7 @@ const { title, description, pubDate, updatedDate, heroImage, tags = [], category
 						</div>
 					</div>
 					<slot />
+					{showComments && <Comments />}
 				</div>
 				<div class="toc-sidebar">
 					<TableOfContents headings={headings} />
