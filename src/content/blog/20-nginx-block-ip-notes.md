@@ -8,7 +8,8 @@ tags: [Nginx, 安全, 随笔]
 category: ''
 ---
 
-> ⚠️ 这篇文章很水。内容质量较为低下，算是一个随手记。
+> [!WARNING]
+> 这篇文章很水。内容质量较为低下，算是一个随手记。
 
 ## 0. 前言
 
@@ -26,27 +27,16 @@ category: ''
 
 ```nginx
 geo $real_ip $is_blocked { # 这里 $real_ip 是一个 map
-
     default 0;
-
     include /etc/nginx/blockip.conf; # 黑名单文件
-
 }
-
 server {
-
     # ...省略配置...
-
     # 拦截爆破
-
     if ($is_blocked) {
-
         default_type text/plain;
-
         return 418 "Stop brute-force attacks on my blog website. Thank you."; 
-
     }
-
 }
 ```
 
@@ -54,9 +44,7 @@ server {
 
 ```nginx
 123.45.67.89 1;
-
 1.2.3.4 1;
-
 10.0.0.0/24 1; # 支持网段
 ```
 

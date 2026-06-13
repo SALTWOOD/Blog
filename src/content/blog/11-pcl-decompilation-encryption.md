@@ -52,317 +52,145 @@ category: ""
 再经过一些优化和改进，我写出了这么一个类：
 
 ```csharp
-
 using System.Security.Cryptography;
-
 using System.Text;
-
-
-
 /// <summary>
-
 /// 一个适用于 PCL 测试版的加解密助手类。
-
 /// </summary>
-
 /// <remarks>
-
 /// <para>
-
 /// 通过 Encrypt 和 Decrypt 方法，可以生成或解密 PCL 同款加密方式的密文。<br/>
-
 /// 注意：秋仪金主题使用 RSA 加密方式，此类无法处理，需获取龙猫的私钥。
-
 /// </para>
-
 /// <example>
-
 /// 使用示例：
-
 /// <code>
-
 /// var helper = new PCLSecretHelper("PCLAAAA-BBBB-CCCC-DDDD");
-
 /// string encrypted = helper.Encrypt("0|1|2|3|4|5|6|7|9|10|11|12|13");
-
 /// string decrypted = helper.Decrypt("+NRco8AuOV8=");
-
 /// </code>
-
 /// </example>
-
 /// </remarks>
-
 public class PCLSecretHelper
-
 {
-
     /// <summary>初始化向量</summary>
-
     public const string IV = "95168702";
-
-
-
     /// <summary>哈希计算初始值</summary>
-
     public const int HASH_INIT = 5381;
-
-
-
     /// <summary>哈希计算异或值</summary>
-
     public const ulong HASH_XOR = 0xA98F501BC684032FUL;
-
-
-
     /// <summary>默认加密密钥</summary>
-
     public const string DEFAULT_KEY = "@;$ Abv2";
-
-
-
     private readonly string _id;
-
-
-
     /// <summary>
-
     /// 使用指定的启动器识别码初始化助手类
-
     /// </summary>
-
     /// <param name="id">形如 PCLAAAA-BBBB-CCCC-DDDD 的识别码</param>
-
     public PCLSecretHelper(string id)
-
     {
-
         _id = id;
-
     }
-
-
-
     /// <summary>
-
     /// 解密 Base64 编码的密文字符串
-
     /// </summary>
-
     /// <param name="source">Base64 编码的密文</param>
-
     /// <returns>UTF8 编码的明文</returns>
-
     public string Decrypt(string source)
-
     {
-
         string key = GetSecretKey(_id);
-
         byte[] keyBytes = Encoding.UTF8.GetBytes(key);
-
         byte[] ivBytes = Encoding.UTF8.GetBytes(IV);
-
-
-
         using (DES des = DES.Create())
-
         using (MemoryStream memoryStream = new MemoryStream())
-
         {
-
             byte[] encryptedData = Convert.FromBase64String(source);
-
-
-
             using (CryptoStream cryptoStream = new CryptoStream(
-
                 memoryStream,
-
                 des.CreateDecryptor(keyBytes, ivBytes),
-
                 CryptoStreamMode.Write))
-
             {
-
                 cryptoStream.Write(encryptedData, 0, encryptedData.Length);
-
                 cryptoStream.FlushFinalBlock();
-
             }
-
-
-
             return Encoding.UTF8.GetString(memoryStream.ToArray());
-
         }
-
     }
-
-
-
     /// <summary>
-
     /// 加密字符串为 Base64 编码的密文
-
     /// </summary>
-
     /// <param name="source">UTF8 编码的明文</param>
-
     /// <returns>Base64 编码的密文</returns>
-
     public string Encrypt(string source)
-
     {
-
         string key = GetSecretKey(_id);
-
         byte[] keyBytes = Encoding.UTF8.GetBytes(key);
-
         byte[] ivBytes = Encoding.UTF8.GetBytes(IV);
-
-
-
         using (DES des = DES.Create())
-
         using (MemoryStream memoryStream = new MemoryStream())
-
         {
-
             byte[] plainData = Encoding.UTF8.GetBytes(source);
-
-
-
             using (CryptoStream cryptoStream = new CryptoStream(
-
                 memoryStream,
-
                 des.CreateEncryptor(keyBytes, ivBytes),
-
                 CryptoStreamMode.Write))
-
             {
-
                 cryptoStream.Write(plainData, 0, plainData.Length);
-
                 cryptoStream.FlushFinalBlock();
-
             }
-
-
-
             return Convert.ToBase64String(memoryStream.ToArray());
-
         }
-
     }
-
-
-
     /// <summary>
-
     /// 字符串填充处理（前补指定字符至指定长度）
-
     /// </summary>
-
     /// <param name="str">原始字符串</param>
-
     /// <param name="code">填充字符</param>
-
     /// <param name="length">目标长度</param>
-
     /// <returns>
-
     /// 当原始字符串长于目标长度时截断前部，
-
     /// 否则在左侧填充指定字符至目标长度
-
     /// </returns>
-
     public static string PadString(string str, char code, int length)
-
     {
-
         if (str.Length > length) return str.Substring(0, length);
-
         return new string(code, length - str.Length) + str;
-
     }
-
-
-
     /// <summary>
-
     /// 计算字符串的特征哈希值
-
     /// </summary>
-
     /// <param name="str">输入字符串</param>
-
     /// <returns>64 位无符号哈希值</returns>
-
     public static ulong GetHash(string str)
-
     {
-
         ulong hash = HASH_INIT;
-
         foreach (char c in str)
-
         {
-
             hash = (hash << 5) ^ hash ^ c;
-
         }
-
         return hash ^ HASH_XOR;
-
     }
-
-
-
     /// <summary>
-
     /// 生成 DES 加密的 Key
-
     /// </summary>
-
     /// <param name="key">Key 种子</param>
-
     /// <returns>
-
     /// 用于 DES 加解密的 Key
-
     /// </returns>
-
     public static string GetSecretKey(string key)
-
     {
-
         return string.IsNullOrEmpty(key)
-
             ? DEFAULT_KEY
-
             : PadString(GetHash(key).ToString(), 'X', 8);
-
     }
-
 }
-
 ```
 
 通过注释中给出的示例，传入识别码构造实例，然后再调用对应的方法，能够以测试版 PCL 同款的方式加密或者解密信息。
 
 ```csharp
-
 var helper = new PCLSecretHelper("PCLAAAA-BBBB-CCCC-DDDD");
-
 string encrypted = helper.Encrypt("0|1|2|3|4|5|6|7|9|10|11|12|13");
-
 Console.WriteLine($"加密后：{encrypted}");
-
 string decrypted = helper.Decrypt("+NRco8AuOV8=");
-
 Console.WriteLine($"解密后：{decrypted}");
-
 ```

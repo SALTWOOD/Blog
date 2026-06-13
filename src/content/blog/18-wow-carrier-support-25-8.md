@@ -8,19 +8,24 @@ tags: [战舰世界, 游戏, 烤肉]
 category: ''
 ---
 
-> ℹ️ 本文是人工烤肉，原文在[此处](https://blog.korabli.su/blog/621)。
+> [!NOTE]
+> 本文是人工烤肉，原文在[此处](https://blog.korabli.su/blog/621)。
 > This content is manually translated. Original post can be found [here](https://blog.korabli.su/blog/621).
 > Данный контент является ручным переводом. Оригинальный текст находится по [ссылке](https://blog.korabli.su/blog/621).
 
-> ⚠️ 侵权请联系 [admin@ski.ink](mailto:admin@ski.ink) 删除。
+> [!WARNING]
+> 侵权请联系 [admin@ski.ink](mailto:admin@ski.ink) 删除。
 > Contact [admin@ski.ink](mailto:admin@ski.ink) for removal in case of infringement.
 > При нарушении прав пишите на [admin@ski.ink](mailto:admin@ski.ink) для удаления.
 
-> ⚠️ 我烤肉会使用一些个人风格的表述以及中文战舰世界圈常用的名称和表述，显得没有那么正式。不喜勿喷。
+> [!WARNING]
+> 我烤肉会使用一些个人风格的表述以及中文战舰世界圈常用的名称和表述，显得没有那么正式。不喜勿喷。
 
-> ⚠️ 截至本文翻译完成时，25.8 尚未发布，部分数据可能与本文记述不同。本文将不对实装后的不同之处进行修正。
+> [!WARNING]
+> 截至本文翻译完成时，25.8 尚未发布，部分数据可能与本文记述不同。本文将不对实装后的不同之处进行修正。
 
-> ℹ️ 如有翻译错误，欢迎指出。
+> [!NOTE]
+> 如有翻译错误，欢迎指出。
 
 ## 战舰世界莱服封闭测试 25.8 — 航母支援中队
 

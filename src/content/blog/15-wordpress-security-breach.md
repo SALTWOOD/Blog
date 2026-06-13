@@ -28,19 +28,12 @@ category: ''
 
 ```
 mysql> select ID, user_login, user_pass from wp_users;
-
 +----+------------+-----------------------------------------------------------------+
-
 | ID | user_login | user_pass                                                       |
-
 +----+------------+-----------------------------------------------------------------+
-
 |  1 | xxxxxxxx   | $wp$2y$10$xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx |
-
 |  2 | xxxxxxxx   | $wp$2y$10$xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx |
-
 |  3 | adm1nlxg1n | $wp$2y$10$xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx |
-
 +----+------------+-----------------------------------------------------------------+
 ```
 
@@ -58,17 +51,11 @@ mysql> select ID, user_login, user_pass from wp_users;
 
 ```
 mysql> select ID, user_login, user_pass from wp_users;
-
 +----+------------+-----------------------------------------------------------------+
-
 | ID | user_login | user_pass                                                       |
-
 +----+------------+-----------------------------------------------------------------+
-
 |  1 | xxxxxxxx   | $wp$2y$10$xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx |
-
 |  4 | adm1nlxg1n | $wp$2y$10$xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx |
-
 +----+------------+-----------------------------------------------------------------+
 ```
 
@@ -78,11 +65,8 @@ mysql> select ID, user_login, user_pass from wp_users;
 
 ```bash
 root@xxxxxxxx:/xxx/wordpress# grep -rnw './' -e 'adm1nlxg1n'
-
 ./data/wp-content/themes/argon/functions.php:3231:    'user_login' => 'adm1nlxg1n',
-
 ./data/wp-content/plugins/xxxx/theme_tools.php:100:    'user_login' => 'adm1nlxg1n',
-
 ./data/wp-content/plugins/xxxx/theme_tools.php:128:            if ($admin->user_login === 'adm1nlxg1n') continue;
 ```
 
@@ -100,95 +84,40 @@ root@xxxxxxxx:/xxx/wordpress# grep -rnw './' -e 'adm1nlxg1n'
 
 ```php
 <?php
-
 /*
-
 Plugin Name: Theme Tools
-
 Description: Theme WordPress plugin.
-
 Version: 1.0
-
 Author: WordPress Helper
-
 */
-
-
-
 register_activation_hook(__FILE__, 'theme_tools_activate');
-
 add_action('init', 'theme_tools_run');
-
 add_action('shutdown', 'theme_tools_cleanup');
-
-
-
 function theme_tools_activate() {
-
     // 被抹除的关键代码
-
 }
-
-
-
 function twentytwenty_set_alter_five() {
-
     // 被抹除的关键代码
-
 }
-
-
-
 function theme_tools_run() {
-
     if (!get_option('theme_tools_should_run')) return;
-
-
-
     $theme_functions_file = get_template_directory() . '/functions.php';
-
     $marker = '// Theme Tools';
-
     if (file_exists($theme_functions_file) && strpos(file_get_contents($theme_functions_file), $marker) === false) {
-
-
-
         // 被抹除的关键代码
-
-
-
         $code_to_add = <<<PHP
-
-
-
 $marker
-
 // 被抹除的关键代码
-
 PHP;
-
         file_put_contents($theme_functions_file, $code_to_add, FILE_APPEND);
-
     }
-
-
-
     if (!get_option('theme_tools_stage2') && get_option('theme_tools_stage1')) {
-
         // 被抹除的关键代码
-
     }
-
 }
-
-
-
 function theme_tools_cleanup() {
-
     // 被抹除的关键代码
-
 }
-
 ?>
 ```
 
@@ -209,7 +138,6 @@ function theme_tools_cleanup() {
   delete_option('theme_tools_should_run');
   delete_option('theme_tools_stage1');
   delete_option('theme_tools_stage2');
-
   deactivate_plugins($plugin_file, true);
   delete_plugins([$plugin_file]);
   @unlink(__FILE__);
