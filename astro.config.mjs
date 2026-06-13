@@ -3,6 +3,8 @@
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import pagefind from 'astro-pagefind';
+import { unified } from '@astrojs/markdown-remark';
+import { remarkAlert } from 'remark-github-blockquote-alert';
 import { defineConfig, fontProviders } from 'astro/config';
 
 // https://astro.build/config
@@ -12,6 +14,9 @@ export default defineConfig({
 		'/blog': '/',
 	},
 	integrations: [mdx(), sitemap(), pagefind()],
+	markdown: {
+		processor: unified({ remarkPlugins: [remarkAlert] }),
+	},
 	fonts: [
 		{
 			provider: fontProviders.local(),
