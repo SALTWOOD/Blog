@@ -8,14 +8,16 @@ tags: [WordPress, OpenLiteSpeed, Docker]
 category: ''
 ---
 
-> ⚠️ 这篇文章我自认为写得不太好，不喜勿喷，有错误请指出我会修改。
+> [!WARNING]
+> 这篇文章我自认为写得不太好，不喜勿喷，有错误请指出我会修改。
 
 ## 0. 起因
 
 一开始，我用的是 WordPress 官方的 Docker 镜像，在家里云上跑着倒还挺正常。  
 后面迁移到云上了经常爆，查了查原因发现是内存不够用，于是开始着手优化站点。
 
-> ℹ️ 此事在此篇文章亦有记载，具体我就不多说了，这篇文章主要是讲怎么用 LiteSpeed 搭建 WordPress。
+> [!NOTE]
+> 此事在此篇文章亦有记载，具体我就不多说了，这篇文章主要是讲怎么用 LiteSpeed 搭建 WordPress。
 
 https://blog.ski.ink/2025/03/17/failed-blog-migration/
 
@@ -33,111 +35,58 @@ https://blog.ski.ink/2025/03/17/failed-blog-migration/
 
 ```yaml
 services:
-
   mysql:
-
     image: mariadb:11.4
-
     logging:
-
       driver: none
-
     command: ["--max-allowed-packet=512M"]
-
     volumes:
-
       - "./data/db:/var/lib/mysql:delegated"
-
     environment:
-
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-
       MYSQL_USER: ${MYSQL_USER}
-
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-
     restart: always
-
     networks:
-
       - default
-
   litespeed:
-
     image: litespeedtech/openlitespeed:${OLS_VERSION}-${PHP_VERSION}
-
     container_name: litespeed
-
     env_file:
-
       - .env
-
     volumes:
-
       - ./lsws/conf:/usr/local/lsws/conf
-
       - ./lsws/admin-conf:/usr/local/lsws/admin/conf
-
       - ./bin/container:/usr/local/bin
-
       - ./sites:/var/www/vhosts/
-
       - /root/.acme.sh/:/root/.acme.sh/:ro
-
       - ./logs:/usr/local/lsws/logs/
-
     ports:
-
       - 80:80
-
       - 443:443
-
       - 443:443/udp
-
       - 7080:7080
-
     restart: always
-
     environment:
-
       TZ: ${TimeZone}
-
     networks:
-
       - default
-
   redis:
-
     image: "redis:alpine"
-
     logging:
-
       driver: none
-
     command: redis-server --requirepass <RANDOM_PASSWORD> # 记得更改此处！
-
     volumes:
-
       - ./redis/data:/var/lib/redis
-
       - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
-
     environment:
-
       - REDIS_REPLICATION_MODE=master
-
     restart: always
-
     networks:
-
       - default
-
 networks:
-
   default:
-
     driver: bridge
 ```
 
@@ -203,7 +152,8 @@ bash bin/database.sh -D <YOUR_DOMAIN>
 
 ## 3. 简单的数据迁移
 
-> ⚠️ 我这里使用的方法是我第一直觉想出来的，肯定有些问题，照着学出问题自行负责，没那个技术力的话看看就好。
+> [!WARNING]
+> 我这里使用的方法是我第一直觉想出来的，肯定有些问题，照着学出问题自行负责，没那个技术力的话看看就好。
 
 为了将上传的文件和插件迁移过去，我使用了一个骚操作：
 

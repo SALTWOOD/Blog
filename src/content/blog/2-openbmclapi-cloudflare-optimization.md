@@ -8,12 +8,15 @@ tags: [Cloudflare, Minecraft, 教程]
 category: ''
 ---
 
-> ℹ️ 此篇文章含有较多的图片，因此不适合在移动网络环境或卡顿的网络环境下阅读。
+> [!NOTE]
+> 此篇文章含有较多的图片，因此不适合在移动网络环境或卡顿的网络环境下阅读。
 
-> ⚠️ **优选 IP 违反 Cloudflare 的协议，使用优选 IP 可能导致域名被列入黑名单，无法使用 Cloudflare 提供的服务。**  
+> [!WARNING]
+> **优选 IP 违反 Cloudflare 的协议，使用优选 IP 可能导致域名被列入黑名单，无法使用 Cloudflare 提供的服务。**  
 > **按照本文的教程操作导致域名被封禁与本人无关，本文仅对优选 IP 的原理进行技术性记述，本人不鼓励使用优选 IP。**
 
-> ✅ 作者**并不实际拥有** `example.com` 和 `example.top`，因此文中的图片经过浏览器开发工具修改，**仅作演示**。
+> [!NOTE]
+> 作者**并不实际拥有** `example.com` 和 `example.top`，因此文中的图片经过浏览器开发工具修改，**仅作演示**。
 
 ## 0. 前言
 
@@ -33,7 +36,8 @@ category: ''
 
 你一共需要**两个域名**来完成此操作。这里我使用 `example.com` 和 `example.top` 代称这两个域名。
 
-> ℹ️ 你也可以选择在 Cloudflare 购买 `example.com`，但是必须有另一个不由 Cloudflare 管理的域名（此例是 `example.top`）  
+> [!NOTE]
+> 你也可以选择在 Cloudflare 购买 `example.com`，但是必须有另一个不由 Cloudflare 管理的域名（此例是 `example.top`）  
 > 如果你在 Cloudflare 购买了一个域名，你可以跳过此步。
 
 首先，先将 `example.com` 添加至 Cloudflare。在 [https://dash.cloudflare.com/](https://dash.cloudflare.com/) 注册你的账号，然后点击**添加域**。
@@ -66,7 +70,8 @@ category: ''
 
 ![](https://blog.ski.ink/wp-content/uploads/2025/05/image-10.webp)
 
-> ℹ️ 由于我也不知道什么原因，开启 SaaS 需要绑定付款方式，即使后面可以选择 Free 计划……  
+> [!NOTE]
+> 由于我也不知道什么原因，开启 SaaS 需要绑定付款方式，即使后面可以选择 Free 计划……  
 > 付款方式要银行卡或者 PayPal，没有的可以走了，记得回退更改。
 
 然后，进入 `example.com` 的管理界面，依次点击 **SSL/TLS**、**自定义主机名**，然后设置回退源为 `origin.example.com`。
@@ -91,7 +96,8 @@ category: ''
 
 上面我们已经成功地将 `example.top` 作为一个自定义主机名添加到了 Cloudflare，接下来我们需要配置辅助域名，使其解析至优选 IP。这边**我再叠一次甲**：
 
-> ⚠️ **优选 IP 违反 Cloudflare 的协议，使用优选 IP 可能导致域名被列入黑名单，无法使用 Cloudflare 提供的服务。**  
+> [!WARNING]
+> **优选 IP 违反 Cloudflare 的协议，使用优选 IP 可能导致域名被列入黑名单，无法使用 Cloudflare 提供的服务。**  
 > **按照本文的教程操作导致域名被封禁与本人无关，本文仅对优选 IP 的原理进行技术性记述，本人不鼓励使用优选 IP。**
 
 好，让我们转到 `example.top`。添加如图所示的解析：
@@ -108,7 +114,8 @@ category: ''
 
 看到这两个页面的其中一个，就说明你配置正确了，接下来需要配置 **Origin Rules** 和 **Cache Rules**。
 
-> ℹ️ 如果你的节点本来的访问地址就是 443 端口，不需要加端口号就能访问的话，可以只配置 **Cache Rules**。
+> [!NOTE]
+> 如果你的节点本来的访问地址就是 443 端口，不需要加端口号就能访问的话，可以只配置 **Cache Rules**。
 
 ### 2.4. 配置 Origin Rules 和 Cache Rules
 
@@ -148,21 +155,13 @@ category: ''
 
 ```
 CLUSTER_ID=xxxxxxxxxxxxxxxxxxxxxxxx
-
 CLUSTER_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
 CLUSTER_PORT=4001 #此处是你在 Origin Rules 中设置的重写端口
-
 CLUSTER_PUBLIC_PORT=443
-
 CLUSTER_IP=example.top
-
 CLUSTER_BYOC=true
-
 SSL_CERT=/path/to/your/cert/cert.pem
-
 SSL_KEY=/path/to/your/cert/key.pem # 此处证书是你设置的源站的，也就是 example.com，上文开启小黄云的那个解析的解析目标
-
 DISABLE_ACCESS_LOG=true
 ```
 

@@ -20,7 +20,6 @@ category: ''
 
 ```
 UPDATE wp_options SET option_value = '<YOUR_NEW_URL>' WHERE option_name = 'siteurl';
-
 UPDATE wp_options SET option_value = '<YOUR_NEW_URL>' WHERE option_name = 'home';
 ```
 
@@ -34,15 +33,9 @@ UPDATE wp_options SET option_value = '<YOUR_NEW_URL>' WHERE option_name = 'home'
 
 ```bash
 # 原服务器执行
-
 mysqldump -u root -p --databases wordpress_db > wp_db.sql
-
-
-
 # 新服务器导入前先创建空数据库
-
 mysql -u root -p -e "CREATE DATABASE wordpress_db;"
-
 mysql -u root -p wordpress_db < wp_db.sql
 ```
 

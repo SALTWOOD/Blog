@@ -42,11 +42,8 @@ OpenWRT 官方提供了 [Firmware Selector](https://firmware-selector.openwrt.or
 
 ```bash
 sudo apt update
-
 sudo apt install build-essential clang flex bison g++ gawk \
-
 gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev \
-
 python3-setuptools rsync swig unzip zlib1g-dev file wget
 ```
 
@@ -60,7 +57,6 @@ python3-setuptools rsync swig unzip zlib1g-dev file wget
 
 ```bash
 git branch -a
-
 git tag
 ```
 
@@ -78,7 +74,6 @@ git checkout <VERSION/BRANCH>
 
 ```bash
 ./scripts/feeds update -a
-
 ./scripts/feeds install -a
 ```
 

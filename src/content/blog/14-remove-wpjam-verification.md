@@ -8,7 +8,8 @@ tags: [WordPress, WPJAM, 破解]
 category: ''
 ---
 
-> ⚠️ 本篇文章仅作记录使用。我尝试去掉验证码是因为**每隔一段时间就得重新验证一次嫌烦**，**并不是因为不支持作者**。  
+> [!WARNING]
+> 本篇文章仅作记录使用。我尝试去掉验证码是因为**每隔一段时间就得重新验证一次嫌烦**，**并不是因为不支持作者**。  
 > 如果作者看到这篇文章认为我侵犯了你的权益，请**直接在下方评论区告诉我**，我会**删除文章**。
 
 ## 0. 起因
@@ -33,11 +34,8 @@ grep -rnw './' -e '验证'
 
 ```
 root@localhost:/opt/blog/wp-content/plugins/wpjam-basic# grep -rnw './' -e '验证'
-
 ./includes/class-wpjam-field.php:543:                           if($value || is_array($value) || is_numeric($value)){   // 空值只需 required 验证
-
 ./components/wpjam-admin.php:244:                       'submit_text'   => '验证',
-
 ./components/wpjam-admin.php:281:                                       'page_title'    => '验证 WPJAM',
 ```
 
@@ -45,57 +43,31 @@ root@localhost:/opt/blog/wp-content/plugins/wpjam-basic# grep -rnw './' -e '验�
 
 ```php
 <?php
-
 public static function on_admin_init(){
-
 	$menu_page	= wpjam_get_item('menu_page', 'wpjam-basic');
-
 	if(get_transient('wpjam_basic_verify')){
-
 		if($menu_page){
-
 			wpjam_set_item('menu_page', 'wpjam-basic', wpjam_except($menu_page, 'subs.wpjam-about'));
-
 		}
-
 	}elseif(self::verify()){
-
 		if(isset($_GET['unbind_wpjam_user'])){
-
 			delete_user_meta(get_current_user_id(), 'wpjam_weixin_user');
-
 			wp_redirect(admin_url('admin.php?page=wpjam-verify'));
-
 		}
-
 	}else{
-
 		if($menu_page && isset($menu_page['subs'])){
-
 			$menu_page['subs']	= wpjam_pick($menu_page['subs'], ['wpjam-basic'])+['wpjam-verify'=> [
-
 				'parent'		=> 'wpjam-basic',
-
 				'order'			=> 3,
-
 				'menu_title'	=> '扩展管理',
-
 				'page_title'	=> '验证 WPJAM',
-
 				'function'		=> 'form',
-
 				'form'			=> [self::class, 'get_form']
-
 			]];
-
 			wpjam_set_item('menu_page', 'wpjam-basic', $menu_page);
-
 		}
-
 	}
-
 }
-
 ?>
 ```
 
@@ -107,57 +79,31 @@ public static function on_admin_init(){
 
 ```php
 <?php
-
 public static function on_admin_init(){
-
 	$menu_page	= wpjam_get_item('menu_page', 'wpjam-basic');
-
 	if(true){//get_transient('wpjam_basic_verify')){
-
 		if($menu_page){
-
 			wpjam_set_item('menu_page', 'wpjam-basic', $menu_page);//, wpjam_except($menu_page, 'subs.wpjam-about'));
-
 		}
-
 	}/*elseif(self::verify()){
-
 		if(isset($_GET['unbind_wpjam_user'])){
-
 			delete_user_meta(get_current_user_id(), 'wpjam_weixin_user');
-
 			wp_redirect(admin_url('admin.php?page=wpjam-verify'));
-
 		}
-
 	}else{
-
 		if($menu_page && isset($menu_page['subs'])){
-
 			$menu_page['subs']	= wpjam_pick($menu_page['subs'], ['wpjam-basic'])+['wpjam-verify'=> [
-
 				'parent'		=> 'wpjam-basic',
-
 				'order'			=> 3,
-
 				'menu_title'	=> '扩展管理',
-
 				'page_title'	=> '验证 WPJAM',
-
 				'function'		=> 'form',
-
 				'form'			=> [self::class, 'get_form']
-
 			]];
-
 			wpjam_set_item('menu_page', 'wpjam-basic', $menu_page);
-
 		}
-
 	}*/
-
 }
-
 ?>
 ```
 
@@ -177,7 +123,6 @@ public static function on_admin_init(){
 
 ```
 root@localhost:/opt/blog/wp-content/plugins/wpjam-basic# grep -rnw './' -e 'wpjam_basic_verify'
-
 ./components/wpjam-admin.php:265:               if(true){//get_transient('wpjam_basic_verify')){
 ```
 

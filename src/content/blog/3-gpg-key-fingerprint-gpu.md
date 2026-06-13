@@ -8,7 +8,8 @@ tags: [GPG, GPU, 教程]
 category: ''
 ---
 
-> ℹ️ 需要注意的是，GPG Key 的计算是一个很靠运气和算力的事情，可能一个号码一秒出来，也可能算个几天毫无成果。
+> [!NOTE]
+> 需要注意的是，GPG Key 的计算是一个很靠运气和算力的事情，可能一个号码一秒出来，也可能算个几天毫无成果。
 
 ## 0. GPG Key 能干啥？
 
@@ -52,11 +53,8 @@ category: ''
 
 ```bash
 saltwood@SALTWOOD-DESKTOP:~/gpg-fingerprint-filter-gpu$ make
-
 nvcc -c -o key_test.o -O3 -std=c++14 --compiler-options -Wall,-Wextra `pkg-config --cflags libgcrypt` key_test.cpp
-
 /bin/sh: 1: nvcc: not found
-
 make: *** [Makefile:17: key_test.o] Error 127
 ```
 
@@ -66,17 +64,11 @@ make: *** [Makefile:17: key_test.o] Error 127
 
 ```bash
 sudo dpkg -i cuda-repo-*.deb
-
 sudo apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/$(lsb_release -c | awk '{print $2}')/x86_64/7fa2af80.pub
-
 sudo apt-get update
-
 sudo apt-get install cuda
-
 export PATH=/usr/local/cuda/bin:$PATH
-
 export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
-
 source ~/.bashrc
 ```
 
@@ -125,7 +117,6 @@ source ~/.bashrc
 
 ```bash
 git config --global commit.gpgsign true
-
 git config --global user.signingkey <这里填写你算出来的 Key 的短 ID>
 ```
 
