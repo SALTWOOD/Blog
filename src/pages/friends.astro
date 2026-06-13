@@ -1,0 +1,88 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import FriendCard from '../components/FriendCard.astro';
+
+const avatars = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/friends/*.webp',
+	{ eager: true },
+);
+
+const friendData = [
+	{ slug: 'zerowolf', name: '零狼の小窝', url: 'https://zerowolf.cn/', desc: '土生土长的浙江野狼！' },
+	{ slug: 'yanmo', name: '烟墨的屑站点', url: 'https://ymbit.cn', desc: '林花谢了春红，太匆匆。无奈朝来寒雨，晚来风。' },
+	{ slug: 'xiamohuahuo', name: '夏沫花火zzz🌙 (Muska_Ami)のLife', url: 'https://1l1.icu', desc: 'Keep doing, keep loving.' },
+	{ slug: 'daiyangcheng', name: 'Daiyangcheng 的博客', url: 'https://www.daiyangcheng.cn/', desc: 'dyc 的碎碎念' },
+	{ slug: 'luoxue', name: '落雪の自留地', url: 'https://www.lxhtt.cn', desc: '衣带渐宽终不悔，为伊消得人憔悴。' },
+	{ slug: 'milu', name: '米露小窝', url: 'https://milu.ink', desc: '放弃个性，就和死了没什么区别' },
+	{ slug: 'lzasn', name: 'Lzasnの小窝', url: 'https://blog.lzasn.xyz', desc: '静待时间留下岁月痕迹……' },
+	{ slug: 'tangge233', name: 'tangge233 的小博客', url: 'https://blog.tangge233.top/', desc: '一只鸽子的博客' },
+	{ slug: 'dongyan', name: '冬烟の小窝', url: 'https://blog.45m.fun/', desc: '你猜，我猜你肯定猜不到嘿嘿……' },
+	{ slug: 'pysio', name: '熊猫的小窝', url: 'https://www.pysio.online/', desc: '一只懒懒的熊猫' },
+	{ slug: 'tingfeng', name: '听风博客', url: 'https://blog.ifeng.asia/', desc: '听风是大佬！' },
+	{ slug: 'alongw', name: '阿龙的笔记', url: 'https://www.alongw.cn', desc: '阿巴阿巴…' },
+	{ slug: 'ningmeng', name: '柠檬的小窝', url: 'https://www.ningmeng123.xin/', desc: '生活嘛，开心就好' },
+	{ slug: 'luoyuan', name: '洛元の小屋', url: 'https://blog.dimeta.top/', desc: '洛元の小屋，科技，游戏，生活为主的 blog' },
+	{ slug: 'bingxin', name: 'Bingxin Home', url: 'https://byteloid.one', desc: '相聚于此乐土。' },
+	{ slug: 'luochancy', name: 'I am Luochancy', url: 'https://www.luochancy.com', desc: '这是个猫猫的博客喵～' },
+	{ slug: 'kndxhz', name: '小伙纸の网站', url: 'https://kndxhz.cn', desc: '永远相信美好的事情即将发生' },
+	{ slug: 'aehxy', name: 'Aehxy 的个人小站', url: 'https://www.aehxy.com', desc: '若知是梦何须醒，不比真如一相会。' },
+	{ slug: 'lincol29', name: 'Lincol29 的博客', url: 'https://www.lincol29.cn', desc: '一名 Java 转 C# 开发的码农，专注于 C# 编程技术、上位机开发，分享 docker 工具及 wordpress 建站教程的博客。' },
+	{ slug: 'kk9', name: 'KK9 小窝', url: 'https://www.kk9.org.cn/', desc: '给时光以生命，给岁月以文明' },
+	{ slug: 'enderluoxh', name: 'enderLuoxh的个人小站', url: 'https://jzrxh.work/', desc: '用有限创造无限，用短暂守护永恒。' },
+	{ slug: 'qingping', name: '青萍叙事', url: 'https://blog.lusyoe.com', desc: '一个懂技术的产品汪' },
+	{ slug: 'huajibenji', name: 'huajibenjiの笔记', url: 'https://blog.alittlehuaji.top', desc: 'Ciallo～(∠・ω< )⌒☆' },
+	{ slug: 'xiaopang', name: 'XiaoPang 的个人博客', url: 'https://blog.xpdbk.com', desc: '追随梦想需竭尽全力' },
+];
+
+const friends = friendData.map((f) => ({
+	...f,
+	avatar: avatars[`../assets/friends/${f.slug}.webp`].default,
+}));
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead title="友链 - 盐木的小破窝" description="盐木的友链" />
+		<style>
+			main {
+				width: 1100px;
+				max-width: calc(100% - 2em);
+				margin: auto;
+				padding: 3em 1em;
+			}
+			h1 {
+				color: rgb(var(--black));
+			}
+			.friends-grid {
+				list-style: none;
+				margin: 1.5rem 0 0;
+				padding: 0;
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+				gap: 1.5rem;
+			}
+			.friends-grid li {
+				margin: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>友链</h1>
+			<ul class="friends-grid">
+				{friends.map((f) => (
+					<li>
+						<FriendCard {...f} />
+					</li>
+				))}
+			</ul>
+		</main>
+		<Footer />
+	</body>
+</html>
