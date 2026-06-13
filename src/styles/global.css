@@ -8,6 +8,7 @@
 	color-scheme: light;
 	--accent: #2337ff;
 	--accent-dark: #000d8a;
+	--accent-rgb: 35, 55, 255;
 	--black: 15, 18, 25;
 	--gray: 96, 115, 159;
 	--gray-light: 229, 233, 240;
@@ -23,6 +24,7 @@
 	color-scheme: dark;
 	--accent: #6e8bff;
 	--accent-dark: #2337ff;
+	--accent-rgb: 110, 139, 255;
 	--black: 220, 225, 235;
 	--gray: 150, 165, 200;
 	--gray-light: 25, 28, 40;
@@ -32,6 +34,9 @@
 	--box-shadow:
 		0 2px 6px rgba(0, 0, 0, 40%), 0 8px 24px rgba(0, 0, 0, 50%),
 		0 16px 32px rgba(0, 0, 0, 50%);
+}
+html {
+	scroll-behavior: smooth;
 }
 body {
 	font-family: var(--font-atkinson);
