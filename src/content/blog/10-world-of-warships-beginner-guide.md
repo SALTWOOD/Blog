@@ -3,7 +3,7 @@ title: '萌新入坑莱服战舰世界指南'
 description: ''
 pubDate: 2025-04-01T16:21:52.000Z
 updatedDate: 2026-04-04T14:01:27.557Z
-heroImage: '../../assets/10.webp'
+# heroImage: '../../assets/10.webp'
 tags: []
 category: ''
 ---

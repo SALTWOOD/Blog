@@ -3,7 +3,7 @@ title: '[烤肉] 战舰世界莱服封闭测试 25.8 — 航母支援中队'
 description: ''
 pubDate: 2025-07-13T03:12:54.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
-heroImage: '../../assets/18.jpg'
+# heroImage: '../../assets/18.jpg'
 tags: []
 category: ''
 ---

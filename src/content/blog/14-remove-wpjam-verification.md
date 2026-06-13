@@ -3,7 +3,7 @@ title: '如何彻底干掉 WPJAM 的公众号验证码'
 description: ''
 pubDate: 2025-04-13T13:52:12.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
-heroImage: '../../assets/14.webp'
+# heroImage: '../../assets/14.webp'
 tags: []
 category: ''
 ---
