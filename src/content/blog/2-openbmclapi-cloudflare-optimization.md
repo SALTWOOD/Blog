@@ -3,6 +3,7 @@ title: '使用 Cloudflare 优选为 OpenBMCLAPI 助力'
 description: ''
 pubDate: 2025-02-17T11:33:11.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
+heroImage: '../../assets/2.webp'
 tags: []
 category: ''
 ---

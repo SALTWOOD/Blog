@@ -3,6 +3,7 @@ title: '基于 Cap 的 WordPress Argon 评论发送验证码'
 description: ''
 pubDate: 2025-07-07T14:05:20.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
+heroImage: '../../assets/16.webp'
 tags: []
 category: ''
 ---

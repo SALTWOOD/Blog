@@ -3,6 +3,7 @@ title: 'PCL 反编译——加密和解密原理记录'
 description: ''
 pubDate: 2025-04-04T15:48:45.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
+heroImage: '../../assets/12.webp'
 tags: []
 category: ''
 ---

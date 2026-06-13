@@ -3,6 +3,7 @@ title: '【随手记】借助 Nginx 拦截指定 IP 访问'
 description: ''
 pubDate: 2026-01-08T11:59:21.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
+heroImage: '../../assets/20.webp'
 tags: []
 category: ''
 ---

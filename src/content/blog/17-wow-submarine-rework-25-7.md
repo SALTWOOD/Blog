@@ -3,6 +3,7 @@ title: '[烤肉] 战舰世界莱服封闭测试 25.7 — 潜艇机制大改'
 description: ''
 pubDate: 2025-07-12T13:06:34.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
+heroImage: '../../assets/17.jpg'
 tags: []
 category: ''
 ---
