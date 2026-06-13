@@ -4,7 +4,7 @@ description: ''
 pubDate: 2025-07-07T14:05:20.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
 # heroImage: '../../assets/16.webp'
-tags: []
+tags: [WordPress, 安全, 验证码]
 category: ''
 ---
 
