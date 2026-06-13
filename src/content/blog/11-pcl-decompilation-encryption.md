@@ -7,91 +7,49 @@ updatedDate: 2026-04-04T14:27:41.636Z
 tags: [PCL, 逆向, .NET]
 category: ""
 ---
+
 ## 0. 起因
-
-
 
 在 Google 上搜 "PCL" 找到[一篇文章](https://www.luogu.com/article/ughew4si)，通过对 PCL 旧版泄露源码和非法魔改测试版的反编译，验证了这篇文章部分的事实。
 
-
-
 但也仅限于部分，反编译的代码只能确定有同名的方法，却不能确定方法内部实现是否相同。
-
-
 
 同时，那篇文章只贴出了 PCL 加解密的部分代码，抠掉了重要的部分，于是对 PCL 的加解密产生了兴趣的我开始尝试反编译 PCL 的测试版。
 
-
-
 ## 1. 直接尝试反编译
 
-
-
 既然 PCL 是用 Visual BASIC 编写的，那么肯定基于 .NET。
-
 既然基于 .NET，那就可以请出我们的 .NET 反编译大神——[ILSpy](https://github.com/icsharpcode/ILSpy)。
-
-
 
 但是，在把测试版的 PCL 拖进 ILSpy 之后，却发现无法解析——
 
-
-
 [![image](https://blog.ski.ink/wp-content/uploads/2025/05/image-69-1024x230.webp)](https://blog.ski.ink/wp-content/uploads/2025/05/image-69.webp)
-
-
 
 经过一番研究和询问龙猫，得知 PCL 测试版是经过加壳的，需要先脱壳再反编译才可能得到代码。
 
-
-
 ## 2. 尝试脱壳
-
-
 
 在 GitHub 搜索过后，我找到了两个项目
 
-
-
 [void-stack/VMUnprotect.Dumper](https://github.com/void-stack/VMUnprotect.Dumper)
-
-
 
 [SychicBoy/NETReactorSlayer](https://github.com/SychicBoy/NETReactorSlayer)
 
-
-
 搭配 ILSpy 尝试了一下，用它们两个去旧测试版的 PCL 壳是没有问题的，只是代码被混淆了而已，但是去新测试版的壳却又出现了问题。
-
-
 
 再次询问群友，得知龙猫最近更新了 PCL，使用了 .NET Reactor 的 6.5 版本，而这个版本**目前没有脱壳的方法**，反混淆倒是可以用 **NETReactorSlayer**。
 
-
-
 ## 3. 转换思路
-
-
 
 虽然没法直接反编译新测试版的 PCL，但是我从群友那里得知并验证了一个信息：**除了秋仪金主题相关的，其他部分的加密方式并没有更改过。**
 
-
-
 于是我找来了**旧测试版**的 PCL，通过 **VMUnprotect.Dumper**，成功脱壳了 PCL 反编译了源码，获取到了那篇文章提及的 `GetHash` `StrFill` 和 `SecureKey` 三个方法，与原文中提供的 `SecureAdd` 和 `SecureRemove` 拼凑在一起，再去拿来密文和识别码，调用方法，成功解密出数据！
-
-
 
 [![image](https://blog.ski.ink/wp-content/uploads/2025/05/image-70.webp)](https://blog.ski.ink/wp-content/uploads/2025/05/image-70.webp)
 
-
-
 ## 4. 代码
 
-
-
 再经过一些优化和改进，我写出了这么一个类：
-
-
 
 ```csharp
 
@@ -393,11 +351,7 @@ public class PCLSecretHelper
 
 ```
 
-
-
 通过注释中给出的示例，传入识别码构造实例，然后再调用对应的方法，能够以测试版 PCL 同款的方式加密或者解密信息。
-
-
 
 ```csharp
 

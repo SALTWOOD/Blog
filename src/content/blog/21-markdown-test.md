@@ -10,7 +10,7 @@ category: ''
 # 标题测试 (H1)
 ## 子标题测试 (H2)
 
-这是一段包含 **粗体 (Bold)**、*斜体 (Italic)*、~~删除线 (Strikethrough)~~ 以及 <u>下划线 (Underline)</u> 的基础文本。
+这是一段包含 **粗体 (Bold)**、*斜体 (Italic)*、~~删除线 (Strikethrough)~~ 以及 下划线 (Underline) 的基础文本。
 
 ---
 
