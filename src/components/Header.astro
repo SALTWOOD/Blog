@@ -2,6 +2,17 @@
 import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 import ThemeToggle from './ThemeToggle.astro';
+
+// Replicate HeaderLink's active logic for the plain <a> used in the mobile menu.
+const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
+const subpath = pathname.match(/[^/]+/g);
+const mobileLinks = [
+	{ href: '/', label: '文章' },
+	{ href: '/tags', label: '标签' },
+	{ href: '/about', label: '关于' },
+];
+const isActive = (href: string) =>
+	href === pathname || href === `/${subpath?.[0] || ''}`;
 ---
 
 <header>
@@ -13,7 +24,7 @@ import ThemeToggle from './ThemeToggle.astro';
 			<HeaderLink href="/about">关于</HeaderLink>
 		</div>
 		<div class="social-links">
-			<ThemeToggle />
+			<div class="toggle-slot" data-toggle-slot="desktop"><ThemeToggle /></div>
 			<a href="https://github.com/SALTWOOD" target="_blank">
 				<span class="sr-only">GitHub</span>
 				<svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32"
@@ -24,7 +35,50 @@ import ThemeToggle from './ThemeToggle.astro';
 				>
 			</a>
 		</div>
+		<button
+			id="menu-toggle"
+			class="menu-toggle"
+			type="button"
+			aria-label="菜单"
+			aria-expanded="false"
+			aria-controls="mobile-menu"
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="24"
+				height="24"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				aria-hidden="true"
+			>
+				<line x1="3" y1="6" x2="21" y2="6"></line>
+				<line x1="3" y1="12" x2="21" y2="12"></line>
+				<line x1="3" y1="18" x2="21" y2="18"></line>
+			</svg>
+		</button>
 	</nav>
+	<div id="mobile-menu" class="mobile-menu" hidden>
+		{mobileLinks.map((link) => (
+			<a href={link.href} class:list={['mobile-link', { active: isActive(link.href) }]}>
+				{link.label}
+			</a>
+		))}
+		<div class="mobile-actions">
+			<div class="toggle-slot" data-toggle-slot="mobile"></div>
+			<a href="https://github.com/SALTWOOD" target="_blank" class="mobile-github">
+				<span class="sr-only">GitHub</span>
+				<svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32"
+					><path
+						fill="currentColor"
+						d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+					></path></svg
+				>
+			</a>
+		</div>
+	</div>
 </header>
 <style>
 	header {
@@ -32,6 +86,7 @@ import ThemeToggle from './ThemeToggle.astro';
 		padding: 0 1em;
 		background: var(--bg-header);
 		box-shadow: 0 2px 8px rgba(var(--black), 5%);
+		position: relative;
 	}
 	h2 {
 		margin: 0;
@@ -65,9 +120,149 @@ import ThemeToggle from './ThemeToggle.astro';
 		gap: 0.5em;
 		align-items: center;
 	}
+	/* The toggle slot wrapper dissolves so the ThemeToggle button stays a direct
+	   flex child of .social-links on desktop (byte-identical layout). It also
+	   serves as a stable anchor for reparenting the single toggle instance. */
+	.toggle-slot {
+		display: contents;
+	}
+	/* Hamburger button — hidden on desktop, shown on mobile. */
+	.menu-toggle {
+		display: none;
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0.5em;
+		color: rgb(var(--black));
+		align-items: center;
+		justify-content: center;
+	}
+	.menu-toggle svg {
+		display: block;
+	}
+	/* Dropdown panel — always hidden on desktop. */
+	.mobile-menu {
+		display: none;
+	}
 	@media (max-width: 720px) {
+		.internal-links,
 		.social-links {
 			display: none;
 		}
+		.menu-toggle {
+			display: flex;
+		}
+		.mobile-menu {
+			position: absolute;
+			top: 100%;
+			right: 0.5em;
+			left: 0.5em;
+			z-index: 50;
+			display: block;
+			background: var(--bg-header);
+			box-shadow: var(--box-shadow);
+			border-radius: 8px;
+			padding: 0.5em 0;
+		}
+		.mobile-menu[hidden] {
+			display: none;
+		}
+		.mobile-menu .mobile-link {
+			display: block;
+			box-sizing: border-box;
+			min-height: 44px;
+			padding: 0.75em 1em;
+			color: rgb(var(--black));
+			border-bottom: none;
+			text-decoration: none;
+		}
+		.mobile-menu .mobile-link.active {
+			font-weight: bolder;
+			color: var(--accent);
+		}
+		.mobile-actions {
+			display: flex;
+			align-items: center;
+			gap: 0.5em;
+			box-sizing: border-box;
+			min-height: 44px;
+			padding: 0.75em 1em;
+			margin-top: 0.25em;
+			border-top: 1px solid rgb(var(--gray-light));
+		}
+		.mobile-actions .mobile-github {
+			display: flex;
+			align-items: center;
+		}
 	}
 </style>
+<script is:inline>
+	(function () {
+		function closeMenu() {
+			var panel = document.getElementById('mobile-menu');
+			var btn = document.getElementById('menu-toggle');
+			if (panel) panel.setAttribute('hidden', '');
+			if (btn) btn.setAttribute('aria-expanded', 'false');
+		}
+		function openMenu() {
+			var panel = document.getElementById('mobile-menu');
+			var btn = document.getElementById('menu-toggle');
+			if (panel) panel.removeAttribute('hidden');
+			if (btn) btn.setAttribute('aria-expanded', 'true');
+		}
+		function relocateToggle() {
+			var toggle = document.getElementById('theme-toggle');
+			if (!toggle) return;
+			var mobile = window.matchMedia('(max-width: 720px)').matches;
+			var slot = document.querySelector(
+				mobile ? '[data-toggle-slot="mobile"]' : '[data-toggle-slot="desktop"]'
+			);
+			if (slot && toggle.parentNode !== slot) slot.appendChild(toggle);
+		}
+		function init() {
+			relocateToggle();
+		}
+
+		if (!window.__headerMenuInit) {
+			window.__headerMenuInit = true;
+			document.addEventListener('click', function (e) {
+				var btn = e.target.closest('#menu-toggle');
+				if (btn) {
+					var panel = document.getElementById('mobile-menu');
+					if (panel && panel.hasAttribute('hidden')) openMenu();
+					else closeMenu();
+					return;
+				}
+				var panel = document.getElementById('mobile-menu');
+				if (!panel || panel.hasAttribute('hidden')) return;
+				// Clicking a nav link inside closes the panel.
+				if (e.target.closest('#mobile-menu .mobile-link')) {
+					closeMenu();
+					return;
+				}
+				// Clicking anywhere outside the panel closes it.
+				if (!e.target.closest('#mobile-menu')) {
+					closeMenu();
+				}
+			});
+			document.addEventListener('keydown', function (e) {
+				if (e.key !== 'Escape') return;
+				var panel = document.getElementById('mobile-menu');
+				if (panel && !panel.hasAttribute('hidden')) {
+					closeMenu();
+					var btn = document.getElementById('menu-toggle');
+					if (btn) btn.focus();
+				}
+			});
+			window
+				.matchMedia('(max-width: 720px)')
+				.addEventListener('change', function () {
+					closeMenu();
+					relocateToggle();
+				});
+			document.addEventListener('astro:after-swap', init);
+		}
+
+		init();
+	})();
+</script>
