@@ -5,6 +5,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import FriendCard from '../components/FriendCard.astro';
+import Comments from '../components/Comments.astro';
 
 const avatars = import.meta.glob<{ default: ImageMetadata }>(
 	'../assets/friends/*.webp',
@@ -81,6 +82,7 @@ const friends = friendData.map((f) => ({
 					</li>
 				))}
 			</ul>
+			<Comments />
 		</main>
 		<Footer />
 	</body>
