@@ -1,55 +1,55 @@
 ---
 // ========================================
-// GISCUS CONFIGURATION
-// Get your values at https://giscus.app
-// 1. Enable Discussions on your GitHub repo
-// 2. Install the Giscus app on the repo
-// 3. Fill in the values below
+// REMARK42 CONFIGURATION
+// Docs: https://remark42.com/docs/getting-started/installation/
+//
+// These values must match your Remark42 backend:
+//   - REMARK_URL:  the --url passed to the remark42 server (REMARK_URL)
+//   - REMARK_SITE_ID: the --site passed to the remark42 server ("remark" by default)
+//
+// Make sure "ski" (or whatever you set below) is included in the backend's
+// --site/--sites list, otherwise comments won't load.
 // ========================================
-const GISCUS_REPO = 'your-username/your-repo';
-const GISCUS_REPO_ID = 'R_xxxxxxxx';
-const GISCUS_CATEGORY = 'Announcements';
-const GISCUS_CATEGORY_ID = 'DIC_xxxxxxxx';
+const REMARK_URL = 'https://comments.ski.ink';
+const REMARK_SITE_ID = 'remark';
 ---
 
 <section class="comments" data-pagefind-ignore>
 	<h2 class="comments-title">Comments</h2>
-	<div class="giscus"></div>
-	<script
-		is:inline
-		src="https://giscus.app/client.js"
-		data-repo={GISCUS_REPO}
-		data-repo-id={GISCUS_REPO_ID}
-		data-category={GISCUS_CATEGORY}
-		data-category-id={GISCUS_CATEGORY_ID}
-		data-mapping="pathname"
-		data-strict="0"
-		data-reactions-enabled="1"
-		data-emit-metadata="0"
-		data-input-position="top"
-		data-theme="preferred_color_scheme"
-		data-lang="en"
-		crossorigin="anonymous"
-		async
-	>
+	<div id="remark42">Comments loading...</div>
+	<script is:inline define:vars={{ REMARK_URL, REMARK_SITE_ID }}>
+		window.remark_config = {
+			host: REMARK_URL,
+			site_id: REMARK_SITE_ID,
+			components: ['embed'],
+			theme: document.documentElement.dataset.theme || 'light',
+			locale: 'zh',
+		};
+
+		// Load the Remark42 embed script.
+		!(function (e, n) {
+			for (var o = 0; o < e.length; o++) {
+				var r = n.createElement('script'),
+					c = '.js',
+					d = n.head || n.body;
+				if ('noModule' in r) {
+					r.type = 'module';
+					c = '.mjs';
+				} else {
+					r.async = true;
+				}
+				r.defer = true;
+				r.src = remark_config.host + '/web/' + e[o] + c;
+				d.appendChild(r);
+			}
+		})(remark_config.components || ['embed'], document);
 	</script>
 	<script is:inline>
-		function syncGiscusTheme() {
-			var currentTheme = document.documentElement.dataset.theme || 'light';
-			var iframe = document.querySelector('iframe.giscus-frame');
-			if (iframe) {
-				iframe.contentWindow.postMessage(
-					{ giscus: { setConfig: { theme: currentTheme } } },
-					'https://giscus.app'
-				);
-			}
-		}
-		window.addEventListener('theme-change', syncGiscusTheme);
-		var giscusLoaded = false;
-		window.addEventListener('message', function (e) {
-			if (e.origin === 'https://giscus.app' && !giscusLoaded) {
-				giscusLoaded = true;
-				syncGiscusTheme();
+		// Sync Remark42 theme with the site's theme system.
+		window.addEventListener('theme-change', function () {
+			if (window.REMARK42 && window.REMARK42.changeTheme) {
+				var currentTheme = document.documentElement.dataset.theme || 'light';
+				window.REMARK42.changeTheme(currentTheme);
 			}
 		});
 	</script>
