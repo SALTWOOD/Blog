@@ -1,6 +1,6 @@
 ---
 title: "利用简码实现一个 WordPress 天气小工具"
-description: ""
+description: "通过腾讯位置服务与天气 API，用 WordPress 简码实现一个根据访客 IP 显示所在地天气的小工具。"
 pubDate: 2025-02-26T13:10:35.000Z
 updatedDate: 2026-03-28T12:57:12.173Z
 # heroImage: '../../assets/6.webp'

@@ -1,6 +1,6 @@
 ---
 title: '[烤肉] 战舰世界莱服封闭测试 25.7 — 潜艇机制大改'
-description: ''
+description: '人工烤肉，翻译战舰世界莱服 25.7 封闭测试开发者日志，关于潜艇机制的大改。'
 pubDate: 2025-07-12T13:06:34.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
 # heroImage: '../../assets/17.jpg'

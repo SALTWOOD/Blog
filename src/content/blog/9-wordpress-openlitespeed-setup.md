@@ -1,6 +1,6 @@
 ---
 title: '使用 OpenLiteSpeed 搭建高性能 WordPress 站点'
-description: ''
+description: '用 OpenLiteSpeed + Docker 替换官方镜像搭建 WordPress，解决低配机器内存不足的问题，并附简单的数据迁移。'
 pubDate: 2025-03-23T17:05:46.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
 # heroImage: '../../assets/9.webp'

@@ -1,6 +1,6 @@
 ---
 title: 'OpenWRT 入门——构建、安装与配置'
-description: ''
+description: '记录折腾 OpenWRT 的过程，包括获取与编译镜像、刷入安装以及基本配置。'
 pubDate: 2025-09-30T19:52:52.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
 # heroImage: '../../assets/19.webp'

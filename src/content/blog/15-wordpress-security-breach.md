@@ -1,6 +1,6 @@
 ---
 title: 'WordPress 维护：记录一次突发的入侵'
-description: ''
+description: '记录一次朋友 WordPress 站点被入侵的排查过程：定位后门用户、分析恶意插件代码并亡羊补牢。'
 pubDate: 2025-05-14T16:24:10.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
 # heroImage: '../../assets/15.webp'

@@ -1,6 +1,6 @@
 ---
 title: '基于 Cap 的 WordPress Argon 评论发送验证码'
-description: ''
+description: 'Argon 主题的评论验证码只在前端校验、形同虚设，改用基于 PoW 的 Cap 做真正的后端验证。'
 pubDate: 2025-07-07T14:05:20.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
 # heroImage: '../../assets/16.webp'

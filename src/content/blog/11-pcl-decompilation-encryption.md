@@ -1,6 +1,6 @@
 ---
 title: "PCL 反编译——加密和解密原理记录"
-description: ""
+description: "通过反编译研究 PCL 测试版的加解密方式，并写出一个能以同款方式加解密的辅助类。"
 pubDate: 2025-04-04T14:47:06.000Z
 updatedDate: 2026-04-04T14:27:41.636Z
 # heroImage: '../../assets/11.webp'

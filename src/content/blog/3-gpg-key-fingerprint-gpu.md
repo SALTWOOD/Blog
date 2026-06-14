@@ -1,6 +1,6 @@
 ---
 title: '利用 gpg-fingerprint-filter-gpu 计算 GPG Key'
-description: ''
+description: '借助开源项目 gpg-fingerprint-filter-gpu，利用 NVIDIA GPU 算出一个带靓号指纹的 GPG Key 用于 GitHub 提交签名。'
 pubDate: 2025-02-18T11:22:40.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
 # heroImage: '../../assets/3.webp'

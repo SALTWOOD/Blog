@@ -1,6 +1,6 @@
 ---
 title: '记一次失败的博客迁移'
-description: ''
+description: '记录迁移 WordPress 时踩到的反复重定向、MySQL 到 MariaDB、Apache 内存爆炸等几个坑。'
 pubDate: 2025-03-16T18:04:42.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
 # heroImage: '../../assets/8.webp'
