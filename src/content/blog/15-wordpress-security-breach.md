@@ -154,7 +154,7 @@ function theme_tools_cleanup() {
 
 ### 4.1. 为什么那么巧？
 
-[![](https://blog.ski.ink/wp-content/uploads/2025/05/image-77.webp)](https://blog.ski.ink/wp-content/uploads/2025/05/image-77.webp)
+[![](https://static.ski.ink/old-blog/uploads/2025/05/image-77.webp)](https://static.ski.ink/old-blog/uploads/2025/05/image-77.webp)
 
 查看了我自己站点的通知，发现在朋友站点被入侵并发现前的一天，我的站点上朋友的账号被成功登录。很巧的是，这两个账号的用户名、密码相同。
 
@@ -168,7 +168,7 @@ function theme_tools_cleanup() {
 
 ### 4.2. 为什么你是源站直通？
 
-[![](https://blog.ski.ink/wp-content/uploads/2025/05/image-78.webp)](https://blog.ski.ink/wp-content/uploads/2025/05/image-78.webp)
+[![](https://static.ski.ink/old-blog/uploads/2025/05/image-78.webp)](https://static.ski.ink/old-blog/uploads/2025/05/image-78.webp)
 
 找到提供服务器的朋友，拜托他查询了攻击我的站点和我朋友的站点的 IP，得到的回复如图。
 

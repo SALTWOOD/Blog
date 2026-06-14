@@ -42,21 +42,21 @@ category: ''
 
 首先，先将 `example.com` 添加至 Cloudflare。在 [https://dash.cloudflare.com/](https://dash.cloudflare.com/) 注册你的账号，然后点击**添加域**。
 
-![](https://blog.ski.ink/wp-content/uploads/2025/05/image-6.webp)
+![](https://static.ski.ink/old-blog/uploads/2025/05/image-6.webp)
 
 此时你会看到这样一个这样的界面，输入 `example.com`，点击继续。
 
-![](https://blog.ski.ink/wp-content/uploads/2025/05/image-7.webp)
+![](https://static.ski.ink/old-blog/uploads/2025/05/image-7.webp)
 
 此处有四个计划，分别是 **Pro, Business, Enterprise, Free**。如果你是富哥可以选别的，但是 Free 在我们的需求下就够用了。
 
 配置完成后，会显示如下的页面：
 
-![](https://blog.ski.ink/wp-content/uploads/2025/05/image-8-890x1024.webp)
+![](https://static.ski.ink/old-blog/uploads/2025/05/image-8-890x1024.webp)
 
 此处，Cloudflare 提供给我们两个 DNS 服务器，我这里是 `brenna.ns.cloudflare.com` 和 `craig.ns.cloudflare.com`。将这两个 DNS 服务器替换到你的域名购买处，如图：
 
-![](https://blog.ski.ink/wp-content/uploads/2025/05/image-9.webp)
+![](https://static.ski.ink/old-blog/uploads/2025/05/image-9.webp)
 
 很棒！现在，`example.com` 成功地被你托管到了 Cloudflare 上，接下来还需要一个 `example.top`，但由于它不需要（也不能）托管到 Cloudflare 上，所以你随便在阿里云或者别的地方买一个就行了。
 
@@ -68,7 +68,7 @@ category: ''
 
 首先，先新建一个 DNS 解析，指向你的源站。我这里新建了 `origin.example.com` 到 `example.com` 的解析。**记得开小黄云**！你在新建解析的时候右侧有个"代理状态"开关，把它点成这个样子就是开了。
 
-![](https://blog.ski.ink/wp-content/uploads/2025/05/image-10.webp)
+![](https://static.ski.ink/old-blog/uploads/2025/05/image-10.webp)
 
 > [!NOTE]
 > 由于我也不知道什么原因，开启 SaaS 需要绑定付款方式，即使后面可以选择 Free 计划……  
@@ -76,11 +76,11 @@ category: ''
 
 然后，进入 `example.com` 的管理界面，依次点击 **SSL/TLS**、**自定义主机名**，然后设置回退源为 `origin.example.com`。
 
-![](https://blog.ski.ink/wp-content/uploads/2025/05/image-11.webp)
+![](https://static.ski.ink/old-blog/uploads/2025/05/image-11.webp)
 
 接下来，点击上方的**添加自定义主机名**按钮，输入你那个不由 Cloudflare 管理的域名的一个子域。我这里使用 `example.top`，其他配置按照默认，如图这样。
 
-![](https://blog.ski.ink/wp-content/uploads/2025/05/image-12.webp)
+![](https://static.ski.ink/old-blog/uploads/2025/05/image-12.webp)
 
 接下来，转到 `example.top` 的解析管理页面，添加如下解析：
 
@@ -90,7 +90,7 @@ category: ''
 
 添加之后，等待自定义主机名生效。
 
-![](https://blog.ski.ink/wp-content/uploads/2025/05/image-13-1024x124.webp)
+![](https://static.ski.ink/old-blog/uploads/2025/05/image-13-1024x124.webp)
 
 ### 2.3. 配置辅助域名
 
@@ -102,15 +102,15 @@ category: ''
 
 好，让我们转到 `example.top`。添加如图所示的解析：
 
-![](https://blog.ski.ink/wp-content/uploads/2025/05/image-16.webp)
+![](https://static.ski.ink/old-blog/uploads/2025/05/image-16.webp)
 
 这样子，访问 `example.top` 的时候，会被 CNAME 到优选过的 Cloudflare 代理节点，然后经过前文配置的自定义主机名，就会最终回到源站。
 
 此时我们访问 `example.top`，应该会看到类似这样的页面：
 
-![](https://blog.ski.ink/wp-content/uploads/2025/05/image-18-1024x579.webp)
+![](https://static.ski.ink/old-blog/uploads/2025/05/image-18-1024x579.webp)
 
-![](https://blog.ski.ink/wp-content/uploads/2025/05/image-17-1024x576.webp)
+![](https://static.ski.ink/old-blog/uploads/2025/05/image-17-1024x576.webp)
 
 看到这两个页面的其中一个，就说明你配置正确了，接下来需要配置 **Origin Rules** 和 **Cache Rules**。
 
@@ -169,9 +169,9 @@ DISABLE_ACCESS_LOG=true
 
 ## 4. 成果展示
 
-![](https://blog.ski.ink/wp-content/uploads/2025/05/image-19.webp)
+![](https://static.ski.ink/old-blog/uploads/2025/05/image-19.webp)
 
-![](https://blog.ski.ink/wp-content/uploads/2025/05/image-20-1024x397.webp)
+![](https://static.ski.ink/old-blog/uploads/2025/05/image-20-1024x397.webp)
 
 大概就是这样的效果，当然你别拿晚上的和高峰期的比。
 

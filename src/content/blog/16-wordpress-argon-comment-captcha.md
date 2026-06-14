@@ -16,13 +16,13 @@ category: ''
 
 之前无聊死了，去翻了翻 Argon 主题的代码，发现后端居然没有对发送评论时的验证码进行验证。也就是说，**Argon 主题的评论验证码是前端的**。
 
-[![Argon 评论验证码图例](https://blog.ski.ink/wp-content/uploads/2025/07/image.webp)](https://blog.ski.ink/wp-content/uploads/2025/07/image.webp)
+[![Argon 评论验证码图例](https://static.ski.ink/old-blog/uploads/2025/07/image.webp)](https://static.ski.ink/old-blog/uploads/2025/07/image.webp)
 
 于是打开 F12 扒了一下请求，直接丢进 Python 重放，居然能过，意味着验证码根本没有起到任何作用。
 
-[![Python 重放评论请求](https://blog.ski.ink/wp-content/uploads/2025/07/image-1.webp)](https://blog.ski.ink/wp-content/uploads/2025/07/image-1.webp)
+[![Python 重放评论请求](https://static.ski.ink/old-blog/uploads/2025/07/image-1.webp)](https://static.ski.ink/old-blog/uploads/2025/07/image-1.webp)
 
-[![重放评论效果图](https://blog.ski.ink/wp-content/uploads/2025/07/image-2.webp)](https://blog.ski.ink/wp-content/uploads/2025/07/image-2.webp)
+[![重放评论效果图](https://static.ski.ink/old-blog/uploads/2025/07/image-2.webp)](https://static.ski.ink/old-blog/uploads/2025/07/image-2.webp)
 
 要知道，验证这种东西做在前端，这么一个无用的验证码除了发评论的时候烦一下人，没有任何作用。
 
