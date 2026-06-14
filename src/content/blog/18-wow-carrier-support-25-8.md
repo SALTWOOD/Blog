@@ -1,6 +1,6 @@
 ---
 title: '[烤肉] 战舰世界莱服封闭测试 25.8 — 航母支援中队'
-description: ''
+description: '人工烤肉，翻译战舰世界莱服 25.8 封闭测试开发者日志，介绍新增的航母支援中队。'
 pubDate: 2025-07-13T03:12:54.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
 # heroImage: '../../assets/18.jpg'

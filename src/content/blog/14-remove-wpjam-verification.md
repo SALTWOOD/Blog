@@ -1,6 +1,6 @@
 ---
 title: '如何彻底干掉 WPJAM 的公众号验证码'
-description: ''
+description: '通过扒 WPJAM 插件的源代码，找到并干掉隔一段时间就得重来的公众号验证。'
 pubDate: 2025-04-13T13:52:12.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
 # heroImage: '../../assets/14.webp'

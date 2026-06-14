@@ -1,6 +1,6 @@
 ---
 title: '碧蓝航线萌新系列——游戏简介'
-description: ''
+description: '面向刚入坑碧蓝航线的新玩家，介绍游戏资源、主要功能模块以及每天该做些什么。'
 pubDate: 2025-03-06T13:53:54.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
 # heroImage: '../../assets/7.webp'

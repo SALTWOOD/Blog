@@ -1,6 +1,6 @@
 ---
 title: '通过 Ajax 实现一个更强的天气小工具'
-description: ''
+description: '在之前简码天气小工具的基础上改用 Ajax 异步请求，避免阻塞页面渲染、提升网站打开速度。'
 pubDate: 2025-04-08T12:00:33.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
 tags: [WordPress, 天气, Ajax]

@@ -1,6 +1,6 @@
 ---
 title: '【随手记】借助 Nginx 拦截指定 IP 访问'
-description: ''
+description: '一篇随手记，借助 Nginx 的 geo 模块在 CDN 环境下拦截爆破博客的指定 IP。'
 pubDate: 2026-01-08T11:59:21.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
 # heroImage: '../../assets/20.webp'

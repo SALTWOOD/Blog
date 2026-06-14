@@ -1,6 +1,6 @@
 ---
 title: '如何关闭 MuMu 模拟器弹窗广告'
-description: ''
+description: '总结关闭 MuMu 模拟器内部桌面广告、电脑弹窗、开屏广告与消息中心推送的几招。'
 pubDate: 2025-02-21T13:45:48.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
 # heroImage: '../../assets/5.webp'
