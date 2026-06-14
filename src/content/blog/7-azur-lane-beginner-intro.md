@@ -19,12 +19,12 @@ category: ''
 本人的文笔不太好，不太会组织文字，导致这一篇文章**可能写得不太好**，后续的文章应该会优化。萌新看不懂是正常的，玩一小会过完游戏自带的新手教程再看这篇文章会好很多。  
 同时，这系列文章为国服碧蓝编写，其中大多数也适用于日服、欧服等外服，但是有一些机制不太一样，我会在下文说明。*~~（没错说的就是你低耗）~~*
 
-![](https://static.ski.ink/blog-uploads/2025/05/image-44.webp)
+![](https://static.ski.ink/blog-uploads/7/images/1.webp)
 
 <details>
 <summary>这是旧版主界面，但是萌新应该都是新版罢？</summary>
 
-![](https://static.ski.ink/blog-uploads/2025/05/image-45-1024x576.webp)
+![](https://static.ski.ink/blog-uploads/7/images/2.webp)
 </details>
 
 如图，这是我的游戏主页面。
@@ -51,26 +51,26 @@ category: ''
 <details>
 <summary>千万别学我去婚布里！</summary>
 
-![](https://static.ski.ink/blog-uploads/2025/05/image-55-1024x576.webp)
+![](https://static.ski.ink/blog-uploads/7/images/3.webp)
 </details>
 
 ## 2. 主要功能模块
 
 ### 2.1. 船坞
 
-![](https://static.ski.ink/blog-uploads/2025/05/image-47-1024x576.webp)
+![](https://static.ski.ink/blog-uploads/7/images/4.webp)
 
 **船坞**是查看舰娘的地方。你可以在这里对你的舰娘进行一些操作，包括但不限于**更换装备**、**升级**、**突破**、**强化**、**查看档案**等操作。同时，上方也有两个按钮比较常用，分别是**船坞容量**（指示你的船坞还能停放多少艘舰娘）和**筛选**（按照属性筛选舰娘）
 
 ### 2.2. 仓库
 
-![](https://static.ski.ink/blog-uploads/2025/05/image-49-1024x576.webp)
+![](https://static.ski.ink/blog-uploads/7/images/5.webp)
 
 仓库存放的是舰娘的装备，可以在这里进行**装备强化**、**装备制造**、**装备拆解**。装备是舰娘实力的很重要一部分，后面将会**专门开一篇文章**介绍装备的选择。
 
 ### 2.3. 建造
 
-![](https://static.ski.ink/blog-uploads/2025/05/image-50-1024x576.webp)
+![](https://static.ski.ink/blog-uploads/7/images/6.webp)
 
 可以在这里建造出**很大一部分常驻舰娘**（还有部分是绝版、活动限定或是打捞限定），也就是别的游戏的抽卡。萌新主要关心左侧两个红框和下方红框。
 
@@ -80,11 +80,11 @@ category: ''
 
 此外，需要补充说明的是：**千万不要想着常驻池子大建！**常驻池子没有大建的必要，资源优先堆到活动限定。
 
-![](https://static.ski.ink/blog-uploads/2025/05/image-51-1024x576.webp)
+![](https://static.ski.ink/blog-uploads/7/images/7.webp)
 
 ### 2.4. 商店
 
-![](https://static.ski.ink/blog-uploads/2025/05/image-46-1024x576.webp)
+![](https://static.ski.ink/blog-uploads/7/images/8.webp)
 
 别看商店分成六个按钮，实际上萌新一般是用到右下的三个按钮。
 
@@ -95,13 +95,13 @@ category: ''
 - **功能道具**，除了**永恒礼盒**和**扩展船坞**其他不建议购买。
 - **补给商店**——重头戏来了。
 
-![](https://static.ski.ink/blog-uploads/2025/05/image-52-1024x576.webp)
+![](https://static.ski.ink/blog-uploads/7/images/9.webp)
 
 **补给商店**按钮点进去又分为**月度商店**、**补给商店**和限时开放的**活动商店**。对于萌新来说，一般是补给商店中的**军火**和月度商店中的**勋章**可能比较有用。
 
 ### 2.5. 生活区
 
-![](https://static.ski.ink/blog-uploads/2025/05/image-53-1024x576.webp)
+![](https://static.ski.ink/blog-uploads/7/images/10.webp)
 
 生活区最主要是**后宅**，这里可以让舰娘"**训练**"和"**休息**"，可以让舰娘**恢复心情值**、**增长经验**。**指挥喵**暂时对萌新用不着，这玩意甚至连一些大佬都不太会用。
 
@@ -109,7 +109,7 @@ category: ''
 
 ### 2.6. 出击
 
-![](https://static.ski.ink/blog-uploads/2025/05/image-54-1024x576.webp)
+![](https://static.ski.ink/blog-uploads/7/images/11.webp)
 
 **出击**，是你带着舰娘去战斗的地方。整个页面大致分为以下几块。
 

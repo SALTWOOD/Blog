@@ -161,7 +161,7 @@ add_shortcode('current_weather', 'current_weather_shortcode');
 
 ## 3. 实际效果
 
-![](https://static.ski.ink/blog-uploads/2025/05/image-5.webp)
+![](https://static.ski.ink/blog-uploads/6/images/1.webp)
 
 这就是实际效果。因为本人能力所限，就只能做到这个视觉效果了。
 如果读者有更好的方案，或者修改出一个更好的版本，欢迎在评论区留下您的作品。
