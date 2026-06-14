@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import type { CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
@@ -7,6 +8,8 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import Comments from '../components/Comments.astro';
+import FallbackImage from '../assets/og-default.png';
+import { SITE_AUTHOR } from '../consts';
 
 interface Heading {
 	depth: number;
@@ -20,11 +23,52 @@ type Props = CollectionEntry<'blog'>['data'] & {
 };
 
 const { title, description, pubDate, updatedDate, heroImage, tags = [], category, headings = [], showComments } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const imageUrl = new URL((heroImage ?? FallbackImage).src, Astro.site);
+const aboutURL = new URL('/about/', Astro.site).href;
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'BlogPosting',
+	headline: title,
+	description: description,
+	image: imageUrl.href,
+	datePublished: pubDate.toISOString(),
+	dateModified: (updatedDate ?? pubDate).toISOString(),
+	author: {
+		'@type': 'Person',
+		name: SITE_AUTHOR,
+		alternateName: '盐木',
+		url: aboutURL,
+	},
+	publisher: {
+		'@type': 'Person',
+		name: SITE_AUTHOR,
+		url: aboutURL,
+	},
+	mainEntityOfPage: {
+		'@type': 'WebPage',
+		'@id': canonicalURL.href,
+	},
+	keywords: tags.join(', '),
+	...(category ? { articleSection: category } : {}),
+};
 ---
 
-<html lang="en">
+<html lang="zh-CN">
 	<head>
-		<BaseHead title={title} description={description} />
+		<BaseHead
+			title={title}
+			description={description}
+			type="article"
+			image={heroImage ?? FallbackImage}
+			publishedTime={pubDate}
+			modifiedTime={updatedDate}
+			tags={tags}
+			section={category}
+		/>
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 		<style>
 			main {
 				width: calc(100% - 2em);
@@ -122,7 +166,7 @@ const { title, description, pubDate, updatedDate, heroImage, tags = [], category
 		<main>
 			<article>
 				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
+					{heroImage && <Image width={1020} height={510} src={heroImage} alt={title} />}
 				</div>
 			<div class="content-wrapper">
 				<div class="prose" data-pagefind-body>
