@@ -19,7 +19,7 @@ category: ''
 
 ## 1. 正文
 
-[![](https://static.ski.ink/old-blog/uploads/2026/01/image.webp)](https://static.ski.ink/old-blog/uploads/2026/01/image.webp)
+[![](https://static.ski.ink/blog-uploads/2026/01/image.webp)](https://static.ski.ink/blog-uploads/2026/01/image.webp)
 
 如左图，咱的博客一直被某个 91.93 开头的 IP 尝试登录。研究了一会 Nginx 的 geo 模块，这里记录一下新的发现。
 

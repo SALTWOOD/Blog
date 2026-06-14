@@ -144,7 +144,7 @@ bash bin/database.sh -D <YOUR_DOMAIN>
 
 登录 WordPress 管理后台，在侧边栏找到 **LiteSpeed Cache**，找到 **Cache Rules**（缓存规则），点击上方的 **[6] 对象**（Object），修改成如图的设置
 
-![](https://static.ski.ink/old-blog/uploads/2025/05/image-56-1024x987.webp)
+![](https://static.ski.ink/blog-uploads/2025/05/image-56-1024x987.webp)
 
 需要注意的是，下方的密码在我给出的修改版 Docker Compose 配置文件中有提到，如果你没设置密码（也就是 command 那行是注释的状态）则密码那行可以留空。
 
@@ -161,7 +161,7 @@ bash bin/database.sh -D <YOUR_DOMAIN>
 
 于是我就直接将这三个文件夹复制过来了，打开站点，乍一看似乎没问题，但是在进行一些操作的时候提示没权限。此时使用 `ls -l` 看了下权限，发现权限不一样，正常应该是这样的——
 
-![](https://static.ski.ink/old-blog/uploads/2025/05/image-57.webp)
+![](https://static.ski.ink/blog-uploads/2025/05/image-57.webp)
 
 我这里，**litespeed、object-cache.php** 两个文件属于一个叫 **debian** 的用户，想来是容器里头系统的用户。
 

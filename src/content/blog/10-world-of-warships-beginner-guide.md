@@ -14,7 +14,7 @@ category: ''
 
 战舰世界主要分成 Wargaming 的直营、Lesta 的俄服和 360 的国服。其中 Wargaming 直营分别有**亚服**、**欧服**、**美服**三个。莱服相比其他服务器，差别主要在于玩家素质及官方极其放水的奖励力度。（入坑没几天**直接给你送到 X 级**）
 
-![](https://static.ski.ink/old-blog/uploads/2025/05/image-61.webp)
+![](https://static.ski.ink/blog-uploads/2025/05/image-61.webp)
 
 ## 1. 注册账号
 
@@ -22,7 +22,7 @@ category: ''
 
 接下来，按照你的真实情况填写信息，记得地址选择**白俄罗斯**（氪金便宜），然后邀请码填写 **SUPERSTART**（我注册时填的 **SUPERSTART2025**，如果你看到这篇文章时不是 2025 年了，那这个我也不确定用哪个，可以去 B 站搜搜或者问问群友）
 
-![](https://static.ski.ink/old-blog/uploads/2025/05/image-62-748x1024.webp)
+![](https://static.ski.ink/blog-uploads/2025/05/image-62-748x1024.webp)
 
 注册完之后，去邮箱找到确认邮件，**点击链接激活**（不激活无法登录）。
 
@@ -36,7 +36,7 @@ Lesta Game Center 会在打开 exe 之后自动安装（毛子的传统艺能）
 
 此时，输入邮箱和密码，登录，然后在主界面找到 **Мир кораблей**，这个就是莱服战舰世界了。
 
-![](https://static.ski.ink/old-blog/uploads/2025/05/image-63-1024x637.webp)
+![](https://static.ski.ink/blog-uploads/2025/05/image-63-1024x637.webp)
 
 点击之后弹出一个页面，选择游戏的安装位置，其他看不懂不用管，点那个红色的按钮下载。（还是看不懂可以截屏翻译）
 
@@ -48,7 +48,7 @@ Lesta Game Center 会在打开 exe 之后自动安装（毛子的传统艺能）
 
 提到模组，肯定会有人担心安装模组会导致封号。我可以保证安装模组一定不会封号（至少 **MOST Korabli** 不会）。为什么呢？
 
-![](https://static.ski.ink/old-blog/uploads/2025/05/image-64.webp)
+![](https://static.ski.ink/blog-uploads/2025/05/image-64.webp)
 
 这就是 **MOST Korabli** 的官网。其中 `korabli.su` 就是莱服战舰世界的官方域名，也就是说模组是被官方承认的，自然不必担心被封号什么的了。
 
@@ -70,11 +70,11 @@ Lesta Game Center 会在打开 exe 之后自动安装（毛子的传统艺能）
 
 进入 MOST Korabli，第一页是选择你安装的游戏实例。如果此时你已经**完整安装了莱服战舰世界**的话，此时应该会自动检测到游戏实例，此时你直接下一步就好。如果没检测到，你可以手动选择文件夹（名为 Korabli）
 
-![](https://static.ski.ink/old-blog/uploads/2025/05/image-65.webp)
+![](https://static.ski.ink/blog-uploads/2025/05/image-65.webp)
 
 然后选择上方顶栏的第二个按钮，进入如下界面。
 
-![](https://static.ski.ink/old-blog/uploads/2025/05/image-66-1024x576.webp)
+![](https://static.ski.ink/blog-uploads/2025/05/image-66-1024x576.webp)
 
 注意左侧的子菜单。我个人的话第一个 **Прицелы**（直译为瞄准具）并没有选择安装任何一个。
 
@@ -144,7 +144,7 @@ Lesta Game Center 会在打开 exe 之后自动安装（毛子的传统艺能）
 
 首先，去[此处](https://github.com/LocalizedKorabli/Korabli-LESTA-L10N)，点击右侧的 Releases，选择最新版本下载安装，打开程序，看到如下界面——
 
-![](https://static.ski.ink/old-blog/uploads/2025/05/image-67.webp)
+![](https://static.ski.ink/blog-uploads/2025/05/image-67.webp)
 
 勾选下方的自动更新，检查**游戏目录**、**游戏区服**和**游戏类型**三个是否正确，然后勾选”**安装体验增强包**“和”**安装模组（汉化修改包）**“，点击安装汉化。
 
@@ -164,7 +164,7 @@ Lesta Game Center 会在打开 exe 之后自动安装（毛子的传统艺能）
 
 5. 即使你装了汉化，也只有文字是中文。游戏内的语音还是俄语，你需要到**设置**=>**声音**=>**配音**=>**语言**中手动切换为中文。
 
-![](https://static.ski.ink/old-blog/uploads/2025/05/image-68-1024x506.webp)
+![](https://static.ski.ink/blog-uploads/2025/05/image-68-1024x506.webp)
 
 如果你发现安装的模组失效了，请打开桌面的 MOST Korabli，点击右下角的大红按钮再安装一遍。
 
