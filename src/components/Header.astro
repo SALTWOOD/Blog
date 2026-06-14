@@ -9,6 +9,7 @@ const subpath = pathname.match(/[^/]+/g);
 const mobileLinks = [
 	{ href: '/', label: '文章' },
 	{ href: '/tags', label: '标签' },
+	{ href: 'https://travellings.cn', label: '开往' },
 	{ href: '/about', label: '关于' },
 	{ href: '/friends', label: '友链' },
 ];
@@ -22,6 +23,7 @@ const isActive = (href: string) =>
 		<div class="internal-links">
 			<HeaderLink href="/">文章</HeaderLink>
 			<HeaderLink href="/tags">标签</HeaderLink>
+			<HeaderLink href="https://travellings.cn">开往</HeaderLink>
 			<HeaderLink href="/about">关于</HeaderLink>
 			<HeaderLink href="/friends">友链</HeaderLink>
 		</div>
