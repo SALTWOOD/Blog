@@ -23,7 +23,7 @@ category: ""
 
 但是，在把测试版的 PCL 拖进 ILSpy 之后，却发现无法解析——
 
-[![image](https://static.ski.ink/blog-uploads/2025/05/image-69-1024x230.webp)](https://static.ski.ink/blog-uploads/2025/05/image-69.webp)
+[![image](https://static.ski.ink/blog-uploads/11/images/1.webp)](https://static.ski.ink/blog-uploads/11/images/1.webp)
 
 经过一番研究和询问龙猫，得知 PCL 测试版是经过加壳的，需要先脱壳再反编译才可能得到代码。
 
@@ -45,7 +45,7 @@ category: ""
 
 于是我找来了**旧测试版**的 PCL，通过 **VMUnprotect.Dumper**，成功脱壳了 PCL 反编译了源码，获取到了那篇文章提及的 `GetHash` `StrFill` 和 `SecureKey` 三个方法，与原文中提供的 `SecureAdd` 和 `SecureRemove` 拼凑在一起，再去拿来密文和识别码，调用方法，成功解密出数据！
 
-[![image](https://static.ski.ink/blog-uploads/2025/05/image-70.webp)](https://static.ski.ink/blog-uploads/2025/05/image-70.webp)
+[![image](https://static.ski.ink/blog-uploads/11/images/2.webp)](https://static.ski.ink/blog-uploads/11/images/2.webp)
 
 ## 4. 代码
 
