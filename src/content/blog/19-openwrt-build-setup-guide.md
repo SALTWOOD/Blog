@@ -79,9 +79,9 @@ git checkout <VERSION/BRANCH>
 
 运行结束之后，如果没有出现大面积的 WARNING，基本就是成功了。如下图，左侧是成功案例，右侧是失败案例。如果失败了，可以使用 `./scripts/feeds clean` 清除 Feeds 然后再试一遍。
 
-[![Feeds 更新成功图](https://static.ski.ink/old-blog/uploads/2025/09/image-2.webp)](https://static.ski.ink/old-blog/uploads/2025/09/image-2.webp)
+[![Feeds 更新成功图](https://static.ski.ink/blog-uploads/2025/09/image-2.webp)](https://static.ski.ink/blog-uploads/2025/09/image-2.webp)
 
-[![Feeds 更新失败图](https://static.ski.ink/old-blog/uploads/2025/09/image-3-1024x569.webp)](https://static.ski.ink/old-blog/uploads/2025/09/image-3.webp)
+[![Feeds 更新失败图](https://static.ski.ink/blog-uploads/2025/09/image-3-1024x569.webp)](https://static.ski.ink/blog-uploads/2025/09/image-3.webp)
 
 ### 3.4. 配置
 
@@ -95,7 +95,7 @@ make menuconfig
 
 你会看到如下图的界面
 
-[![配置界面图](https://static.ski.ink/old-blog/uploads/2025/10/image-1024x510.webp)](https://static.ski.ink/old-blog/uploads/2025/10/image.webp)
+[![配置界面图](https://static.ski.ink/blog-uploads/2025/10/image-1024x510.webp)](https://static.ski.ink/blog-uploads/2025/10/image.webp)
 
 我这里是为我的 x86 主机编译镜像，因此选用了如下配置。进入菜单使用 Enter，退出菜单使用双击 Esc
 
@@ -122,7 +122,7 @@ make defconfig download clean world -j$(nproc) V=s
 
 这步最耗时，取决于你的 CPU 核心数。我编译的时候去打了两把窝，半小时就好了。如果出错，检查依赖或配置，试试 `make clean` 之类的清理一下，或者网上搜搜错误信息一般能解决。
 
-[![编译中图](https://static.ski.ink/old-blog/uploads/2025/09/image-1.webp)](https://static.ski.ink/old-blog/uploads/2025/09/image-1.webp)
+[![编译中图](https://static.ski.ink/blog-uploads/2025/09/image-1.webp)](https://static.ski.ink/blog-uploads/2025/09/image-1.webp)
 
 ## 4. 安装
 
