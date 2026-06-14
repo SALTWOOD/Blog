@@ -20,7 +20,7 @@ category: ''
 
 ## 1. 探索
 
-[![](https://blog.ski.ink/wp-content/uploads/2025/05/image-73.webp)](https://blog.ski.ink/wp-content/uploads/2025/05/image-73.webp)
+[![](https://static.ski.ink/old-blog/uploads/2025/05/image-73.webp)](https://static.ski.ink/old-blog/uploads/2025/05/image-73.webp)
 
 当我第八次看到这个页面的时候我绷不住了，于是直接启动 VSCode 连到远端服务器开始研究。
 
@@ -107,7 +107,7 @@ public static function on_admin_init(){
 ?>
 ```
 
-[![](https://blog.ski.ink/wp-content/uploads/2025/05/image-76.webp)](https://blog.ski.ink/wp-content/uploads/2025/05/image-76.webp)
+[![](https://static.ski.ink/old-blog/uploads/2025/05/image-76.webp)](https://static.ski.ink/old-blog/uploads/2025/05/image-76.webp)
 
 由于 PHP 不用编译什么的，直接保存就能看到效果。于是我跑到 `/wp-admin` 去一看，下面少了一个**关于 WPJAM**。
 
