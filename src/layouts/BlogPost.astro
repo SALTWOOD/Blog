@@ -9,7 +9,8 @@ import Header from '../components/Header.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import Comments from '../components/Comments.astro';
 import FallbackImage from '../assets/og-default.png';
-import { SITE_AUTHOR } from '../consts';
+import { SITE_TITLE } from '../consts';
+import { authorPerson } from '../lib/schema';
 
 interface Heading {
 	depth: number;
@@ -26,7 +27,6 @@ const { title, description, pubDate, updatedDate, heroImage, tags = [], category
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const imageUrl = new URL((heroImage ?? FallbackImage).src, Astro.site);
-const aboutURL = new URL('/about/', Astro.site).href;
 
 const jsonLd = {
 	'@context': 'https://schema.org',
@@ -36,23 +36,43 @@ const jsonLd = {
 	image: imageUrl.href,
 	datePublished: pubDate.toISOString(),
 	dateModified: (updatedDate ?? pubDate).toISOString(),
-	author: {
-		'@type': 'Person',
-		name: SITE_AUTHOR,
-		alternateName: '盐木',
-		url: aboutURL,
-	},
-	publisher: {
-		'@type': 'Person',
-		name: SITE_AUTHOR,
-		url: aboutURL,
-	},
+	author: authorPerson(Astro.site),
+	publisher: authorPerson(Astro.site),
 	mainEntityOfPage: {
 		'@type': 'WebPage',
 		'@id': canonicalURL.href,
 	},
 	keywords: tags.join(', '),
 	...(category ? { articleSection: category } : {}),
+};
+
+const breadcrumbLd = {
+	'@context': 'https://schema.org',
+	'@type': 'BreadcrumbList',
+	itemListElement: [
+		{
+			'@type': 'ListItem',
+			position: 1,
+			name: SITE_TITLE,
+			item: new URL('/', Astro.site).href,
+		},
+		...(category
+			? [
+					{
+						'@type': 'ListItem',
+						position: 2,
+						name: category,
+						item: new URL(`/categories/${category}/`, Astro.site).href,
+					},
+				]
+			: []),
+		{
+			'@type': 'ListItem',
+			position: category ? 3 : 2,
+			name: title,
+			item: canonicalURL.href,
+		},
+	],
 };
 ---
 
@@ -69,6 +89,7 @@ const jsonLd = {
 			section={category}
 		/>
 		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+		<script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />
 		<style>
 			main {
 				width: calc(100% - 2em);
