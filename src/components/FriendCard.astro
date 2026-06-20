@@ -6,14 +6,16 @@ interface Props {
 	name: string;
 	url: string;
 	desc: string;
-	avatar: ImageMetadata;
+	avatar?: ImageMetadata;
 }
 
 const { name, url, desc, avatar } = Astro.props;
 ---
 
 <a class="friend-card" href={url} target="_blank" rel="noopener noreferrer">
-	<Image src={avatar} width={56} height={56} alt={name} />
+	{
+		avatar && <Image src={avatar} width={56} height={56} alt={name} />
+	}
 	<div class="text">
 		<h3 class="name">{name}</h3>
 		<p class="desc">{desc}</p>
