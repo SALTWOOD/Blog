@@ -129,6 +129,7 @@ jobs:
 
             const prBody = [
               "来自 #" + context.issue.number + " 的友链申请",
+              "This PR closes #" + context.issue.number + ".",
               "",
               "| 字段 | 内容 |",
               "|------|------|",
