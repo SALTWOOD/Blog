@@ -49,6 +49,17 @@ const {
 		document.documentElement.setAttribute('data-theme', 'light');
 	}
 </script>
+<!-- First-load entrance (blur + focus-pull): once per browser session, so it
+     plays when entering the site but not on every in-site navigation. The
+     animation itself lives in global.css and is skipped under reduced-motion. -->
+<script is:inline>
+	try {
+		if (!sessionStorage.getItem('pw-entered')) {
+			sessionStorage.setItem('pw-entered', '1');
+			document.documentElement.classList.add('page-enter');
+		}
+	} catch (e) {}
+</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="icon" href="/favicon.ico" />
 <link rel="sitemap" href="/sitemap-index.xml" />
