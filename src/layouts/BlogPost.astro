@@ -95,36 +95,45 @@ const breadcrumbLd = {
 				width: calc(100% - 2em);
 				max-width: 100%;
 				margin: 0;
+				padding: 0;
 			}
 			.hero-image {
 				width: 100%;
+				max-width: 1040px;
+				margin: 0 auto;
+				padding: 0 1em;
+				box-sizing: border-box;
 			}
 			.hero-image img {
 				display: block;
+				width: 100%;
+				height: auto;
 				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
+				border-radius: var(--r-lg);
+				border: 1px solid var(--rule);
+				box-shadow: var(--shadow-card);
 			}
 			.content-wrapper {
 				display: flex;
-				gap: 2em;
-				max-width: 1000px;
+				gap: 2.5em;
+				max-width: 1040px;
 				margin: 0 auto;
-				padding: 1em;
+				padding: 2.5em 1em;
+				box-sizing: border-box;
 			}
 			.prose {
 				flex: 1;
 				min-width: 0;
 				max-width: 720px;
-				color: rgb(var(--gray-dark));
+				color: rgb(var(--ink));
 			}
 			.toc-sidebar {
 				width: 220px;
 				flex-shrink: 0;
 				position: sticky;
-				top: 2em;
+				top: 5em;
 				align-self: flex-start;
-				max-height: calc(100vh - 4em);
+				max-height: calc(100vh - 6em);
 				overflow-y: auto;
 			}
 			@media (max-width: 1000px) {
@@ -133,51 +142,82 @@ const breadcrumbLd = {
 				}
 				.content-wrapper {
 					flex-direction: column;
-					padding: 1em;
+					padding: 2em 1em;
 				}
 			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
+
+			/* Log-entry header */
+			.entry-head {
+				margin-bottom: 1.5em;
+				padding-bottom: 1.25em;
+				border-bottom: 1px solid var(--rule);
 			}
-			.title h1 {
+			.entry-head .meta {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				gap: 0.5em;
+				font-family: var(--font-mono);
+				font-size: 0.8rem;
+				letter-spacing: 0.02em;
+				color: rgb(var(--ink-soft));
+				margin-bottom: 0.9rem;
+				text-transform: uppercase;
+			}
+			.entry-head .meta .cat {
+				color: var(--sea);
+			}
+			.entry-head .meta .dot {
+				color: var(--rule);
+			}
+			.entry-head h1 {
 				margin: 0 0 0.5em 0;
+				font-size: clamp(1.9rem, 4.5vw, 2.6rem);
+				line-height: 1.15;
 			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
+			.entry-head .last-updated {
+				margin: 0;
+				font-size: 0.85rem;
+				color: rgb(var(--ink-soft));
 				font-style: italic;
+				font-family: var(--font-display);
 			}
 			.post-meta {
 				display: flex;
 				flex-wrap: wrap;
 				gap: 0.5em;
-				justify-content: center;
-				margin-bottom: 1em;
+				margin-top: 1.4em;
 			}
 			.tag-list {
 				display: flex;
 				flex-wrap: wrap;
-				gap: 0.3em;
+				gap: 0.4em;
 			}
 			.tag-badge,
 			.category-badge {
 				display: inline-block;
-				padding: 0.45em 0.9em;
-				border-radius: 999px;
-				font-size: 0.8em;
+				padding: 0.3em 0.75em;
+				border-radius: var(--r-sm);
+				font-family: var(--font-mono);
+				font-size: 0.78em;
+				letter-spacing: 0.02em;
 				text-decoration: none;
-				background: rgb(var(--gray-light));
-				color: rgb(var(--gray-dark));
+				background: var(--paper-chip);
+				border: 1px solid var(--rule);
+				color: rgb(var(--ink-soft));
+				transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 			}
 			.tag-badge:hover,
 			.category-badge:hover {
-				background: var(--accent);
+				background: var(--sea);
+				border-color: var(--sea);
 				color: #fff;
+			}
+
+			/* Inline article images get a framed chart treatment */
+			.prose :global(img) {
+				border: 1px solid var(--rule);
+				box-shadow: var(--shadow-card);
 			}
 		</style>
 	</head>
@@ -189,41 +229,46 @@ const breadcrumbLd = {
 				<div class="hero-image">
 					{heroImage && <Image width={1020} height={510} src={heroImage} alt={title} />}
 				</div>
-			<div class="content-wrapper">
-				<div class="prose" data-pagefind-body>
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
+				<div class="content-wrapper">
+					<div class="prose" data-pagefind-body>
+						<header class="entry-head">
+							<div class="meta">
+								<FormattedDate date={pubDate} />
+								{category && (
+									<>
+										<span class="dot">/</span>
+										<span class="cat">{category}</span>
+									</>
+								)}
+							</div>
+							<h1>{title}</h1>
 							{
 								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
+									<p class="last-updated">
+										最后更新于 <FormattedDate date={updatedDate} />
+									</p>
 								)
 							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-						<div class="post-meta">
-							{category && <a href={`/categories/${category}`} class="category-badge">{category}</a>}
-							{
-								tags.length > 0 && (
-									<div class="tag-list">
-										{tags.map((tag) => (
-											<a href={`/tags/${tag}`} class="tag-badge">#{tag}</a>
-										))}
-									</div>
-								)
-							}
-						</div>
+							<div class="post-meta">
+								{category && <a href={`/categories/${category}`} class="category-badge">{category}</a>}
+								{
+									tags.length > 0 && (
+										<div class="tag-list">
+											{tags.map((tag) => (
+												<a href={`/tags/${tag}`} class="tag-badge">#{tag}</a>
+											))}
+										</div>
+									)
+								}
+							</div>
+						</header>
+						<slot />
+						{showComments && <Comments />}
 					</div>
-					<slot />
-					{showComments && <Comments />}
+					<div class="toc-sidebar">
+						<TableOfContents headings={headings} />
+					</div>
 				</div>
-				<div class="toc-sidebar">
-					<TableOfContents headings={headings} />
-				</div>
-			</div>
 			</article>
 		</main>
 		<Footer />

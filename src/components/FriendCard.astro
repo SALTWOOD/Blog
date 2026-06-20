@@ -25,25 +25,21 @@ const { name, url, desc, avatar } = Astro.props;
 <style>
 	.friend-card {
 		display: flex;
-		gap: 0.85rem;
+		gap: 0.9rem;
 		align-items: center;
 		text-decoration: none;
-		background: rgba(var(--gray-light), 0.6);
-		border: 1px solid rgba(var(--gray), 0.25);
-		border-radius: 12px;
+		background: var(--paper-raised);
+		border: 1px solid var(--rule);
+		border-left: 3px solid transparent;
+		border-radius: var(--r-md);
 		padding: 1rem;
-		backdrop-filter: blur(8px);
-		-webkit-backdrop-filter: blur(8px);
 		box-sizing: border-box;
-		transition:
-			transform 0.2s ease,
-			box-shadow 0.2s ease,
-			border-color 0.2s ease;
+		transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 	}
 	.friend-card:hover {
-		transform: translateY(-2px);
-		box-shadow: var(--box-shadow);
-		border-color: rgba(var(--accent-rgb), 0.5);
+		transform: translateY(-3px);
+		box-shadow: var(--shadow-card);
+		border-left-color: var(--brass);
 	}
 	.friend-card :global(img) {
 		width: 56px;
@@ -51,18 +47,28 @@ const { name, url, desc, avatar } = Astro.props;
 		border-radius: 50%;
 		object-fit: cover;
 		flex-shrink: 0;
+		border: 1px solid var(--rule);
 	}
 	.name {
 		margin: 0 0 0.25rem;
-		color: rgb(var(--black));
-		font-size: 1.05rem;
+		color: rgb(var(--ink));
+		font-family: var(--font-display);
+		font-size: 1.08rem;
+		font-weight: 600;
 		line-height: 1.3;
+		transition: color 0.15s ease;
+	}
+	.friend-card:hover .name {
+		color: var(--sea);
+	}
+	[data-theme='dark'] .friend-card:hover .name {
+		color: var(--brass-soft);
 	}
 	.desc {
 		margin: 0;
-		color: rgb(var(--gray));
-		font-size: 0.9rem;
-		line-height: 1.4;
+		color: rgb(var(--ink-soft));
+		font-size: 0.88rem;
+		line-height: 1.45;
 		display: -webkit-box;
 		-webkit-line-clamp: 2;
 		-webkit-box-orient: vertical;

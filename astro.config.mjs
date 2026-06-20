@@ -19,24 +19,30 @@ export default defineConfig({
 	},
 	fonts: [
 		{
+			// Display / headings — characterful optical-size serif (logbook voice)
 			provider: fontProviders.local(),
-			name: 'Atkinson',
-			cssVariable: '--font-atkinson',
-			fallbacks: ['sans-serif'],
+			name: 'Fraunces',
+			cssVariable: '--font-display',
+			fallbacks: ['Georgia', 'Cambria', '"PingFang SC"', '"Microsoft YaHei"', 'serif'],
 			options: {
 				variants: [
-					{
-						src: ['./src/assets/fonts/atkinson-regular.woff'],
-						weight: 400,
-						style: 'normal',
-						display: 'swap',
-					},
-					{
-						src: ['./src/assets/fonts/atkinson-bold.woff'],
-						weight: 700,
-						style: 'normal',
-						display: 'swap',
-					},
+					{ src: ['./src/assets/fonts/fraunces-400.woff2'], weight: 400, style: 'normal', display: 'swap' },
+					{ src: ['./src/assets/fonts/fraunces-600.woff2'], weight: 600, style: 'normal', display: 'swap' },
+				],
+			},
+		},
+		{
+			// Body / UI — technical sans, pairs with the serif
+			provider: fontProviders.local(),
+			name: 'IBM Plex Sans',
+			cssVariable: '--font-body',
+			fallbacks: ['"Helvetica Neue"', 'Helvetica', '"PingFang SC"', '"Microsoft YaHei"', 'Arial', 'sans-serif'],
+			options: {
+				variants: [
+					{ src: ['./src/assets/fonts/ibm-plex-sans-400.woff2'], weight: 400, style: 'normal', display: 'swap' },
+					{ src: ['./src/assets/fonts/ibm-plex-sans-500.woff2'], weight: 500, style: 'normal', display: 'swap' },
+					{ src: ['./src/assets/fonts/ibm-plex-sans-600.woff2'], weight: 600, style: 'normal', display: 'swap' },
+					{ src: ['./src/assets/fonts/ibm-plex-sans-700.woff2'], weight: 700, style: 'normal', display: 'swap' },
 				],
 			},
 		},

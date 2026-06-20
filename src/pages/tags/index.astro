@@ -15,20 +15,25 @@ const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 	<head>
-		<BaseHead title="Tags - Astro Blog" description="Browse all tags" />
+		<BaseHead title="标签 - 盐木的小破窝" description="按标签浏览所有文章" />
 	</head>
 	<body>
 		<Header />
 		<main>
-			<h1>Tags</h1>
-			<ul class="tag-list">
+			<header class="page-head">
+				<span class="eyebrow">Index · 索引</span>
+				<h1>标签</h1>
+				<p class="lede">共 {tags.length} 个标签，{posts.length} 篇文章。</p>
+			</header>
+			<ul class="data-list">
 				{
 					tags.map(([tag, count]) => (
 						<li>
-							<a href={`/tags/${tag}`}>#{tag}</a>
-							<span class="count">{count}</span>
+							<a href={`/tags/${tag}`}>
+								#{tag}<span class="count">{count}</span>
+							</a>
 						</li>
 					))
 				}
@@ -37,34 +42,3 @@ const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 		<Footer />
 	</body>
 </html>
-
-<style>
-	.tag-list {
-		list-style: none;
-		padding: 0;
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.5em;
-	}
-	.tag-list li {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.3em;
-	}
-	.tag-list a {
-		display: inline-block;
-		padding: 0.5em 1em;
-		background: rgb(var(--gray-light));
-		border-radius: 999px;
-		text-decoration: none;
-		font-size: 0.9em;
-	}
-	.tag-list a:hover {
-		background: var(--accent);
-		color: #fff;
-	}
-	.count {
-		color: rgb(var(--gray));
-		font-size: 0.8em;
-	}
-</style>

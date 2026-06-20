@@ -18,47 +18,34 @@ const categories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1]);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 	<head>
-		<BaseHead title="Categories - Astro Blog" description="Browse all categories" />
+		<BaseHead title="分类 - 盐木的小破窝" description="按分类浏览所有文章" />
 	</head>
 	<body>
 		<Header />
 		<main>
-			<h1>Categories</h1>
-			<ul class="category-list">
-				{
-					categories.map(([category, count]) => (
-						<li>
-							<a href={`/categories/${category}`}>{category}</a>
-							<span class="count">{count}</span>
-						</li>
-					))
-				}
-			</ul>
+			<header class="page-head">
+				<span class="eyebrow">Index · 索引</span>
+				<h1>分类</h1>
+				<p class="lede">共 {categories.length} 个分类。</p>
+			</header>
+			{categories.length > 0 ? (
+				<ul class="data-list">
+					{
+						categories.map(([category, count]) => (
+							<li>
+								<a href={`/categories/${category}`}>
+									{category}<span class="count">{count}</span>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			) : (
+				<p class="empty">暂无分类。文章的分类字段尚未填写。</p>
+			)}
 		</main>
 		<Footer />
 	</body>
 </html>
-
-<style>
-	.category-list {
-		list-style: none;
-		padding: 0;
-	}
-	.category-list li {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		padding: 0.5em 0;
-		border-bottom: 1px solid rgb(var(--gray-light));
-	}
-	.category-list a {
-		text-decoration: none;
-		font-size: 1.1em;
-	}
-	.count {
-		color: rgb(var(--gray));
-		font-size: 0.85em;
-	}
-</style>

@@ -42,26 +42,34 @@ const friends = friendData
 				margin: auto;
 				padding: 3em 1em;
 			}
-			h1 {
-				color: rgb(var(--black));
-			}
 			.friends-grid {
 				list-style: none;
-				margin: 1.5rem 0 0;
+				margin: 0;
 				padding: 0;
 				display: grid;
-				grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-				gap: 1.5rem;
+				grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+				gap: 1.25rem;
 			}
 			.friends-grid li {
 				margin: 0;
+			}
+			.note {
+				margin-top: 2.5rem;
+				padding-top: 1.5rem;
+				border-top: 1px solid var(--rule);
+				color: rgb(var(--ink-soft));
+				font-size: 0.92rem;
 			}
 		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
-			<h1>友链</h1>
+			<header class="page-head">
+				<span class="eyebrow">Shipmates · 友邻</span>
+				<h1>友链</h1>
+				<p class="lede">同行者们的港湾。顺序每次刷新随机打乱。</p>
+			</header>
 			<ul class="friends-grid">
 				{friends.map((f) => (
 					<li>
@@ -81,8 +89,7 @@ const friends = friendData
 					items.forEach((item) => grid.appendChild(item));
 				}
 			</script>
-			<hr>
-			<span>添加友链，请在下方留言或访问<a href="https://github.com/SALTWOOD/Blog">此处</a></span>
+			<p class="note">添加友链，请在下方留言或访问<a href="https://github.com/SALTWOOD/Blog">此处</a>。</p>
 			<Comments />
 		</main>
 		<Footer />

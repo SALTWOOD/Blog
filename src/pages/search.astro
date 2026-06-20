@@ -4,59 +4,68 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 ---
 
-<html lang="en">
+<html lang="zh-CN">
 	<head>
-		<BaseHead title="Search" description="Search blog posts" />
+		<BaseHead title="搜索 - 盐木的小破窝" description="搜索站内文章" />
 		<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+		<style>
+			main {
+				width: 760px;
+				max-width: calc(100% - 2em);
+				margin: 0 auto;
+				padding: 3em 1em;
+			}
+			/* Light — retune Pagefind UI to parchment */
+			:global(.pagefind-ui) {
+				--pagefind-ui-primary: var(--sea);
+				--pagefind-ui-text: rgb(var(--ink));
+				--pagefind-ui-background: var(--paper-raised);
+				--pagefind-ui-border: var(--rule);
+				--pagefind-ui-tag: var(--paper-chip);
+				--pagefind-ui-border-radius: var(--r-md);
+				--pagefind-ui-font: var(--font-body);
+			}
+			/* Dark — ocean at night */
+			:global([data-theme='dark']) .pagefind-ui {
+				--pagefind-ui-text: rgb(228, 223, 208);
+				--pagefind-ui-background: rgb(20, 30, 38);
+				--pagefind-ui-border: rgb(42, 57, 66);
+				--pagefind-ui-tag: rgb(27, 39, 48);
+				--pagefind-ui-border-radius: var(--r-md);
+				--pagefind-ui-font: var(--font-body);
+			}
+			:global([data-theme='dark']) .pagefind-ui input {
+				background: rgb(27, 39, 48);
+				color: rgb(228, 223, 208);
+			}
+			:global([data-theme='dark']) .pagefind-ui .pagefind-ui__result {
+				border-color: rgb(42, 57, 66);
+			}
+		</style>
 	</head>
 
 	<body>
 		<Header />
 		<main>
-			<div class="search-container">
-				<h1>Search</h1>
-				<div id="search"></div>
-			</div>
+			<header class="page-head">
+				<span class="eyebrow">Lookup · 检索</span>
+				<h1>搜索</h1>
+				<p class="lede">在全部日志里查找关键词。</p>
+			</header>
+			<div id="search"></div>
+			<script is:inline type="module">
+				try {
+					const { PagefindUI } = await import('/pagefind/pagefind-ui.js');
+					new PagefindUI({
+						element: '#search',
+						showSubResults: true,
+					});
+				} catch (e) {
+					document.getElementById('search').innerHTML =
+						'<p>搜索索引暂不可用。请先运行 <code>pnpm build</code> 再 <code>pnpm preview</code> 以启用搜索。</p>';
+				}
+			</script>
 		</main>
 		<Footer />
-		<script is:inline type="module">
-			try {
-				const { PagefindUI } = await import('/pagefind/pagefind-ui.js');
-				new PagefindUI({
-					element: '#search',
-					showSubResults: true,
-				});
-			} catch (e) {
-				document.getElementById('search').innerHTML =
-					'<p>Search index not available. Run <code>npm run build</code> then <code>npm run preview</code> to enable search.</p>';
-			}
-		</script>
-		<style>
-			main {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: 0 auto;
-				padding: 1em;
-			}
-			h1 {
-				margin-bottom: 1em;
-				text-align: center;
-			}
-			:global([data-theme='dark']) .pagefind-ui {
-				--pagefind-ui-text: rgb(200, 210, 225);
-				--pagefind-ui-background: rgb(13, 17, 23);
-				--pagefind-ui-border: rgb(45, 48, 60);
-				--pagefind-ui-tag: rgb(45, 48, 60);
-				--pagefind-ui-border-radius: 8px;
-				--pagefind-ui-font: inherit;
-			}
-			:global([data-theme='dark']) .pagefind-ui input {
-				background: rgb(25, 28, 40);
-				color: rgb(200, 210, 225);
-			}
-			:global([data-theme='dark']) .pagefind-ui .pagefind-ui__result {
-				border-color: rgb(45, 48, 60);
-			}
-		</style>
 	</body>
 </html>

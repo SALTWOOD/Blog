@@ -28,16 +28,19 @@ const { category, posts } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 	<head>
-		<BaseHead title={`${category} - Astro Blog`} description={`Posts in ${category}`} />
+		<BaseHead title={`${category} - 盐木的小破窝`} description={`分类「${category}」下的文章`} />
 	</head>
 	<body>
 		<Header />
 		<main>
-			<h1>{category}</h1>
-			<p>{posts.length} post{posts.length !== 1 ? 's' : ''}</p>
-			<ul class="post-list">
+			<header class="page-head">
+				<span class="eyebrow">Category · 分类</span>
+				<h1>{category}</h1>
+				<p class="lede">{posts.length} 篇文章</p>
+			</header>
+			<ul class="entry-list">
 				{
 					posts.map((post) => (
 						<li>
@@ -49,27 +52,8 @@ const { category, posts } = Astro.props;
 					))
 				}
 			</ul>
-			<p><a href="/categories">&larr; All categories</a></p>
+			<a href="/categories" class="back-link">← 所有分类</a>
 		</main>
 		<Footer />
 	</body>
 </html>
-
-<style>
-	.post-list {
-		list-style: none;
-		padding: 0;
-	}
-	.post-list li {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		padding: 0.5em 0;
-		border-bottom: 1px solid rgb(var(--gray-light));
-	}
-	.post-list time {
-		color: rgb(var(--gray));
-		font-size: 0.85em;
-		white-space: nowrap;
-	}
-</style>
