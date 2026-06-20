@@ -1,0 +1,55 @@
+---
+---
+<button id="bg-toggle" data-slot-toggle aria-label="切换背景" title="切换背景 (星图 / 照片)">
+	<svg class="bg-sky" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+		<path d="M12 2 L13.6 9.5 L21 11 L13.6 12.5 L12 20 L10.4 12.5 L3 11 L10.4 9.5 Z"></path>
+		<circle cx="18.5" cy="5.5" r="0.6" fill="currentColor"></circle>
+		<circle cx="5" cy="18" r="0.6" fill="currentColor"></circle>
+	</svg>
+	<svg class="bg-photo" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+		<rect x="3" y="3" width="18" height="18" rx="2"></rect>
+		<circle cx="8.5" cy="8.5" r="1.6"></circle>
+		<path d="M21 15l-5-5L5 21"></path>
+	</svg>
+</button>
+
+<style is:inline>
+	#bg-toggle {
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0.5em;
+		color: rgb(var(--ink));
+		display: flex;
+		align-items: center;
+		border-radius: var(--r-sm);
+		transition: color 0.15s ease, background 0.15s ease;
+	}
+	#bg-toggle:hover {
+		color: var(--sea);
+		background: rgba(var(--sea-rgb), 0.1);
+	}
+	#bg-toggle svg {
+		display: none;
+	}
+	:root[data-bg='sky'] #bg-toggle .bg-sky,
+	:root[data-bg='photo'] #bg-toggle .bg-photo {
+		display: block;
+	}
+</style>
+
+<script is:inline>
+	if (!window.__bgToggleInit) {
+		window.__bgToggleInit = true;
+		document.addEventListener('click', function (e) {
+			var btn = e.target.closest('#bg-toggle');
+			if (!btn) return;
+			var root = document.documentElement;
+			var next = root.getAttribute('data-bg') === 'photo' ? 'sky' : 'photo';
+			root.setAttribute('data-bg', next);
+			try {
+				localStorage.setItem('bg', next);
+			} catch (e) {}
+		});
+	}
+</script>
