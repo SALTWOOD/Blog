@@ -142,7 +142,7 @@ jobs:
             await github.rest.pulls.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: "添加友链：" + name,
+              title: "chore(links): " + name,
               head: branchName,
               base: "main",
               body: prBody.join("\n"),
