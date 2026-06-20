@@ -1,6 +1,4 @@
 ---
-import { Image } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
 import fs from 'node:fs';
 import path from 'node:path';
 import BaseHead from '../components/BaseHead.astro';
@@ -30,8 +28,7 @@ const friends = friendData
 		url: f.url,
 		desc: f.description,
 		avatar: avatars[`../assets/friends/${f.slug}.webp`]?.default,
-	}))
-	.filter((f): f is typeof f & { avatar: ImageMetadata } => !!f.avatar);
+	}));
 ---
 
 <!doctype html>
