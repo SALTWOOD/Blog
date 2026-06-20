@@ -7,7 +7,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import Sidebar from '../components/Sidebar.astro';
 import { homeSidebar } from '../config/sidebar';
-import { SITE_ALTERNATE_NAME, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { SITE_ALTERNATE_NAME, SITE_COORDS, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { authorPerson } from '../lib/schema';
 
 const posts = (await getCollection('blog')).sort(
@@ -291,7 +291,7 @@ const websiteJsonLd = {
 	<body>
 		<Header />
 		<section class="hero">
-			<span class="bearing">32.790°N · 79.909°W</span>
+			<span class="bearing">{SITE_COORDS}</span>
 			<h1>
 				<span class="kicker">Saltwood&apos;s Log</span>
 				{SITE_TITLE}
