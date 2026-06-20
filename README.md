@@ -7,7 +7,7 @@
 欢迎交换友链！你有两种方式请求添加友链：
 
 ### 提交 Issue
-1. [点击此处](https://github.com/SALTWOOD/Blog/issues/new/choose)
+1. [点击此处](https://github.com/SALTWOOD/Blog/issues/new?template=friend-link.yml)
 2. 按照指示填写内容并提交
 
 ### 发起 PR
