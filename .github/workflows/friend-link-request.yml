@@ -3,10 +3,17 @@ name: Friend Link Request
 on:
   issues:
     types: [opened]
+  issue_comment:
+    types: [created]
 
 jobs:
   process:
-    if: contains(github.event.issue.body, '### 博客名称')
+    if: >
+      contains(github.event.issue.body, '### 博客名称') &&
+      (
+        github.event_name == 'issues' ||
+        (github.event_name == 'issue_comment' && github.event.comment.body == '/review' && github.event.issue.state == 'open')
+      )
     runs-on: ubuntu-latest
     permissions:
       contents: write
