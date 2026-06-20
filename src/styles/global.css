@@ -134,58 +134,44 @@ body {
 	text-rendering: optimizeLegibility;
 }
 
-/* Nautical chart grid — a fixed layer behind everything. It drifts one cell
-   per cycle so the loop is seamless, like a chart panning under way. */
+/* Star-map background — the navigator's sky (a star compass). In light mode
+   it's inverted + dimmed to read as a chart printed on parchment; in dark
+   mode the full night sky shows through. */
 body::before {
 	content: '';
 	position: fixed;
-	inset: -130px;
+	inset: 0;
 	z-index: -2;
-	background-image:
-		linear-gradient(var(--grid-major) 1px, transparent 1px),
-		linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
-		linear-gradient(var(--grid-minor) 1px, transparent 1px),
-		linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px);
-	background-size: 110px 110px, 110px 110px, 22px 22px, 22px 22px;
+	background: url('/sky_view.svg') center / cover no-repeat;
+	filter: invert(1) brightness(0.97);
 	will-change: transform;
 }
+[data-theme='dark'] body::before {
+	filter: none;
+}
 
-/* Sea glow — breathes gently over the top of the grid. */
+/* Soft edge vignette for depth. */
 body::after {
 	content: '';
 	position: fixed;
 	inset: 0;
 	z-index: -1;
-	background: radial-gradient(circle at 50% -10%, rgba(var(--sea-rgb), 0.09), transparent 55%);
-	transform-origin: 50% 0;
-	will-change: opacity, transform;
+	background: radial-gradient(ellipse at center, transparent 58%, rgba(0, 0, 0, 0.4) 100%);
+	pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
 	body::before {
-		animation: chart-drift 70s linear infinite;
-	}
-	body::after {
-		animation: glow-breathe 14s ease-in-out infinite;
+		animation: sky-breathe 26s ease-in-out infinite;
 	}
 }
-@keyframes chart-drift {
-	from {
-		transform: translate(0, 0);
-	}
-	to {
-		transform: translate(-110px, -110px);
-	}
-}
-@keyframes glow-breathe {
+@keyframes sky-breathe {
 	0%,
 	100% {
-		opacity: 0.75;
 		transform: scale(1);
 	}
 	50% {
-		opacity: 1;
-		transform: scale(1.08);
+		transform: scale(1.05);
 	}
 }
 
