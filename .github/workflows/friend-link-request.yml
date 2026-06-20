@@ -98,7 +98,7 @@ jobs:
                 "",
                 ...errors.map(e => "- " + e),
                 "",
-                "请修正上面的问题后，直接修改或回复本 Issue 以便维护者核对。",
+                "请修正上面的问题后，直接评论 `/review` 以触发自动检查或者等待维护者审查。",
               ].join("\n");
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
