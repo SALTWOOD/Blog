@@ -411,7 +411,7 @@ hr::after {
 @keyframes pw-enter {
 	from {
 		transform: scale(1.06);
-		filter: blur(6px);
+		filter: blur(10px);
 	}
 	to {
 		transform: none;
@@ -420,7 +420,7 @@ hr::after {
 }
 @media (prefers-reduced-motion: no-preference) {
 	html.page-enter body {
-		animation: pw-enter 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+		animation: pw-enter 1.25s cubic-bezier(0.2, 0.7, 0.2, 1);
 		animation-fill-mode: backwards;
 		transform-origin: 50% 50vh;
 		will-change: transform, filter;
