@@ -2,6 +2,7 @@
 import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 import ThemeToggle from './ThemeToggle.astro';
+import BgToggle from './BgToggle.astro';
 
 // Replicate HeaderLink's active logic for the plain <a> used in the mobile menu.
 const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
@@ -28,7 +29,10 @@ const isActive = (href: string) =>
 			<HeaderLink href="/friends">友链</HeaderLink>
 		</div>
 		<div class="social-links">
-			<div class="toggle-slot" data-toggle-slot="desktop"><ThemeToggle /></div>
+			<div class="toggle-slot" data-toggle-slot="desktop">
+				<BgToggle />
+				<ThemeToggle />
+			</div>
 			<a href="https://github.com/SALTWOOD" target="_blank">
 				<span class="sr-only">GitHub</span>
 				<svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32"
@@ -280,13 +284,16 @@ const isActive = (href: string) =>
 			if (btn) btn.setAttribute('aria-expanded', 'true');
 		}
 		function relocateToggle() {
-			var toggle = document.getElementById('theme-toggle');
-			if (!toggle) return;
 			var mobile = window.matchMedia('(max-width: 720px)').matches;
 			var slot = document.querySelector(
 				mobile ? '[data-toggle-slot="mobile"]' : '[data-toggle-slot="desktop"]'
 			);
-			if (slot && toggle.parentNode !== slot) slot.appendChild(toggle);
+			if (!slot) return;
+			// Move every slotted toggle (theme + background) into the active slot,
+			// preserving document order so they stay grouped.
+			document.querySelectorAll('[data-slot-toggle]').forEach(function (toggle) {
+				if (toggle.parentNode !== slot) slot.appendChild(toggle);
+			});
 		}
 		function init() {
 			relocateToggle();

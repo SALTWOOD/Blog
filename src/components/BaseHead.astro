@@ -60,6 +60,21 @@ const {
 		}
 	} catch (e) {}
 </script>
+<!-- Background choice (sky / photo / grid) — applied before paint to avoid a
+     flash of the wrong background. The header button cycles + persists it. -->
+<script is:inline>
+	(function () {
+		try {
+			var bg = localStorage.getItem('bg');
+			document.documentElement.setAttribute(
+				'data-bg',
+				bg === 'photo' ? 'photo' : 'sky'
+			);
+		} catch (e) {
+			document.documentElement.setAttribute('data-bg', 'sky');
+		}
+	})();
+</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="icon" href="/favicon.ico" />
 <link rel="sitemap" href="/sitemap-index.xml" />
