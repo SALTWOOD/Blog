@@ -15,8 +15,8 @@ const filtered = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 {
 	filtered.length > 0 && (
-		<nav class="toc" aria-label="Table of contents">
-			<h2 class="toc-title">On this page</h2>
+		<nav class="toc" aria-label="目录">
+			<h2 class="toc-title">本页目录</h2>
 			<ul>
 				{filtered.map((h) => (
 					<li class={h.depth === 3 ? 'toc-h3' : 'toc-h2'}>
@@ -29,12 +29,18 @@ const filtered = headings.filter((h) => h.depth === 2 || h.depth === 3);
 }
 
 <style>
+	.toc {
+		border-left: 2px solid var(--rule);
+		padding-left: 1em;
+	}
 	.toc-title {
-		font-size: 0.8em;
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
 		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		color: rgb(var(--gray));
-		margin: 0 0 0.5em 0;
+		letter-spacing: 0.12em;
+		color: var(--brass);
+		margin: 0 0 0.8em 0;
+		font-weight: 600;
 	}
 	.toc ul {
 		list-style: none;
@@ -42,20 +48,29 @@ const filtered = headings.filter((h) => h.depth === 2 || h.depth === 3);
 		margin: 0;
 	}
 	.toc li {
-		margin: 0.15em 0;
+		margin: 0.1em 0;
 	}
 	.toc a {
 		display: block;
 		text-decoration: none;
-		font-size: 0.85em;
-		line-height: 1.4;
-		color: rgb(var(--gray-dark));
-		transition: color 0.15s;
+		font-size: 0.84rem;
+		line-height: 1.45;
+		color: rgb(var(--ink-soft));
+		padding: 0.2em 0 0.2em 0.5em;
+		border-left: 2px solid transparent;
+		margin-left: -1.1em;
+		transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
 	}
 	.toc a:hover {
-		color: var(--accent);
+		color: var(--sea);
+		border-left-color: var(--brass);
+		background: rgba(var(--sea-rgb), 0.05);
+	}
+	[data-theme='dark'] .toc a:hover {
+		color: var(--brass-soft);
 	}
 	.toc-h3 {
-		padding-left: 1em;
+		padding-left: 0.9em;
+		font-size: 0.95em;
 	}
 </style>

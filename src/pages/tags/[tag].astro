@@ -26,16 +26,19 @@ const { tag, posts } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 	<head>
-		<BaseHead title={`#${tag} - Astro Blog`} description={`Posts tagged with ${tag}`} />
+		<BaseHead title={`#${tag} - 盐木的小破窝`} description={`标签「${tag}」下的文章`} />
 	</head>
 	<body>
 		<Header />
 		<main>
-			<h1>#{tag}</h1>
-			<p>{posts.length} post{posts.length !== 1 ? 's' : ''}</p>
-			<ul class="post-list">
+			<header class="page-head">
+				<span class="eyebrow">Tag · 标签</span>
+				<h1>#{tag}</h1>
+				<p class="lede">{posts.length} 篇文章</p>
+			</header>
+			<ul class="entry-list">
 				{
 					posts.map((post) => (
 						<li>
@@ -47,27 +50,8 @@ const { tag, posts } = Astro.props;
 					))
 				}
 			</ul>
-			<p><a href="/tags">&larr; All tags</a></p>
+			<a href="/tags" class="back-link">← 所有标签</a>
 		</main>
 		<Footer />
 	</body>
 </html>
-
-<style>
-	.post-list {
-		list-style: none;
-		padding: 0;
-	}
-	.post-list li {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		padding: 0.5em 0;
-		border-bottom: 1px solid rgb(var(--gray-light));
-	}
-	.post-list time {
-		color: rgb(var(--gray));
-		font-size: 0.85em;
-		white-space: nowrap;
-	}
-</style>

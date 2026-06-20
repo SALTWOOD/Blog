@@ -86,43 +86,93 @@ const isActive = (href: string) =>
 </header>
 <style>
 	header {
+		position: sticky;
+		top: 0;
+		z-index: 40;
 		margin: 0;
-		padding: 0 1em;
+		padding: 0 1.5em;
 		background: var(--bg-header);
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
-		position: relative;
+		-webkit-backdrop-filter: blur(10px) saturate(1.2);
+		backdrop-filter: blur(10px) saturate(1.2);
+		border-top: 3px solid var(--brass);
+		border-bottom: 1px solid var(--rule);
 	}
 	h2 {
 		margin: 0;
-		font-size: 1em;
+		font-family: var(--font-display);
+		font-size: 1.15rem;
+		font-weight: 600;
+		letter-spacing: -0.01em;
 	}
-
-	h2 a,
-	h2 a.active {
+	h2 a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45em;
 		text-decoration: none;
+		color: rgb(var(--ink));
+	}
+	h2 a::before {
+		content: '';
+		width: 0.5em;
+		height: 0.5em;
+		flex-shrink: 0;
+		background: var(--brass);
+		transform: rotate(45deg);
 	}
 	nav {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		gap: 1em;
+		max-width: 64rem;
+		margin: 0 auto;
 	}
-	nav a {
-		padding: 1em 0.5em;
-		color: var(--black);
-		border-bottom: 4px solid transparent;
-		text-decoration: none;
+	.internal-links {
+		display: flex;
+		align-items: center;
+		gap: 0.1em;
 	}
-	nav a.active {
+	nav :global(.internal-links) a {
+		padding: 1em 0.7em;
+		color: rgb(var(--ink));
+		border-bottom: 2px solid transparent;
 		text-decoration: none;
-		border-bottom-color: var(--accent);
+		font-size: 0.97rem;
+		font-weight: 500;
+		transition: color 0.15s ease, border-color 0.15s ease;
+	}
+	nav :global(.internal-links) a:hover {
+		color: var(--sea);
+	}
+	nav :global(.internal-links) a.active {
+		color: var(--sea-deep);
+		border-bottom-color: var(--brass);
+		font-weight: 600;
+	}
+	[data-theme='dark'] nav :global(.internal-links) a.active {
+		color: var(--brass-soft);
 	}
 	.social-links,
 	.social-links a {
 		display: flex;
 	}
 	.social-links {
-		gap: 0.5em;
+		gap: 0.35em;
 		align-items: center;
+	}
+	.social-links a {
+		color: rgb(var(--ink));
+		padding: 0.5em;
+		border-radius: var(--r-sm);
+		transition: color 0.15s ease, background 0.15s ease;
+	}
+	.social-links a:hover {
+		color: var(--sea);
+		background: rgba(var(--sea-rgb), 0.1);
+	}
+	.social-links a svg {
+		width: 20px;
+		height: 20px;
 	}
 	/* The toggle slot wrapper dissolves so the ThemeToggle button stays a direct
 	   flex child of .social-links on desktop (byte-identical layout). It also
@@ -137,9 +187,14 @@ const isActive = (href: string) =>
 		border: none;
 		cursor: pointer;
 		padding: 0.5em;
-		color: rgb(var(--black));
+		color: rgb(var(--ink));
 		align-items: center;
 		justify-content: center;
+		border-radius: var(--r-sm);
+	}
+	.menu-toggle:hover {
+		color: var(--sea);
+		background: rgba(var(--sea-rgb), 0.1);
 	}
 	.menu-toggle svg {
 		display: block;
@@ -158,15 +213,18 @@ const isActive = (href: string) =>
 		}
 		.mobile-menu {
 			position: absolute;
-			top: 100%;
-			right: 0.5em;
-			left: 0.5em;
+			top: calc(100% + 1px);
+			right: 0.75em;
+			left: 0.75em;
 			z-index: 50;
 			display: block;
-			background: var(--bg-header);
+			background: var(--paper-raised);
+			border: 1px solid var(--rule);
+			border-top: 2px solid var(--brass);
 			box-shadow: var(--box-shadow);
-			border-radius: 8px;
-			padding: 0.5em 0;
+			border-radius: var(--r-md);
+			padding: 0.4em 0;
+			overflow: hidden;
 		}
 		.mobile-menu[hidden] {
 			display: none;
@@ -175,14 +233,21 @@ const isActive = (href: string) =>
 			display: block;
 			box-sizing: border-box;
 			min-height: 44px;
-			padding: 0.75em 1em;
-			color: rgb(var(--black));
+			padding: 0.8em 1.1em;
+			color: rgb(var(--ink));
 			border-bottom: none;
 			text-decoration: none;
+			font-weight: 500;
+		}
+		.mobile-menu .mobile-link:hover {
+			background: rgba(var(--sea-rgb), 0.08);
+			color: var(--sea);
 		}
 		.mobile-menu .mobile-link.active {
-			font-weight: bolder;
-			color: var(--accent);
+			font-weight: 600;
+			color: var(--sea-deep);
+			border-left: 3px solid var(--brass);
+			padding-left: calc(1.1em - 3px);
 		}
 		.mobile-actions {
 			display: flex;
@@ -190,9 +255,9 @@ const isActive = (href: string) =>
 			gap: 0.5em;
 			box-sizing: border-box;
 			min-height: 44px;
-			padding: 0.75em 1em;
+			padding: 0.7em 1.1em;
 			margin-top: 0.25em;
-			border-top: 1px solid rgb(var(--gray-light));
+			border-top: 1px solid var(--rule);
 		}
 		.mobile-actions .mobile-github {
 			display: flex;

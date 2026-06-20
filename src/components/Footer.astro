@@ -3,7 +3,10 @@ const today = new Date();
 ---
 
 <footer>
-	&copy; {today.getFullYear()} 盐木的小破窝. All rights reserved.
+	<div class="colophon">
+		<span class="mark" aria-hidden="true"></span>
+		&copy; {today.getFullYear()} 盐木的小破窝 · All rights reserved.
+	</div>
 	<div class="social-links">
 		<a href="https://github.com/SALTWOOD" target="_blank">
 			<span class="sr-only">GitHub</span>
@@ -18,10 +21,24 @@ const today = new Date();
 </footer>
 <style>
 	footer {
-		padding: 2em 1em 6em 1em;
-		background: linear-gradient(var(--gray-gradient)) no-repeat;
-		color: rgb(var(--gray));
+		padding: 2.5em 1em 6em 1em;
+		color: rgb(var(--ink-soft));
 		text-align: center;
+		font-size: 0.92em;
+		border-top: 1px solid var(--rule);
+		background: linear-gradient(var(--gray-gradient)) no-repeat;
+	}
+	.colophon {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5em;
+		letter-spacing: 0.01em;
+	}
+	.colophon .mark {
+		width: 0.5em;
+		height: 0.5em;
+		background: var(--brass);
+		transform: rotate(45deg);
 	}
 	.social-links {
 		display: flex;
@@ -31,11 +48,18 @@ const today = new Date();
 	}
 	.social-links a {
 		text-decoration: none;
-		color: rgb(var(--gray));
+		color: rgb(var(--ink-soft));
 		display: inline-flex;
-		padding: 0.5em;
+		padding: 0.4em;
+		border-radius: var(--r-sm);
+		transition: color 0.15s ease, background 0.15s ease;
+	}
+	.social-links a svg {
+		width: 20px;
+		height: 20px;
 	}
 	.social-links a:hover {
-		color: rgb(var(--gray-dark));
+		color: var(--sea);
+		background: rgba(var(--sea-rgb), 0.1);
 	}
 </style>

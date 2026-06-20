@@ -45,10 +45,16 @@
 		background: none;
 		border: none;
 		cursor: pointer;
-		padding: 4px;
-		color: rgb(var(--black));
+		padding: 0.5em;
+		color: rgb(var(--ink));
 		display: flex;
 		align-items: center;
+		border-radius: var(--r-sm);
+		transition: color 0.15s ease, background 0.15s ease;
+	}
+	#theme-toggle:hover {
+		color: var(--sea);
+		background: rgba(var(--sea-rgb), 0.1);
 	}
 	#theme-toggle .sun {
 		display: none;
