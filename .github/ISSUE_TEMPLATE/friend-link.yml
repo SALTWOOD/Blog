@@ -1,6 +1,6 @@
 name: 友链申请
 description: 提交你的博客加入友链
-title: "chore(links): <你的博客名称>"
+title: "chore(links): 你的博客名称"
 labels: ["request"]
 body:
   - type: input
