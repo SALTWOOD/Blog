@@ -109,6 +109,8 @@
 
 html {
 	scroll-behavior: smooth;
+	/* Base canvas tone — also the fallback before the star-map SVG loads. */
+	background-color: var(--paper);
 	/* Clip stray horizontal overflow (e.g. the blur/scale halo during the
 	   entrance animation) so no horizontal scrollbar flashes. `clip` (not
 	   `hidden`) avoids creating a scroll container, so sticky/scrolling stay
@@ -124,7 +126,7 @@ body {
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 	color: rgb(var(--ink));
-	background-color: var(--paper);
+	background-color: transparent;
 	position: relative;
 	isolation: isolate; /* contain the background layers' stacking */
 	font-size: 18px;
@@ -134,10 +136,12 @@ body {
 	text-rendering: optimizeLegibility;
 }
 
-/* Star-map background — the navigator's sky (a star compass). In light mode
-   it's inverted + dimmed to read as a chart printed on parchment; in dark
-   mode the full night sky shows through. */
-body::before {
+/* Star-map background — the navigator's sky (a star compass). It lives on
+   :root (html), NOT body, so the entrance animation's transform/filter on
+   <body> can't break its position:fixed (which would otherwise size it to the
+   full document and zoom it). In light mode it's inverted + dimmed to read as
+   a chart printed on parchment; in dark mode the full night sky shows. */
+:root::before {
 	content: '';
 	position: fixed;
 	inset: 0;
@@ -146,12 +150,12 @@ body::before {
 	filter: invert(1) brightness(0.97);
 	will-change: transform;
 }
-[data-theme='dark'] body::before {
+:root[data-theme='dark']::before {
 	filter: none;
 }
 
 /* Soft edge vignette for depth. */
-body::after {
+:root::after {
 	content: '';
 	position: fixed;
 	inset: 0;
@@ -161,7 +165,7 @@ body::after {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-	body::before {
+	:root::before {
 		animation: sky-breathe 26s ease-in-out infinite;
 	}
 }
