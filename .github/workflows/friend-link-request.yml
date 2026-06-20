@@ -1,0 +1,141 @@
+name: Friend Link Request
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  process:
+    if: contains(github.event.issue.body, '### 博客名称')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse, validate, and process
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.issue.body.replace(/\r\n/g, "\n");
+
+            function extractField(title) {
+              const regex = new RegExp(`### ${title}\\s*\\n+([\\s\\S]*?)(?=\\n###|$)`, "i");
+              const match = body.match(regex);
+              return match?.[1]?.trim() ?? "";
+            }
+
+            const name = extractField("博客名称");
+            const url = extractField("网址");
+            const description = extractField("简介");
+            const slug = extractField("标识");
+            const iconUrl = extractField("图标 URL");
+
+            const errors = [];
+
+            if (!name) errors.push("博客名称 不能为空");
+            if (!description) errors.push("简介 不能为空");
+
+            if (!url) {
+              errors.push("网址 不能为空");
+            } else {
+              try { new URL(url); } catch { errors.push("网址格式不合法: " + url); }
+            }
+
+            if (!slug) {
+              errors.push("标识 不能为空");
+            } else if (!/^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?$/.test(slug)) {
+              errors.push("标识 只能包含英文字母、数字和连字符，且不能以连字符开头或结尾");
+            }
+
+            if (!iconUrl) {
+              errors.push("图标 URL 不能为空");
+            } else {
+              try { new URL(iconUrl); } catch { errors.push("图标 URL 格式不合法: " + iconUrl); }
+            }
+
+            if (errors.length === 0) {
+              try {
+                const resp = await fetch(iconUrl, { method: "HEAD" });
+                const contentType = resp.headers.get("content-type") || "";
+                if (!contentType.startsWith("image/webp")) {
+                  errors.push("图标 URL 返回的 Content-Type 不是 image/webp，当前为: " + contentType);
+                }
+              } catch (e) {
+                errors.push("无法访问图标 URL: " + e.message);
+              }
+            }
+
+            const fs = require("fs");
+            const path = require("path");
+            const linksPath = path.join(process.env.GITHUB_WORKSPACE, "src", "links", "links.json");
+
+            let linksData = [];
+            if (fs.existsSync(linksPath)) {
+              try {
+                const raw = JSON.parse(fs.readFileSync(linksPath, "utf-8"));
+                if (Array.isArray(raw)) linksData = raw;
+              } catch {}
+            }
+
+            for (const entry of linksData) {
+              if (entry.slug === slug) errors.push("标识 '" + slug + "' 已存在，请换一个");
+              if (entry.url === url) errors.push("该网址已在友链中，请勿重复申请");
+            }
+
+            if (errors.length > 0) {
+              const comment = [
+                "## 校验未通过",
+                "",
+                ...errors.map(e => "- " + e),
+                "",
+                "请修正上面的问题后，直接修改或回复本 Issue 以便维护者核对。",
+              ].join("\n");
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment,
+              });
+              return;
+            }
+
+            const avatarResp = await fetch(iconUrl);
+            const avatarBuffer = Buffer.from(await avatarResp.arrayBuffer());
+            const avatarPath = path.join(process.env.GITHUB_WORKSPACE, "src", "assets", "friends", slug + ".webp");
+            fs.mkdirSync(path.dirname(avatarPath), { recursive: true });
+            fs.writeFileSync(avatarPath, avatarBuffer);
+
+            linksData.push({ slug, name, url, description });
+            fs.writeFileSync(linksPath, JSON.stringify(linksData, null, 2) + "\n", "utf-8");
+
+            const { execSync } = require("child_process");
+            const branchName = "friend-link/" + slug + "-" + Date.now();
+            execSync("git config user.name 'github-actions[bot]'");
+            execSync("git config user.email 'github-actions[bot]@users.noreply.github.com'");
+            execSync("git checkout -b " + branchName);
+            execSync('git add "src/links/links.json" "src/assets/friends/' + slug + '.webp"');
+            execSync('git commit -m "add friend link: ' + name.replace(/"/g, '\\"') + '"');
+            execSync("git push origin " + branchName);
+
+            const prBody = [
+              "来自 #" + context.issue.number + " 的友链申请",
+              "",
+              "| 字段 | 内容 |",
+              "|------|------|",
+              "| 博客名称 | " + name + " |",
+              "| 网址 | " + url + " |",
+              "| 简介 | " + description + " |",
+              "| 标识 | " + slug + " |",
+            ];
+
+            await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: "添加友链：" + name,
+              head: branchName,
+              base: "main",
+              body: prBody.join("\n"),
+            });
