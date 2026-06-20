@@ -50,7 +50,7 @@ export const homeSidebar: SidebarBlock[] = [
 			{ label: '开往 · travellings', href: 'https://travellings.cn', external: true },
 		],
 	},
-	{ type: 'tags', title: '热门标签', limit: 14 },
+	// { type: 'tags', title: '热门标签', limit: 14 },
 ];
 
 // 文章页左边栏
