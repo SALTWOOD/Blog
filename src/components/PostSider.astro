@@ -1,0 +1,232 @@
+---
+import { getCollection } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+	currentId?: string;
+	readingMinutes: number;
+	wordCount: number;
+}
+
+const { currentId, readingMinutes, wordCount } = Astro.props;
+
+const recent = (await getCollection('blog'))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.filter((p) => p.id !== currentId)
+	.slice(0, 4);
+---
+
+<aside class="post-sider" aria-label="文章信息">
+	<section class="sider-card author">
+		<img src="/avatar.webp" alt="盐木" width="64" height="64" loading="lazy" />
+		<div class="who">
+			<span class="name">盐木</span>
+			<span class="handle">SALTWOOD</span>
+		</div>
+		<p class="bio">广东高一生 · 写码 / 游戏 / 逆向</p>
+		<span class="coords">◆ 23°N · 113°E</span>
+	</section>
+
+	<section class="sider-card stats" aria-label="阅读数据">
+		<div class="stat">
+			<b>{readingMinutes}</b>
+			<span>分钟阅读</span>
+		</div>
+		<div class="stat">
+			<b>{wordCount}</b>
+			<span>字</span>
+		</div>
+	</section>
+
+	{
+		recent.length > 0 && (
+			<section class="sider-card recent">
+				<h3 class="sider-title">近期日志</h3>
+				<ul>
+					{recent.map((p) => (
+						<li>
+							<a href={`/blog/${p.id}/`}>
+								<time><FormattedDate date={p.data.pubDate} /></time>
+								<span>{p.data.title}</span>
+							</a>
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
+
+	<a class="to-top" href="#top">↑ 回到顶部</a>
+</aside>
+
+<style>
+	.post-sider {
+		width: 224px;
+		flex-shrink: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		position: sticky;
+		top: 5em;
+		align-self: flex-start;
+		max-height: calc(100vh - 6em);
+		overflow-y: auto;
+		/* subtle scrollbar */
+		scrollbar-width: thin;
+		scrollbar-color: var(--rule) transparent;
+	}
+	.sider-card {
+		background: var(--paper-raised);
+		border: 1px solid var(--rule);
+		border-radius: var(--r-lg);
+		padding: 1.1rem;
+	}
+
+	/* Author card */
+	.author {
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.35rem;
+	}
+	.author img {
+		width: 64px;
+		height: 64px;
+		border-radius: 50%;
+		object-fit: cover;
+		border: 2px solid var(--brass);
+		box-shadow: var(--shadow-card);
+	}
+	.author .who {
+		display: flex;
+		flex-direction: column;
+		line-height: 1.2;
+		margin-top: 0.2rem;
+	}
+	.author .name {
+		font-family: var(--font-display);
+		font-size: 1.15rem;
+		font-weight: 600;
+		color: rgb(var(--ink));
+	}
+	.author .handle {
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
+		letter-spacing: 0.12em;
+		color: var(--brass);
+	}
+	.author .bio {
+		margin: 0.35rem 0 0;
+		font-size: 0.82rem;
+		color: rgb(var(--ink-soft));
+		line-height: 1.5;
+	}
+	.author .coords {
+		margin-top: 0.45rem;
+		font-family: var(--font-mono);
+		font-size: 0.68rem;
+		letter-spacing: 0.08em;
+		color: var(--sea);
+	}
+
+	/* Reading stats */
+	.stats {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.5rem;
+		text-align: center;
+	}
+	.stat {
+		display: flex;
+		flex-direction: column;
+		gap: 0.1rem;
+	}
+	.stat b {
+		font-family: var(--font-display);
+		font-size: 1.5rem;
+		font-weight: 600;
+		color: var(--sea-deep);
+		line-height: 1;
+	}
+	[data-theme='dark'] .stat b {
+		color: var(--brass-soft);
+	}
+	.stat span {
+		font-size: 0.72rem;
+		color: rgb(var(--ink-soft));
+	}
+
+	/* Recent posts */
+	.recent .sider-title {
+		font-family: var(--font-mono);
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: var(--brass);
+		margin: 0 0 0.7rem;
+		font-weight: 600;
+	}
+	.recent ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+	}
+	.recent li {
+		border-top: 1px solid var(--rule);
+	}
+	.recent li:first-child {
+		border-top: none;
+	}
+	.recent a {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		padding: 0.5rem 0;
+		text-decoration: none;
+		transition: color 0.15s ease;
+	}
+	.recent a time {
+		font-family: var(--font-mono);
+		font-size: 0.68rem;
+		color: var(--brass);
+	}
+	.recent a span {
+		font-size: 0.85rem;
+		line-height: 1.4;
+		color: rgb(var(--ink));
+	}
+	.recent a:hover span {
+		color: var(--sea);
+	}
+	[data-theme='dark'] .recent a:hover span {
+		color: var(--brass-soft);
+	}
+
+	/* Back to top */
+	.to-top {
+		align-self: center;
+		margin-top: 0.25rem;
+		font-family: var(--font-mono);
+		font-size: 0.78rem;
+		text-decoration: none;
+		color: rgb(var(--ink-soft));
+		padding: 0.4em 0.9em;
+		border: 1px solid var(--rule);
+		border-radius: var(--r-pill);
+		transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+	}
+	.to-top:hover {
+		color: var(--sea);
+		border-color: var(--brass);
+		background: rgba(var(--sea-rgb), 0.06);
+	}
+
+	@media (max-width: 1200px) {
+		.post-sider {
+			display: none;
+		}
+	}
+</style>
