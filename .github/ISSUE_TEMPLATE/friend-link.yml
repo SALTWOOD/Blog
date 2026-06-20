@@ -41,6 +41,6 @@ body:
     attributes:
       label: 图标 URL
       placeholder: "https://example.com/avatar.webp"
-      description: 必须是 webp 格式的正方形图片，将裁剪为圆形展示。不需要长期链接，PR 开启后就不再需要
+      description: 可选。正方形 WebP 格式。仅供 PR 审核使用，无需长期有效。若无公开链接，可在提交 Issue 后在评论区发送图片，由维护者协助添加。
     validations:
-      required: true
+      required: false

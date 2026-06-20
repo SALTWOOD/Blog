@@ -57,9 +57,7 @@ jobs:
               errors.push("标识 只能包含英文字母、数字和连字符，且不能以连字符开头或结尾");
             }
 
-            if (!iconUrl) {
-              errors.push("图标 URL 不能为空");
-            } else {
+            if (iconUrl) {
               try { new URL(iconUrl); } catch { errors.push("图标 URL 格式不合法: " + iconUrl); }
             }
 
