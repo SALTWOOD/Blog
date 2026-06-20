@@ -4,7 +4,15 @@
 
 ## 添加友链
 
-欢迎交换友链！本站友链信息存储在 [`src/pages/friends.astro`](src/pages/friends.astro) 中的 `friendData`，头像存放在 `src/assets/friends/`。请按以下步骤提交 PR：
+欢迎交换友链！你有两种方式请求添加友链：
+
+### 提交 Issue
+1. [点击此处](https://github.com/SALTWOOD/Blog/issues/new/choose)
+2. 按照指示填写内容并提交
+
+### 发起 PR
+
+本站友链信息存储在 [`src/pages/friends.astro`](src/pages/friends.astro) 中的 `friendData`，头像存放在 `src/assets/friends/`。
 
 1. Fork 本仓库并克隆到本地
 2. 将你的头像重命名为 **`<slug>.webp`**（正方形，WebP），放入 `src/assets/friends/`
