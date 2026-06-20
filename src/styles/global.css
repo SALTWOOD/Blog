@@ -109,6 +109,11 @@
 
 html {
 	scroll-behavior: smooth;
+	/* Clip stray horizontal overflow (e.g. the blur/scale halo during the
+	   entrance animation) so no horizontal scrollbar flashes. `clip` (not
+	   `hidden`) avoids creating a scroll container, so sticky/scrolling stay
+	   intact. */
+	overflow-x: clip;
 }
 
 body {
