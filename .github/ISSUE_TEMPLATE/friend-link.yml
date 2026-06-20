@@ -1,0 +1,46 @@
+name: 友链申请
+description: 提交你的博客加入友链
+title: "chore(links): <你的博客名称>"
+labels: ["request"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: 博客名称
+      placeholder: "咕咕咕……"
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: 网址
+      placeholder: "https://example.com"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 简介
+      placeholder: "一句话介绍你的网站"
+    validations:
+      required: true
+
+  - type: input
+    id: slug
+    attributes:
+      label: 标识
+      placeholder: "my-blog"
+      description: 用作文件名和头像标识，仅允许英文字母、数字和连字符
+    validations:
+      required: true
+
+  - type: input
+    id: icon
+    attributes:
+      label: 图标 URL
+      placeholder: "https://example.com/avatar.webp"
+      description: 必须是 webp 格式的正方形图片，将裁剪为圆形展示
+    validations:
+      required: true
