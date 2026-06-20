@@ -8,7 +8,8 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import Comments from '../components/Comments.astro';
-import PostSider from '../components/PostSider.astro';
+import Sidebar from '../components/Sidebar.astro';
+import { articleSidebar } from '../config/sidebar';
 import FallbackImage from '../assets/og-default.png';
 import { SITE_TITLE } from '../consts';
 import { authorPerson } from '../lib/schema';
@@ -243,7 +244,7 @@ const breadcrumbLd = {
 					{heroImage && <Image width={1020} height={510} src={heroImage} alt={title} />}
 				</div>
 				<div class="content-wrapper">
-					<PostSider currentId={currentId} readingMinutes={readingMinutes} wordCount={wordCount} />
+					<Sidebar blocks={articleSidebar} currentId={currentId} readingMinutes={readingMinutes} wordCount={wordCount} />
 					<div class="prose" data-pagefind-body>
 						<header class="entry-head">
 							<div class="meta">

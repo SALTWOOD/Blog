@@ -5,6 +5,8 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import Sidebar from '../components/Sidebar.astro';
+import { homeSidebar } from '../config/sidebar';
 import { SITE_ALTERNATE_NAME, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { authorPerson } from '../lib/schema';
 
@@ -31,8 +33,18 @@ const websiteJsonLd = {
 		<script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
 		<style>
 			main {
-				width: 1040px;
+				width: 1240px;
 				max-width: calc(100% - 2em);
+			}
+			/* [sidebar | entries] — sidebar hides itself below 1200px */
+			.home-layout {
+				display: flex;
+				gap: 2.25em;
+				align-items: flex-start;
+			}
+			.home-content {
+				flex: 1;
+				min-width: 0;
 			}
 
 			/* Hero — logbook landing */
@@ -293,36 +305,39 @@ const websiteJsonLd = {
 			</a>
 		</section>
 		<main id="content-root">
-			<section>
-				<div class="log-head">
-					<h2>航行日志</h2>
-					<span class="count">{posts.length} 篇记录</span>
-				</div>
-				<ul class="entries">
-					{
-						posts.map((post) => (
-							<li>
-								<a class="entry" href={`/blog/${post.id}/`}>
-									{post.data.heroImage && (
-										<Image width={720} height={360} src={post.data.heroImage} alt={post.data.title} />
-									)}
-									<div class="entry-meta">
-										<time><FormattedDate date={post.data.pubDate} /></time>
-										{post.data.category && (
-											<>
-												<span class="dot">/</span>
-												<span class="cat">{post.data.category}</span>
-											</>
+			<div class="home-layout">
+				<Sidebar blocks={homeSidebar} />
+				<section class="home-content">
+					<div class="log-head">
+						<h2>航行日志</h2>
+						<span class="count">{posts.length} 篇记录</span>
+					</div>
+					<ul class="entries">
+						{
+							posts.map((post) => (
+								<li>
+									<a class="entry" href={`/blog/${post.id}/`}>
+										{post.data.heroImage && (
+											<Image width={720} height={360} src={post.data.heroImage} alt={post.data.title} />
 										)}
-									</div>
-									<h2 class="title">{post.data.title}</h2>
-									{post.data.description && <p class="desc">{post.data.description}</p>}
-								</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
+										<div class="entry-meta">
+											<time><FormattedDate date={post.data.pubDate} /></time>
+											{post.data.category && (
+												<>
+													<span class="dot">/</span>
+													<span class="cat">{post.data.category}</span>
+												</>
+											)}
+										</div>
+										<h2 class="title">{post.data.title}</h2>
+										{post.data.description && <p class="desc">{post.data.description}</p>}
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</section>
+			</div>
 		</main>
 		<Footer />
 	</body>

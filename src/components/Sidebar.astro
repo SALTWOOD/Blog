@@ -1,0 +1,369 @@
+---
+import { getCollection } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+import {
+	SITE_ALTERNATE_NAME,
+	SITE_AUTHOR,
+	SITE_BIO,
+	SITE_COORDS,
+} from '../consts';
+import type { SidebarBlock } from '../config/sidebar';
+
+interface Props {
+	blocks: SidebarBlock[];
+	readingMinutes?: number;
+	wordCount?: number;
+	currentId?: string;
+}
+
+const { blocks, readingMinutes, wordCount, currentId } = Astro.props;
+
+// 一次性取好各 block 可能用到的数据
+const allPosts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const recentPool = currentId ? allPosts.filter((p) => p.id !== currentId) : allPosts;
+
+const tagCounts = new Map<string, number>();
+allPosts.forEach((p) => p.data.tags.forEach((t) => tagCounts.set(t, (tagCounts.get(t) || 0) + 1)));
+const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
+---
+
+<aside class="sidebar" aria-label="侧栏">
+	{
+		blocks.map((block) => (
+			<Fragment>
+				{block.type === 'author' && (
+					<section class="sb-card author">
+						<img src="/avatar.webp" alt={SITE_ALTERNATE_NAME} width="64" height="64" loading="lazy" />
+						<div class="who">
+							<span class="name">{SITE_ALTERNATE_NAME}</span>
+							<span class="handle">{SITE_AUTHOR}</span>
+						</div>
+						<p class="bio">{SITE_BIO}</p>
+						<span class="coords">◆ {SITE_COORDS}</span>
+					</section>
+				)}
+
+				{block.type === 'site-stats' && (
+					<section class="sb-card stats" aria-label="站点统计">
+						<div class="stat">
+							<b>{allPosts.length}</b>
+							<span>篇文章</span>
+						</div>
+						<div class="stat">
+							<b>{tags.length}</b>
+							<span>个标签</span>
+						</div>
+					</section>
+				)}
+
+				{block.type === 'reading-stats' && readingMinutes !== undefined && (
+					<section class="sb-card stats" aria-label="阅读数据">
+						<div class="stat">
+							<b>{readingMinutes}</b>
+							<span>分钟阅读</span>
+						</div>
+						<div class="stat">
+							<b>{wordCount}</b>
+							<span>字</span>
+						</div>
+					</section>
+				)}
+
+				{block.type === 'recent' && (
+					<section class="sb-card recent">
+						<h3 class="sb-title">{block.title ?? '近期日志'}</h3>
+						<ul>
+							{recentPool.slice(0, block.count ?? 4).map((p) => (
+								<li>
+									<a href={`/blog/${p.id}/`}>
+										<time>
+											<FormattedDate date={p.data.pubDate} />
+										</time>
+										<span>{p.data.title}</span>
+									</a>
+								</li>
+							))}
+						</ul>
+					</section>
+				)}
+
+				{block.type === 'tags' && (
+					<section class="sb-card tags">
+						<h3 class="sb-title">{block.title ?? '标签'}</h3>
+						<ul class="tag-cloud">
+							{tags.slice(0, block.limit ?? 12).map(([tag, count]) => (
+								<li>
+									<a href={`/tags/${tag}`}>
+										#{tag}<span class="n">{count}</span>
+									</a>
+								</li>
+							))}
+						</ul>
+					</section>
+				)}
+
+				{block.type === 'nav' && block.items && (
+					<section class="sb-card nav">
+						{block.title && <h3 class="sb-title">{block.title}</h3>}
+						<ul>
+							{block.items.map((item) => (
+								<li>
+									<a
+										href={item.href}
+										target={item.external ? '_blank' : undefined}
+										rel={item.external ? 'noopener noreferrer' : undefined}
+									>
+										<span>{item.label}</span>
+										{item.external && <span class="ext">↗</span>}
+									</a>
+								</li>
+							))}
+						</ul>
+					</section>
+				)}
+
+				{block.type === 'note' && block.body && (
+					<section class="sb-card note">
+						{block.title && <h3 class="sb-title">{block.title}</h3>}
+						<p set:html={block.body} />
+					</section>
+				)}
+			</Fragment>
+		))
+	}
+</aside>
+
+<style>
+	.sidebar {
+		width: 224px;
+		flex-shrink: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		position: sticky;
+		top: 5em;
+		align-self: flex-start;
+		max-height: calc(100vh - 6em);
+		overflow-y: auto;
+		scrollbar-width: thin;
+		scrollbar-color: var(--rule) transparent;
+	}
+	.sb-card {
+		background: var(--paper-raised);
+		border: 1px solid var(--rule);
+		border-radius: var(--r-lg);
+		padding: 1.1rem;
+	}
+	.sb-title {
+		font-family: var(--font-mono);
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: var(--brass);
+		margin: 0 0 0.7rem;
+		font-weight: 600;
+	}
+
+	/* Author */
+	.author {
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.35rem;
+	}
+	.author img {
+		width: 64px;
+		height: 64px;
+		border-radius: 50%;
+		object-fit: cover;
+		border: 2px solid var(--brass);
+		box-shadow: var(--shadow-card);
+	}
+	.author .who {
+		display: flex;
+		flex-direction: column;
+		line-height: 1.2;
+		margin-top: 0.2rem;
+	}
+	.author .name {
+		font-family: var(--font-display);
+		font-size: 1.15rem;
+		font-weight: 600;
+		color: rgb(var(--ink));
+	}
+	.author .handle {
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
+		letter-spacing: 0.12em;
+		color: var(--brass);
+	}
+	.author .bio {
+		margin: 0.35rem 0 0;
+		font-size: 0.82rem;
+		color: rgb(var(--ink-soft));
+		line-height: 1.5;
+	}
+	.author .coords {
+		margin-top: 0.45rem;
+		font-family: var(--font-mono);
+		font-size: 0.68rem;
+		letter-spacing: 0.08em;
+		color: var(--sea);
+	}
+
+	/* Stats (site + reading) */
+	.stats {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.5rem;
+		text-align: center;
+	}
+	.stat {
+		display: flex;
+		flex-direction: column;
+		gap: 0.1rem;
+	}
+	.stat b {
+		font-family: var(--font-display);
+		font-size: 1.5rem;
+		font-weight: 600;
+		color: var(--sea-deep);
+		line-height: 1;
+	}
+	[data-theme='dark'] .stat b {
+		color: var(--brass-soft);
+	}
+	.stat span {
+		font-size: 0.72rem;
+		color: rgb(var(--ink-soft));
+	}
+
+	/* Recent posts */
+	.recent ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+	}
+	.recent li {
+		border-top: 1px solid var(--rule);
+	}
+	.recent li:first-child {
+		border-top: none;
+	}
+	.recent a {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		padding: 0.5rem 0;
+		text-decoration: none;
+		transition: color 0.15s ease;
+	}
+	.recent a time {
+		font-family: var(--font-mono);
+		font-size: 0.68rem;
+		color: var(--brass);
+	}
+	.recent a span {
+		font-size: 0.85rem;
+		line-height: 1.4;
+		color: rgb(var(--ink));
+	}
+	.recent a:hover span {
+		color: var(--sea);
+	}
+	[data-theme='dark'] .recent a:hover span {
+		color: var(--brass-soft);
+	}
+
+	/* Tag cloud */
+	.tag-cloud {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4em;
+	}
+	.tag-cloud a {
+		display: inline-flex;
+		align-items: baseline;
+		gap: 0.3em;
+		padding: 0.25em 0.6em;
+		font-family: var(--font-mono);
+		font-size: 0.76rem;
+		background: var(--paper-chip);
+		border: 1px solid var(--rule);
+		border-radius: var(--r-sm);
+		text-decoration: none;
+		color: rgb(var(--ink));
+		transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+	}
+	.tag-cloud a .n {
+		font-size: 0.85em;
+		color: var(--brass);
+	}
+	.tag-cloud a:hover {
+		background: var(--sea);
+		border-color: var(--sea);
+		color: #fff;
+	}
+	.tag-cloud a:hover .n {
+		color: rgba(255, 255, 255, 0.85);
+	}
+
+	/* Nav links */
+	.nav ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.nav li {
+		border-top: 1px solid var(--rule);
+	}
+	.nav li:first-child {
+		border-top: none;
+	}
+	.nav a {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5em;
+		padding: 0.5rem 0.1rem;
+		font-size: 0.88rem;
+		text-decoration: none;
+		color: rgb(var(--ink));
+		transition: color 0.15s ease;
+	}
+	.nav a:hover {
+		color: var(--sea);
+	}
+	[data-theme='dark'] .nav a:hover {
+		color: var(--brass-soft);
+	}
+	.nav a .ext {
+		color: var(--brass);
+		font-size: 0.85em;
+	}
+
+	/* Note */
+	.note p {
+		margin: 0;
+		font-size: 0.82rem;
+		line-height: 1.6;
+		color: rgb(var(--ink-soft));
+	}
+	.note p :global(a) {
+		color: var(--sea);
+	}
+
+	@media (max-width: 1200px) {
+		.sidebar {
+			display: none;
+		}
+	}
+</style>
