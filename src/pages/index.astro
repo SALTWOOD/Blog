@@ -61,103 +61,14 @@ const websiteJsonLd = {
 				position: relative;
 			}
 			.hero::before {
+				/* Soft halo behind the title so it stays legible over the star map. */
 				content: '';
 				position: absolute;
 				inset: 0;
-				background: radial-gradient(
-					circle at 50% 38%,
-					rgba(var(--sea-rgb), 0.1) 0%,
-					transparent 62%
-				);
+				background: radial-gradient(circle at 50% 42%, var(--paper) 0%, transparent 42%);
 				pointer-events: none;
 			}
 
-			/* Radar scope behind the title — range rings, a sweeping beam, and
-			   two pulsing contacts. Purely decorative; frozen under reduced-motion. */
-			.radar {
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				width: min(82vw, 660px);
-				aspect-ratio: 1;
-				transform: translate(-50%, -50%);
-				border-radius: 50%;
-				border: 1px solid rgba(var(--sea-rgb), 0.14);
-				background: repeating-radial-gradient(
-					circle at center,
-					transparent 0,
-					transparent calc(20% - 1px),
-					rgba(var(--sea-rgb), 0.10) 20%
-				);
-				opacity: 0.75;
-				pointer-events: none;
-				z-index: 0;
-			}
-			.radar::before {
-				/* crosshair */
-				content: '';
-				position: absolute;
-				inset: 0;
-				border-radius: 50%;
-				background:
-					linear-gradient(rgba(var(--sea-rgb), 0.08), rgba(var(--sea-rgb), 0.08)) center / 100% 1px no-repeat,
-					linear-gradient(rgba(var(--sea-rgb), 0.08), rgba(var(--sea-rgb), 0.08)) center / 1px 100% no-repeat;
-			}
-			.radar .sweep {
-				position: absolute;
-				inset: 0;
-				border-radius: 50%;
-				/* Bright LEADING edge (at 360°/top) sweeping clockwise, with the fade
-				   trailing behind it (counterclockwise) — like a real radar residual. */
-				background: conic-gradient(
-					from 0deg,
-					transparent 0%,
-					transparent 66%,
-					rgba(var(--sea-rgb), 0.06) 82%,
-					rgba(var(--sea-rgb), 0.20) 100%
-				);
-			}
-			/* Blips are spawned at random by the inline script below. They have no
-			   Astro scope attribute, so the selector is global. Each is a one-shot
-			   contact "ping": pop in, hold, fade out while expanding. */
-			:global(.hero .radar .blip) {
-				position: absolute;
-				width: 7px;
-				height: 7px;
-				border-radius: 50%;
-				background: var(--brass);
-				box-shadow: 0 0 10px 1px rgba(var(--brass-rgb), 0.7);
-				transform: translate(-50%, -50%);
-				animation: blip-ping 2.6s ease-out forwards;
-			}
-			@keyframes blip-ping {
-				0% {
-					opacity: 0;
-					transform: translate(-50%, -50%) scale(0.3);
-				}
-				15% {
-					opacity: 1;
-					transform: translate(-50%, -50%) scale(1);
-				}
-				65% {
-					opacity: 0.7;
-					transform: translate(-50%, -50%) scale(1);
-				}
-				100% {
-					opacity: 0;
-					transform: translate(-50%, -50%) scale(2);
-				}
-			}
-			@media (prefers-reduced-motion: no-preference) {
-				.radar .sweep {
-					animation: radar-sweep 5s linear infinite;
-				}
-			}
-			@keyframes radar-sweep {
-				to {
-					transform: rotate(360deg);
-				}
-			}
 			.bearing {
 				position: relative;
 				display: inline-flex;
@@ -382,9 +293,6 @@ const websiteJsonLd = {
 	<body>
 		<Header />
 		<section class="hero">
-			<div class="radar" aria-hidden="true">
-				<span class="sweep"></span>
-			</div>
 			<span class="bearing">{SITE_COORDS}</span>
 			<h1>
 				<span class="kicker">SALTWOOD&apos;s Log</span>
@@ -434,31 +342,5 @@ const websiteJsonLd = {
 			</div>
 		</main>
 		<Footer />
-		<script is:inline>
-			// Spawn radar "contacts" at random positions and intervals — skipped
-			// entirely under reduced-motion.
-			(function () {
-				if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-				var radar = document.querySelector('.hero .radar');
-				if (!radar || radar.__blipInit) return;
-				radar.__blipInit = true;
-				function spawn() {
-					var angle = Math.random() * Math.PI * 2;
-					var radius = 10 + Math.random() * 38; // % of the radar's radius
-					var x = 50 + Math.cos(angle) * radius;
-					var y = 50 + Math.sin(angle) * radius;
-					var dot = document.createElement('span');
-					dot.className = 'blip';
-					dot.style.left = x.toFixed(1) + '%';
-					dot.style.top = y.toFixed(1) + '%';
-					radar.appendChild(dot);
-					setTimeout(function () {
-						if (dot.parentNode) dot.parentNode.removeChild(dot);
-					}, 2700);
-					setTimeout(spawn, 1100 + Math.random() * 2400);
-				}
-				setTimeout(spawn, 500 + Math.random() * 800);
-			})();
-		</script>
 	</body>
 </html>
