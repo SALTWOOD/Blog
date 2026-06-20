@@ -362,6 +362,30 @@ hr::after {
 	}
 }
 
+/* First-load entrance: the whole page starts blurred and slightly enlarged,
+   then focuses in (shrinks to 100% + clears). The .page-enter class is added
+   to <html> by a head script only on the first page view of a session, so this
+   never repeats during in-site navigation and never blocks the sticky header
+   after it finishes (no residual transform). */
+@keyframes pw-enter {
+	from {
+		transform: scale(1.06);
+		filter: blur(6px);
+	}
+	to {
+		transform: none;
+		filter: none;
+	}
+}
+@media (prefers-reduced-motion: no-preference) {
+	html.page-enter body {
+		animation: pw-enter 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+		animation-fill-mode: backwards;
+		transform-origin: 50% 0;
+		will-change: transform, filter;
+	}
+}
+
 @media (max-width: 720px) {
 	body {
 		font-size: 16.5px;
