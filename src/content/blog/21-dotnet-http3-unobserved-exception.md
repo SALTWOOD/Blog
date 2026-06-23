@@ -3,7 +3,7 @@ title: ".NET HTTP/3 未观测异常的排查和修复"
 description: "从一条神秘的「未观测到的异步任务异常」弹窗出发，一层层剥开 .NET HTTP/3 QUIC 实现的内部，最终在上游 issue 里找到真凶并提交修复 PR 的全过程。"
 pubDate: 2026-06-24T15:00:00.000Z
 updatedDate: 2026-06-24T15:00:00.000Z
-# heroImage: '../../assets/21.webp'
+heroImage: '../../assets/21.webp'
 tags: [".NET", "C#", "PCL-CE", "调试", "开发日志"]
 category: ""
 ---
