@@ -1,6 +1,7 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
+import { readingStats } from '../../lib/reading';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog');
@@ -15,11 +16,7 @@ const post = Astro.props;
 const { Content, headings } = await render(post);
 
 // Reading estimate from the raw markdown body — Chinese chars + Latin words.
-const body = post.body ?? '';
-const cnChars = (body.match(/[一-龥]/g) ?? []).length;
-const enWords = (body.replace(/[一-龥]/g, ' ').match(/[A-Za-z0-9]+/g) ?? []).length;
-const wordCount = cnChars + enWords;
-const readingMinutes = Math.max(1, Math.round(cnChars / 400 + enWords / 200));
+const { wordCount, minutes: readingMinutes } = readingStats(post.body ?? '');
 ---
 
 <BlogPost {...post.data} headings={headings} showComments readingMinutes={readingMinutes} wordCount={wordCount} currentId={post.id}>
