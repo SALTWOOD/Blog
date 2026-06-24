@@ -178,7 +178,7 @@ body {
 		animation: sky-breathe 26s ease-in-out infinite;
 	}
 	:root[data-bg='photo']::before {
-		animation: bg-zoom 40s ease-in-out infinite;
+		animation: none;
 	}
 }
 @keyframes sky-breathe {
@@ -188,15 +188,6 @@ body {
 	}
 	50% {
 		transform: scale(1.05);
-	}
-}
-@keyframes bg-zoom {
-	0%,
-	100% {
-		transform: scale(1);
-	}
-	50% {
-		transform: scale(1.08);
 	}
 }
 
