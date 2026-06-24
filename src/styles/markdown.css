@@ -1,0 +1,218 @@
+/* Markdown body styles — scoped under .prose. */
+
+/* ---------------------------------------------------------------------------
+   1. Code blocks — filename header bar, highlighted line bands, copy button.
+   ------------------------------------------------------------------------- */
+.prose pre {
+	position: relative;
+}
+
+/* Make room for the absolutely-positioned filename header bar. */
+.prose pre[data-title] {
+	padding-top: 2.5em;
+}
+
+.prose pre[data-title]::before {
+	content: attr(data-title);
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	padding: 0.4em 1.3em;
+	font-family: var(--font-mono);
+	font-size: 0.78rem;
+	color: rgb(var(--ink-soft));
+	background: var(--paper-raised);
+	border-bottom: 1px solid var(--rule);
+	border-radius: var(--r-md) var(--r-md) 0 0;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	pointer-events: none;
+}
+
+/* Highlighted line — a brass-tinted band with a short brass left accent.
+   Negative margins equal to the block's horizontal padding so the band spans
+   the full content width; box-decoration-break keeps it correct when a long
+   line wraps across visual rows. */
+.prose pre .line-mark {
+	display: block;
+	background: rgba(var(--brass-rgb), 0.12);
+	box-shadow: inset 2px 0 0 var(--brass);
+	margin-left: -1.3em;
+	margin-right: -1.3em;
+	padding-left: 1.3em;
+	padding-right: 1.3em;
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+}
+
+/* Copy button — top-right, revealed on hover/focus-within of the block. */
+.prose .code-copy {
+	position: absolute;
+	top: 0.5em;
+	right: 0.5em;
+	opacity: 0;
+	font-family: var(--font-mono);
+	font-size: 0.72rem;
+	padding: 0.3em 0.7em;
+	color: rgb(var(--ink));
+	background: rgba(var(--paper-rgb), 0.7);
+	border: 1px solid rgba(var(--sea-rgb), 0.4);
+	border-radius: var(--r-sm);
+	cursor: pointer;
+	transition:
+		opacity 0.15s ease,
+		background 0.15s ease,
+		color 0.15s ease,
+		border-color 0.15s ease;
+}
+
+.prose pre:hover .code-copy,
+.prose pre:focus-within .code-copy {
+	opacity: 1;
+}
+
+.prose .code-copy:hover {
+	background: var(--brass);
+	border-color: var(--brass);
+	color: #fff;
+}
+
+/* ---------------------------------------------------------------------------
+   2. Images / figures.
+   ------------------------------------------------------------------------- */
+.prose figure {
+	margin: 1.6em 0;
+}
+
+.prose figure > img {
+	margin: 0;
+}
+
+.prose figcaption {
+	margin-top: 0.6em;
+	font-family: var(--font-mono);
+	font-size: 0.82rem;
+	text-align: center;
+	color: rgb(var(--ink-soft));
+	letter-spacing: 0.02em;
+}
+
+/* ---------------------------------------------------------------------------
+   3. Math (KaTeX) — scroll rather than overflow the column.
+   ------------------------------------------------------------------------- */
+.prose .katex-display {
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+
+/* ---------------------------------------------------------------------------
+   4. Mermaid diagrams — centered boxed panel.
+   ------------------------------------------------------------------------- */
+.prose .astro-mermaid,
+.prose .mermaid,
+.prose [data-mermaid] {
+	margin: 1.6em auto;
+	padding: 1.2em;
+	background: var(--paper-raised);
+	border: 1px solid var(--rule);
+	border-left: 4px solid var(--sea);
+	border-radius: var(--r-md);
+	overflow-x: auto;
+	text-align: center;
+}
+
+.prose .astro-mermaid svg,
+.prose .mermaid svg,
+.prose [data-mermaid] svg {
+	max-width: 100%;
+	height: auto;
+}
+
+/* ---------------------------------------------------------------------------
+   5. Collapsible <details class="fold">.
+   ------------------------------------------------------------------------- */
+.prose details.fold {
+	margin: 1.4em 0;
+	padding: 0.6em 1.1em;
+	background: rgba(var(--sea-rgb), 0.05);
+	border: 1px solid var(--rule);
+	border-left: 4px solid var(--sea);
+	border-radius: var(--r-md);
+}
+
+.prose details.fold > summary {
+	cursor: pointer;
+	font-family: var(--font-mono);
+	color: var(--sea);
+	list-style: none;
+}
+
+.prose details.fold > summary::-webkit-details-marker {
+	display: none;
+}
+
+.prose details.fold > summary::before {
+	content: '\25B8'; /* ▸ */
+	display: inline-block;
+	margin-right: 0.5em;
+	color: var(--brass);
+	transition: transform 0.15s ease;
+}
+
+.prose details.fold[open] > summary::before {
+	transform: rotate(90deg);
+}
+
+/* ---------------------------------------------------------------------------
+   6. Tabs.
+   ------------------------------------------------------------------------- */
+.prose .tab-group {
+	border: 1px solid var(--rule);
+	border-radius: var(--r-md);
+	overflow: hidden;
+	background: var(--paper-raised);
+}
+
+.prose .tab-list {
+	display: flex;
+	flex-wrap: wrap;
+	background: var(--paper-raised);
+	border-bottom: 1px solid var(--rule);
+}
+
+.prose .tab-btn {
+	font-family: var(--font-mono);
+	font-size: 0.85rem;
+	padding: 0.5em 1em;
+	background: transparent;
+	color: rgb(var(--ink-soft));
+	border: 1px solid transparent;
+	border-radius: var(--r-sm);
+	cursor: pointer;
+	transition:
+		color 0.15s ease,
+		background 0.15s ease;
+}
+
+.prose .tab-btn:hover {
+	color: rgb(var(--ink));
+}
+
+.prose .tab-btn[aria-selected='true'] {
+	background: var(--brass);
+	color: #fff;
+}
+
+.prose .tab-panel {
+	padding: 1.1em 1.3em;
+}
+
+.prose .tab-panel > :first-child {
+	margin-top: 0;
+}
+
+.prose .tab-panel > :last-child {
+	margin-bottom: 0;
+}

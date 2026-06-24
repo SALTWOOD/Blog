@@ -13,6 +13,8 @@ import { articleSidebar } from '../config/sidebar';
 import FallbackImage from '../assets/og-default.png';
 import { SITE_TITLE } from '../consts';
 import { authorPerson } from '../lib/schema';
+import 'katex/dist/katex.min.css';
+import '../styles/markdown.css';
 
 interface Heading {
 	depth: number;
@@ -287,5 +289,68 @@ const breadcrumbLd = {
 			</article>
 		</main>
 		<Footer />
+		<script is:inline>
+			// Markdown enhancements (Phase 2): build tab buttons from panel
+			// data-titles, and add a copy button to every code block. Plain
+			// vanilla JS — no framework.
+			function enhanceMarkdown() {
+				// Tabs
+				document.querySelectorAll('.prose .tab-group').forEach((group) => {
+					if (group.querySelector('.tab-list')) return;
+					const panels = Array.from(group.querySelectorAll(':scope > .tab-panel'));
+					if (panels.length === 0) return;
+					const list = document.createElement('div');
+					list.className = 'tab-list';
+					list.setAttribute('role', 'tablist');
+					panels.forEach((panel, i) => {
+						const btn = document.createElement('button');
+						btn.type = 'button';
+						btn.className = 'tab-btn';
+						btn.textContent = panel.dataset.title || `标签页 ${i + 1}`;
+						btn.setAttribute('role', 'tab');
+						btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+						btn.addEventListener('click', () => {
+							panels.forEach((p) => (p.hidden = true));
+							list.querySelectorAll('.tab-btn').forEach((b) => b.setAttribute('aria-selected', 'false'));
+							panel.hidden = false;
+							btn.setAttribute('aria-selected', 'true');
+						});
+						list.appendChild(btn);
+						panel.setAttribute('role', 'tabpanel');
+						panel.hidden = i !== 0;
+					});
+					group.insertBefore(list, group.firstChild);
+				});
+
+				// Copy buttons on code blocks
+				document.querySelectorAll('.prose pre').forEach((pre) => {
+					if (pre.querySelector('.code-copy')) return;
+					const code = pre.querySelector('code');
+					if (!code) return; // skip mermaid / non-code pre
+					const btn = document.createElement('button');
+					btn.type = 'button';
+					btn.className = 'code-copy';
+					btn.setAttribute('aria-label', '复制代码');
+					btn.textContent = '复制';
+					btn.addEventListener('click', async () => {
+						try {
+							await navigator.clipboard.writeText(code.textContent ?? '');
+							btn.textContent = '已复制';
+						} catch {
+							btn.textContent = '失败';
+						}
+						setTimeout(() => (btn.textContent = '复制'), 1500);
+					});
+					pre.appendChild(btn);
+				});
+			}
+			// The blog has no client-side router, so run directly. This script
+			// sits at the end of <body>, after the article content is parsed.
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', enhanceMarkdown);
+			} else {
+				enhanceMarkdown();
+			}
+		</script>
 	</body>
 </html>
