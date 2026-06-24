@@ -9,10 +9,15 @@ import Sidebar from '../components/Sidebar.astro';
 import { homeSidebar } from '../config/sidebar';
 import { SITE_ALTERNATE_NAME, SITE_COORDS, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { authorPerson } from '../lib/schema';
+import { readingStats } from '../lib/reading';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+
+// Reading estimates per post, keyed by collection id, so the cards can show
+// the same CJK-aware word count / reading time as the article page.
+const stats = new Map(posts.map((post) => [post.id, readingStats(post.body ?? '')]));
 
 const websiteJsonLd = {
 	'@context': 'https://schema.org',
@@ -273,6 +278,22 @@ const websiteJsonLd = {
 				-webkit-box-orient: vertical;
 				overflow: hidden;
 			}
+			.entry-tags {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.35em;
+				margin-top: 0.75rem;
+			}
+			.entry-tags .tag-chip {
+				font-family: var(--font-mono);
+				font-size: 0.7rem;
+				letter-spacing: 0.02em;
+				padding: 0.12em 0.5em;
+				border-radius: var(--r-sm);
+				background: var(--paper-chip);
+				border: 1px solid var(--rule);
+				color: rgb(var(--ink-soft));
+			}
 			.entry:hover .title {
 				color: var(--sea);
 			}
@@ -330,9 +351,18 @@ const websiteJsonLd = {
 													<span class="cat">{post.data.category}</span>
 												</>
 											)}
+											<span class="dot">/</span>
+											<span>{stats.get(post.id)?.minutes ?? 1} 分钟</span>
+											<span class="dot">/</span>
+											<span>{stats.get(post.id)?.wordCount ?? 0} 字</span>
 										</div>
 										<h2 class="title">{post.data.title}</h2>
 										{post.data.description && <p class="desc">{post.data.description}</p>}
+										{post.data.tags.length > 0 && (
+											<div class="entry-tags">
+												{post.data.tags.slice(0, 3).map((tag) => <span class="tag-chip">#{tag}</span>)}
+											</div>
+										)}
 									</a>
 								</li>
 							))
