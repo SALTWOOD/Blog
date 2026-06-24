@@ -9,6 +9,7 @@ import Header from '../components/Header.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import Comments from '../components/Comments.astro';
 import Sidebar from '../components/Sidebar.astro';
+import RelatedPosts from '../components/RelatedPosts.astro';
 import { articleSidebar } from '../config/sidebar';
 import FallbackImage from '../assets/og-default.png';
 import { SITE_TITLE } from '../consts';
@@ -280,6 +281,7 @@ const breadcrumbLd = {
 							</div>
 						</header>
 						<slot />
+						<RelatedPosts id={currentId} />
 						{showComments && <Comments />}
 					</div>
 					<div class="toc-sidebar">
