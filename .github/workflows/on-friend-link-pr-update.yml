@@ -45,7 +45,7 @@ jobs:
 
             const fs = require("fs");
             const path = require("path");
-            const linksPath = path.join(process.env.GITHUB_WORKSPACE, "src", "links", "links.json");
+            const linksPath = path.join(process.env.GITHUB_WORKSPACE, "src", "data", "links.json");
             const linksData = JSON.parse(fs.readFileSync(linksPath, "utf-8"));
             const entry = linksData.find(e => e.slug === originalSlug);
 
@@ -94,7 +94,7 @@ jobs:
             const { execSync } = require("child_process");
             execSync("git config user.name 'github-actions[bot]'");
             execSync("git config user.email 'github-actions[bot]@users.noreply.github.com'");
-            const addPaths = ['"src/links/links.json"'];
+            const addPaths = ['"src/data/links.json"'];
             if (slugChanged) {
               addPaths.push('"src/assets/friends/' + originalSlug + '.webp"');
               addPaths.push('"src/assets/friends/' + slug + '.webp"');
