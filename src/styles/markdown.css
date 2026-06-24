@@ -82,6 +82,15 @@
 	letter-spacing: 0.01em;
 }
 
+/* ── Math (KaTeX): wide display equations scroll instead of stretching ──
+   katex.min.css sets `.katex-display > .katex { white-space: nowrap }` with
+   no overflow handling, so a wide equation blows past the column on narrow
+   screens. Let the display block scroll its own axis. */
+.prose .katex-display {
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+
 /* ── Mermaid diagrams ─────────────────────────────────────────────────── */
 .prose .astro-mermaid,
 .prose .mermaid,
