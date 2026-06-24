@@ -7,7 +7,7 @@ import Header from '../components/Header.astro';
 import FriendCard from '../components/FriendCard.astro';
 import Comments from '../components/Comments.astro';
 
-const linksPath = path.resolve('src/links/links.json');
+const linksPath = path.resolve('src/data/links.json');
 let friendData: Array<{ slug: string; name: string; url: string; description: string }> = [];
 if (fs.existsSync(linksPath)) {
 	try {

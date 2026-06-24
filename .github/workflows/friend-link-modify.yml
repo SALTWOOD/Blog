@@ -48,7 +48,7 @@ jobs:
 
             const fs = require("fs");
             const path = require("path");
-            const linksPath = path.join(process.env.GITHUB_WORKSPACE, "src", "links", "links.json");
+            const linksPath = path.join(process.env.GITHUB_WORKSPACE, "src", "data", "links.json");
 
             let linksData = [];
             let entry = null;
@@ -132,7 +132,7 @@ jobs:
             execSync("git config user.name 'github-actions[bot]'");
             execSync("git config user.email 'github-actions[bot]@users.noreply.github.com'");
             execSync("git checkout -b " + branchName);
-            const addPaths = ['"src/links/links.json"'];
+            const addPaths = ['"src/data/links.json"'];
             if (newIconUrl) addPaths.push('"src/assets/friends/' + originalSlug + '.webp"');
             execSync("git add " + addPaths.join(" "));
             const opener = context.payload.issue.user;

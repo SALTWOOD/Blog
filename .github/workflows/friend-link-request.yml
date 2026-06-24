@@ -76,7 +76,7 @@ jobs:
 
             const fs = require("fs");
             const path = require("path");
-            const linksPath = path.join(process.env.GITHUB_WORKSPACE, "src", "links", "links.json");
+            const linksPath = path.join(process.env.GITHUB_WORKSPACE, "src", "data", "links.json");
 
             let linksData = [];
             if (fs.existsSync(linksPath)) {
@@ -122,7 +122,7 @@ jobs:
             execSync("git config user.name 'github-actions[bot]'");
             execSync("git config user.email 'github-actions[bot]@users.noreply.github.com'");
             execSync("git checkout -b " + branchName);
-            execSync('git add "src/links/links.json" "src/assets/friends/' + slug + '.webp"');
+            execSync('git add "src/data/links.json" "src/assets/friends/' + slug + '.webp"');
             const opener = context.payload.issue.user;
             const coAuthorTrailer = "Co-Authored-By: " + opener.login + " <" + opener.id + "+" + opener.login + "@users.noreply.github.com>";
             execSync('git commit -m "chore(links): ' + name.replace(/"/g, '\\"') + '" -m "' + coAuthorTrailer + '"');

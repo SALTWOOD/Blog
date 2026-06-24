@@ -7,7 +7,7 @@ body:
     id: slug
     attributes:
       label: 原标识
-      description: 要修改的友链标识（slug），见 src/links/links.json
+      description: 要修改的友链标识（slug），见 src/data/links.json
       placeholder: "my-blog"
     validations:
       required: true
