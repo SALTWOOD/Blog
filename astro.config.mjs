@@ -3,9 +3,16 @@
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import pagefind from 'astro-pagefind';
-import { unified } from '@astrojs/markdown-remark';
+import mermaid from 'astro-mermaid';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import remarkDirective from 'remark-directive';
 import { remarkAlert } from 'remark-github-blockquote-alert';
 import { defineConfig, fontProviders } from 'astro/config';
+import { shikiMetaTransformer } from './src/lib/markdown/shiki-meta';
+import { rehypeFigure } from './src/lib/markdown/rehype-figure';
+import { remarkFold } from './src/lib/markdown/remark-fold';
+import { remarkTabs } from './src/lib/markdown/remark-tabs';
 
 // https://astro.build/config
 export default defineConfig({
@@ -13,9 +20,14 @@ export default defineConfig({
 	redirects: {
 		'/blog': '/',
 	},
-	integrations: [mdx(), sitemap(), pagefind()],
+	integrations: [mdx(), sitemap(), pagefind(), mermaid()],
 	markdown: {
-		processor: unified({ remarkPlugins: [remarkAlert] }),
+		syntaxHighlight: 'shiki',
+		remarkPlugins: [remarkAlert, remarkMath, remarkDirective, remarkFold, remarkTabs],
+		rehypePlugins: [rehypeKatex, rehypeFigure],
+		shikiConfig: {
+			transformers: [shikiMetaTransformer()],
+		},
 	},
 	fonts: [
 		{
