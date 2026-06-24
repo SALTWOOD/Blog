@@ -161,6 +161,15 @@ const breadcrumbLd = {
 					flex-direction: column;
 					padding: 2em 1em;
 				}
+				/* Give the article column a definite width. Without it the column
+				   is a non-stretched flex item sized to its widest child
+				   (max-content), so a long code line / wide table / equation
+				   stretches the whole page past the viewport and forces horizontal
+				   scrolling. With width:100% those children hit a definite bound and
+				   scroll inside themselves (pre/table/katex) instead. */
+				.prose {
+					width: 100%;
+				}
 			}
 
 			/* Log-entry header */
