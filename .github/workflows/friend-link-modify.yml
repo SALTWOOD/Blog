@@ -137,7 +137,7 @@ jobs:
             execSync("git add " + addPaths.join(" "));
             const opener = context.payload.issue.user;
             const coAuthorTrailer = "Co-Authored-By: " + opener.login + " <" + opener.id + "+" + opener.login + "@users.noreply.github.com>";
-            const subject = "chore(links): 修改友链 " + entry.name.replace(/"/g, '\\"');
+            const subject = "chore(links): update " + entry.name.replace(/"/g, '\\"');
             execSync('git commit -m "' + subject + '" -m "' + coAuthorTrailer + '"');
             execSync("git push origin " + branchName);
 
@@ -158,7 +158,7 @@ jobs:
             await github.rest.pulls.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: "chore(links): 修改友链 " + entry.name,
+              title: "chore(links): update " + entry.name,
               head: branchName,
               base: "main",
               body: prBody.join("\n"),
