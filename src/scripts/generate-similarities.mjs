@@ -1,6 +1,7 @@
-// Generate per-post semantic similarity (TF-IDF + cosine) and write
-// src/data/similarities.json. Chinese is segmented with @node-rs/jieba
-// (prebuilt native binding — no compilation); English is regex-tokenized.
+// Generate per-post semantic similarity (dense embedding + cosine) and write
+// src/data/similarities.json. Each post's frontmatter title + description is
+// embedded with `Snowflake/snowflake-arctic-embed-m-v2.0` (768-dim, mean-pooled
+// and L2-normalized), so cosine similarity is just a dot product.
 // Run with: `pnpm gen:similarities` (or --force).
 //
 // Output shape: { [id]: [{ id, title, score }, ...] } keyed by collection id
@@ -12,11 +13,16 @@ import { basename, dirname, extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import matter from 'gray-matter';
-import { Jieba } from '@node-rs/jieba';
-import { dict } from '@node-rs/jieba/dict.js';
+import { pipeline, env } from '@huggingface/transformers';
 
-// Load the default dictionary once; HMM stays on for out-of-dict words.
-const jieba = Jieba.withDict(dict);
+// Use the official Hugging Face host by default. If huggingface.co is slow or
+// unreachable from your network, set HF_ENDPOINT to a mirror (e.g.
+// https://hf-mirror.com) and the model will fetch from there instead.
+env.allowLocalModels = false;
+env.cacheDir = join(fileURLToPath(new URL('../../', import.meta.url)), '.cache/transformers');
+if (process.env.HF_ENDPOINT) env.remoteHost = process.env.HF_ENDPOINT.replace(/\/+$/, '');
+
+const MODEL = 'Snowflake/snowflake-arctic-embed-m-v2.0';
 
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const BLOG_DIR = join(ROOT, 'src/content/blog');
@@ -28,28 +34,7 @@ const MIN_SCORE = 0.05;
 const FORCE = process.argv.includes('--force');
 // Bump when the algorithm changes so the content-only cache is invalidated
 // and a stale similarities.json never survives an upgrade.
-const ALGO_VERSION = 'jieba-v1';
-
-// English function words; jieba handles Chinese segmentation below.
-const STOP = new Set(
-	'the a an of to in on for and or but is are was were be been being it its this that these those with from by at as into your you i we they he she his her our their not no if then than so do does did has have had can could will would should may might must about over under'.split(
-		' ',
-	),
-);
-
-// Chinese particles / pronouns / connectives that carry no topic signal.
-// Single characters are dropped wholesale in tokenize(), so only multi-char
-// stopphrases need to be listed here.
-const STOP_ZH = new Set([
-	'我们', '你们', '他们', '她们', '它们', '什么', '怎么', '为什么', '怎样',
-	'这个', '那个', '这些', '那些', '这样', '那样', '这里', '那里', '哪个',
-	'一个', '一些', '一切', '其他', '其它', '其余', '没有', '不是', '不能',
-	'不会', '不要', '可以', '能够', '应该', '已经', '正在', '还是', '就是',
-	'只是', '只有', '只要', '或者', '但是', '不过', '而且', '并且', '以及',
-	'因为', '所以', '如果', '虽然', '然后', '当然', '其实', '可能', '觉得',
-	'以为', '现在', '以前', '以后', '时候', '地方', '东西', '问题', '方面',
-	'情况', '样子', '大家', '自己',
-]);
+const ALGO_VERSION = 'arctic-embed-m-v2';
 
 function stripMarkdown(md) {
 	return md
@@ -59,30 +44,6 @@ function stripMarkdown(md) {
 		.replace(/\[([^\]]+)\]\([^)]*\)/g, '$1') // links → keep text
 		.replace(/<[^>]+>/g, ' ') // raw HTML tags
 		.replace(/[#>*_~\-+=|]/g, ' '); // markdown punctuation
-}
-
-/** Tokenize: Latin words (lowercased, stopwords/short dropped) + Chinese
- *  words via jieba (single chars and stopphrases dropped). Returns term→count. */
-function tokenize(text) {
-	const counts = new Map();
-	const add = (t) => counts.set(t, (counts.get(t) ?? 0) + 1);
-	for (const w of text.toLowerCase().match(/[a-z][a-z0-9]{1,}/g) ?? []) {
-		if (!STOP.has(w)) add(w);
-	}
-	for (const run of text.match(/[\p{Script=Han}]+/gu) ?? []) {
-		for (const w of jieba.cut(run, true)) {
-			if (w.length >= 2 && !STOP_ZH.has(w)) add(w);
-		}
-	}
-	return counts;
-}
-
-/** Build a weighted text profile: title ×3, tags/category/description ×2, body ×1. */
-function profile(post) {
-	const parts = [post.title, post.title, post.title];
-	for (let i = 0; i < 2; i++) parts.push(...(post.tags ?? []), post.category ?? '', post.description ?? '');
-	parts.push(stripMarkdown(post.body));
-	return tokenize(parts.join(' '));
 }
 
 async function main() {
@@ -124,40 +85,44 @@ async function main() {
 		} catch {}
 	}
 
-	// TF-IDF: term frequency × inverse document frequency.
-	const N = posts.length;
-	const df = new Map();
-	for (const p of posts) {
-		p.tf = profile(p);
-		for (const term of p.tf.keys()) df.set(term, (df.get(term) ?? 0) + 1);
-	}
-	const idf = (term) => Math.log((N + 1) / ((df.get(term) ?? 1) + 1) + 1);
+	// Load the model once. Title + description discriminates far better than
+	// including the body (Chinese technical bodies share a lot of boilerplate
+	// vocabulary that collapses the embedding space), so we embed frontmatter
+	// only. The body / stripMarkdown() helper stays available for other uses.
+	console.log(`Loading model ${MODEL} ...`);
+	const extractor = await pipeline('feature-extraction', MODEL);
 
-	for (const p of posts) {
-		p.vec = new Map();
-		// Sublinear TF scaling: 1 + log10(tf) dampens repeated-term dominance.
-		for (const [term, tf] of p.tf) p.vec.set(term, (1 + Math.log10(tf)) * idf(term));
-		let sum = 0;
-		for (const v of p.vec.values()) sum += v * v;
-		p.norm = Math.sqrt(sum);
-	}
-
-	const cosine = (a, b) => {
-		const [x, y] = a.vec.size < b.vec.size ? [a, b] : [b, a];
-		let dot = 0;
-		for (const [t, v] of x.vec) {
-			const w = y.vec.get(t);
-			if (w) dot += v * w;
+	const embeddings = [];
+	for (let i = 0; i < posts.length; i++) {
+		const p = posts[i];
+		// Note: src/data/summaries.json could be used as the description source
+		// here in future, if AI summaries are generated and preferred over the
+		// hand-written frontmatter description.
+		const input = `${p.title}. ${p.description || ''}`;
+		const output = await extractor(input, { pooling: 'mean', normalize: true });
+		// Transformers.js v4: the pooled/normalized result is a Tensor whose
+		// `.data` iterable yields the 768 components.
+		embeddings.push(Array.from(output.data));
+		if ((i + 1) % 5 === 0 || i === posts.length - 1) {
+			console.log(`  embedded ${i + 1}/${posts.length} ...`);
 		}
-		const denom = a.norm * b.norm;
-		return denom ? dot / denom : 0;
+	}
+
+	const DIM = embeddings[0]?.length ?? 768;
+
+	// Cosine = dot product (vectors are already unit-length).
+	const dot = (a, b) => {
+		let s = 0;
+		for (let i = 0; i < DIM; i++) s += a[i] * b[i];
+		return s;
 	};
 
 	const out = {};
-	for (const p of posts) {
+	for (let i = 0; i < posts.length; i++) {
+		const p = posts[i];
 		out[p.id] = posts
-			.filter((q) => q.id !== p.id)
-			.map((q) => ({ id: q.id, title: q.title, score: Number(cosine(p, q).toFixed(4)) }))
+			.map((q, j) => (q.id === p.id ? null : { id: q.id, title: q.title, score: Number(dot(embeddings[i], embeddings[j]).toFixed(4)) }))
+			.filter(Boolean)
 			.filter((s) => s.score >= MIN_SCORE)
 			.sort((a, b) => b.score - a.score)
 			.slice(0, TOP_N);
