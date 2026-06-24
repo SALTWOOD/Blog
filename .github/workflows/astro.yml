@@ -5,6 +5,16 @@ on:
   # Using a different branch name? Replace `main` with your branch’s name
   push:
     branches: [ main ]
+    # Skip the build when the push touches no site source or build config
+    # (e.g. `.github/**`, `README.md`, editor config). Manual runs via the
+    # Actions tab still work — see `workflow_dispatch` below.
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'astro.config.mjs'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'tsconfig.json'
   # Allows you to run this workflow manually from the Actions tab on GitHub.
   workflow_dispatch:
 
