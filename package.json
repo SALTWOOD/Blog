@@ -12,6 +12,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "gen:similarities": "node src/scripts/generate-similarities.mjs",
+    "gen:summaries": "node src/scripts/generate-summaries.mjs",
     "new": "node scripts/cli.mjs new",
     "pin": "node scripts/cli.mjs pin",
     "stats": "node scripts/cli.mjs stats"
@@ -28,8 +29,8 @@
     "sharp": "^0.35.1"
   },
   "devDependencies": {
+    "@huggingface/transformers": "^4.2.0",
     "@inquirer/prompts": "^8.5.2",
-    "@node-rs/jieba": "^2.0.1",
     "astro-mermaid": "^2.0.4",
     "gray-matter": "^4.0.3",
     "katex": "^0.17.0",
