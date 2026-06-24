@@ -1,6 +1,6 @@
 name: 友链修改
 description: 申请修改你已加入的友链信息
-title: "chore(links): update 你的博客名称"
+title: "chore(links): update <标识>"
 labels: ["request"]
 body:
   - type: input

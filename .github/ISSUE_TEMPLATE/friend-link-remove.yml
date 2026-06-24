@@ -1,6 +1,6 @@
 name: 友链移除
 description: 申请移除某条友链
-title: "chore(links): 移除友链 <标识>"
+title: "chore(links): remove <标识>"
 labels: ["request"]
 body:
   - type: input
