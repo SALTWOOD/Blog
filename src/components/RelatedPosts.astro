@@ -1,0 +1,71 @@
+---
+import { getRelated } from '../lib/related';
+
+interface Props {
+	id?: string;
+}
+const { id } = Astro.props;
+const related = id ? getRelated(id, 4) : [];
+---
+
+{
+	related.length > 0 && (
+		<nav class="related-posts" aria-label="相关文章">
+			<h3 class="related-title">相关日志</h3>
+			<ul>
+				{related.map((r) => (
+					<li>
+						<a href={`/blog/${r.id}/`}>{r.title}</a>
+					</li>
+				))}
+			</ul>
+		</nav>
+	)
+}
+
+<style>
+	.related-posts {
+		margin-top: 2.75rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--rule);
+	}
+	.related-title {
+		margin: 0 0 0.85rem;
+		font-size: 0.8rem;
+		font-family: var(--font-mono);
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: var(--brass);
+	}
+	.related-posts ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 0.5rem;
+	}
+	.related-posts li a {
+		display: block;
+		padding: 0.6rem 0.9rem;
+		background: var(--paper-raised);
+		border: 1px solid var(--rule);
+		border-left: 3px solid transparent;
+		border-radius: var(--r-md);
+		color: rgb(var(--ink));
+		text-decoration: none;
+		font-size: 0.95rem;
+		line-height: 1.4;
+		transition:
+			transform 0.15s ease,
+			border-left-color 0.15s ease,
+			color 0.15s ease;
+	}
+	.related-posts li a:hover {
+		transform: translateX(3px);
+		border-left-color: var(--brass);
+		color: var(--sea);
+	}
+	[data-theme='dark'] .related-posts li a:hover {
+		color: var(--brass-soft);
+	}
+</style>
