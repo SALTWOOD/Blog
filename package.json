@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@inquirer/prompts": "^8.5.2",
+    "@node-rs/jieba": "^2.0.1",
     "astro-mermaid": "^2.0.4",
     "gray-matter": "^4.0.3",
     "katex": "^0.17.0",
