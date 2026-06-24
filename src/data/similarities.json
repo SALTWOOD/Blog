@@ -1,399 +1,420 @@
 {
-  "1-blog-revived": [],
-  "10-world-of-warships-beginner-guide": [
+  "1-blog-revived": [
     {
-      "id": "7-azur-lane-beginner-intro",
-      "title": "碧蓝航线萌新系列——游戏简介",
-      "score": 0.128
-    },
-    {
-      "id": "2-openbmclapi-cloudflare-optimization",
-      "title": "使用 Cloudflare 优选为 OpenBMCLAPI 助力",
-      "score": 0.123
-    },
-    {
-      "id": "9-wordpress-openlitespeed-setup",
-      "title": "使用 OpenLiteSpeed 搭建高性能 WordPress 站点",
-      "score": 0.1206
-    },
-    {
-      "id": "17-wow-submarine-rework-25-7",
-      "title": "[烤肉] 战舰世界莱服封闭测试 25.7 — 潜艇机制大改",
-      "score": 0.1189
-    }
-  ],
-  "11-pcl-decompilation-encryption": [
-    {
-      "id": "15-wordpress-security-breach",
-      "title": "WordPress 维护：记录一次突发的入侵",
-      "score": 0.1036
-    },
-    {
-      "id": "14-remove-wpjam-verification",
-      "title": "如何彻底干掉 WPJAM 的公众号验证码",
-      "score": 0.1021
-    },
-    {
-      "id": "16-wordpress-argon-comment-captcha",
-      "title": "基于 Cap 的 WordPress Argon 评论发送验证码",
-      "score": 0.0938
+      "id": "8-failed-blog-migration",
+      "title": "记一次失败的博客迁移",
+      "score": 0.4759
     },
     {
       "id": "21-dotnet-http3-unobserved-exception",
       "title": ".NET HTTP/3 未观测异常的排查和修复",
-      "score": 0.091
+      "score": 0.4579
+    },
+    {
+      "id": "15-wordpress-security-breach",
+      "title": "WordPress 维护：记录一次突发的入侵",
+      "score": 0.4312
+    },
+    {
+      "id": "9-wordpress-openlitespeed-setup",
+      "title": "使用 OpenLiteSpeed 搭建高性能 WordPress 站点",
+      "score": 0.385
+    }
+  ],
+  "10-world-of-warships-beginner-guide": [
+    {
+      "id": "7-azur-lane-beginner-intro",
+      "title": "碧蓝航线萌新系列——游戏简介",
+      "score": 0.6395
+    },
+    {
+      "id": "18-wow-carrier-support-25-8",
+      "title": "[烤肉] 战舰世界莱服封闭测试 25.8 — 航母支援中队",
+      "score": 0.5349
+    },
+    {
+      "id": "19-openwrt-build-setup-guide",
+      "title": "OpenWRT 入门——构建、安装与配置",
+      "score": 0.5321
+    },
+    {
+      "id": "17-wow-submarine-rework-25-7",
+      "title": "[烤肉] 战舰世界莱服封闭测试 25.7 — 潜艇机制大改",
+      "score": 0.5101
+    }
+  ],
+  "11-pcl-decompilation-encryption": [
+    {
+      "id": "19-openwrt-build-setup-guide",
+      "title": "OpenWRT 入门——构建、安装与配置",
+      "score": 0.3863
+    },
+    {
+      "id": "17-wow-submarine-rework-25-7",
+      "title": "[烤肉] 战舰世界莱服封闭测试 25.7 — 潜艇机制大改",
+      "score": 0.3841
+    },
+    {
+      "id": "15-wordpress-security-breach",
+      "title": "WordPress 维护：记录一次突发的入侵",
+      "score": 0.3798
+    },
+    {
+      "id": "5-disable-mumu-emulator-ads",
+      "title": "如何关闭 MuMu 模拟器弹窗广告",
+      "score": 0.3557
     }
   ],
   "13-wordpress-weather-ajax-widget": [
     {
       "id": "6-wordpress-weather-shortcode",
       "title": "利用简码实现一个 WordPress 天气小工具",
-      "score": 0.3608
-    },
-    {
-      "id": "16-wordpress-argon-comment-captcha",
-      "title": "基于 Cap 的 WordPress Argon 评论发送验证码",
-      "score": 0.1151
+      "score": 0.5857
     },
     {
       "id": "9-wordpress-openlitespeed-setup",
       "title": "使用 OpenLiteSpeed 搭建高性能 WordPress 站点",
-      "score": 0.0819
+      "score": 0.4276
     },
     {
       "id": "21-dotnet-http3-unobserved-exception",
       "title": ".NET HTTP/3 未观测异常的排查和修复",
-      "score": 0.0783
+      "score": 0.4089
+    },
+    {
+      "id": "20-nginx-block-ip-notes",
+      "title": "【随手记】借助 Nginx 拦截指定 IP 访问",
+      "score": 0.401
     }
   ],
   "14-remove-wpjam-verification": [
     {
-      "id": "15-wordpress-security-breach",
-      "title": "WordPress 维护：记录一次突发的入侵",
-      "score": 0.1508
-    },
-    {
       "id": "16-wordpress-argon-comment-captcha",
       "title": "基于 Cap 的 WordPress Argon 评论发送验证码",
-      "score": 0.1092
+      "score": 0.4176
     },
     {
-      "id": "9-wordpress-openlitespeed-setup",
-      "title": "使用 OpenLiteSpeed 搭建高性能 WordPress 站点",
-      "score": 0.1057
+      "id": "6-wordpress-weather-shortcode",
+      "title": "利用简码实现一个 WordPress 天气小工具",
+      "score": 0.3946
     },
     {
-      "id": "10-world-of-warships-beginner-guide",
-      "title": "萌新入坑莱服战舰世界指南",
-      "score": 0.105
+      "id": "15-wordpress-security-breach",
+      "title": "WordPress 维护：记录一次突发的入侵",
+      "score": 0.3933
+    },
+    {
+      "id": "5-disable-mumu-emulator-ads",
+      "title": "如何关闭 MuMu 模拟器弹窗广告",
+      "score": 0.3907
     }
   ],
   "15-wordpress-security-breach": [
     {
-      "id": "14-remove-wpjam-verification",
-      "title": "如何彻底干掉 WPJAM 的公众号验证码",
-      "score": 0.1508
+      "id": "8-failed-blog-migration",
+      "title": "记一次失败的博客迁移",
+      "score": 0.5492
     },
     {
-      "id": "9-wordpress-openlitespeed-setup",
-      "title": "使用 OpenLiteSpeed 搭建高性能 WordPress 站点",
-      "score": 0.1358
+      "id": "20-nginx-block-ip-notes",
+      "title": "【随手记】借助 Nginx 拦截指定 IP 访问",
+      "score": 0.4848
     },
     {
-      "id": "16-wordpress-argon-comment-captcha",
-      "title": "基于 Cap 的 WordPress Argon 评论发送验证码",
-      "score": 0.1262
+      "id": "6-wordpress-weather-shortcode",
+      "title": "利用简码实现一个 WordPress 天气小工具",
+      "score": 0.4786
     },
     {
-      "id": "2-openbmclapi-cloudflare-optimization",
-      "title": "使用 Cloudflare 优选为 OpenBMCLAPI 助力",
-      "score": 0.1136
+      "id": "1-blog-revived",
+      "title": "盐木的小破窝复活辣！",
+      "score": 0.4312
     }
   ],
   "16-wordpress-argon-comment-captcha": [
     {
-      "id": "15-wordpress-security-breach",
-      "title": "WordPress 维护：记录一次突发的入侵",
-      "score": 0.1262
-    },
-    {
-      "id": "13-wordpress-weather-ajax-widget",
-      "title": "通过 Ajax 实现一个更强的天气小工具",
-      "score": 0.1151
+      "id": "6-wordpress-weather-shortcode",
+      "title": "利用简码实现一个 WordPress 天气小工具",
+      "score": 0.4209
     },
     {
       "id": "14-remove-wpjam-verification",
       "title": "如何彻底干掉 WPJAM 的公众号验证码",
-      "score": 0.1092
+      "score": 0.4176
     },
     {
-      "id": "11-pcl-decompilation-encryption",
-      "title": "PCL 反编译——加密和解密原理记录",
-      "score": 0.0938
+      "id": "20-nginx-block-ip-notes",
+      "title": "【随手记】借助 Nginx 拦截指定 IP 访问",
+      "score": 0.4077
+    },
+    {
+      "id": "13-wordpress-weather-ajax-widget",
+      "title": "通过 Ajax 实现一个更强的天气小工具",
+      "score": 0.3675
     }
   ],
   "17-wow-submarine-rework-25-7": [
     {
       "id": "18-wow-carrier-support-25-8",
       "title": "[烤肉] 战舰世界莱服封闭测试 25.8 — 航母支援中队",
-      "score": 0.337
+      "score": 0.8677
     },
     {
       "id": "10-world-of-warships-beginner-guide",
       "title": "萌新入坑莱服战舰世界指南",
-      "score": 0.1189
+      "score": 0.5101
     },
     {
-      "id": "15-wordpress-security-breach",
-      "title": "WordPress 维护：记录一次突发的入侵",
-      "score": 0.0891
+      "id": "11-pcl-decompilation-encryption",
+      "title": "PCL 反编译——加密和解密原理记录",
+      "score": 0.3841
     },
     {
-      "id": "7-azur-lane-beginner-intro",
-      "title": "碧蓝航线萌新系列——游戏简介",
-      "score": 0.0891
+      "id": "1-blog-revived",
+      "title": "盐木的小破窝复活辣！",
+      "score": 0.3667
     }
   ],
   "18-wow-carrier-support-25-8": [
     {
       "id": "17-wow-submarine-rework-25-7",
       "title": "[烤肉] 战舰世界莱服封闭测试 25.7 — 潜艇机制大改",
-      "score": 0.337
+      "score": 0.8677
     },
     {
       "id": "10-world-of-warships-beginner-guide",
       "title": "萌新入坑莱服战舰世界指南",
-      "score": 0.1115
+      "score": 0.5349
     },
     {
-      "id": "2-openbmclapi-cloudflare-optimization",
-      "title": "使用 Cloudflare 优选为 OpenBMCLAPI 助力",
-      "score": 0.0713
+      "id": "7-azur-lane-beginner-intro",
+      "title": "碧蓝航线萌新系列——游戏简介",
+      "score": 0.3789
     },
     {
-      "id": "6-wordpress-weather-shortcode",
-      "title": "利用简码实现一个 WordPress 天气小工具",
-      "score": 0.0699
+      "id": "11-pcl-decompilation-encryption",
+      "title": "PCL 反编译——加密和解密原理记录",
+      "score": 0.3536
     }
   ],
   "19-openwrt-build-setup-guide": [
     {
-      "id": "9-wordpress-openlitespeed-setup",
-      "title": "使用 OpenLiteSpeed 搭建高性能 WordPress 站点",
-      "score": 0.1405
-    },
-    {
-      "id": "5-disable-mumu-emulator-ads",
-      "title": "如何关闭 MuMu 模拟器弹窗广告",
-      "score": 0.1191
-    },
-    {
       "id": "10-world-of-warships-beginner-guide",
       "title": "萌新入坑莱服战舰世界指南",
-      "score": 0.1122
+      "score": 0.5321
     },
     {
-      "id": "2-openbmclapi-cloudflare-optimization",
-      "title": "使用 Cloudflare 优选为 OpenBMCLAPI 助力",
-      "score": 0.1106
+      "id": "7-azur-lane-beginner-intro",
+      "title": "碧蓝航线萌新系列——游戏简介",
+      "score": 0.4742
+    },
+    {
+      "id": "15-wordpress-security-breach",
+      "title": "WordPress 维护：记录一次突发的入侵",
+      "score": 0.4025
+    },
+    {
+      "id": "11-pcl-decompilation-encryption",
+      "title": "PCL 反编译——加密和解密原理记录",
+      "score": 0.3863
     }
   ],
   "2-openbmclapi-cloudflare-optimization": [
     {
+      "id": "20-nginx-block-ip-notes",
+      "title": "【随手记】借助 Nginx 拦截指定 IP 访问",
+      "score": 0.4563
+    },
+    {
+      "id": "6-wordpress-weather-shortcode",
+      "title": "利用简码实现一个 WordPress 天气小工具",
+      "score": 0.4368
+    },
+    {
       "id": "9-wordpress-openlitespeed-setup",
       "title": "使用 OpenLiteSpeed 搭建高性能 WordPress 站点",
-      "score": 0.1325
-    },
-    {
-      "id": "10-world-of-warships-beginner-guide",
-      "title": "萌新入坑莱服战舰世界指南",
-      "score": 0.123
-    },
-    {
-      "id": "15-wordpress-security-breach",
-      "title": "WordPress 维护：记录一次突发的入侵",
-      "score": 0.1136
+      "score": 0.3709
     },
     {
       "id": "19-openwrt-build-setup-guide",
       "title": "OpenWRT 入门——构建、安装与配置",
-      "score": 0.1106
+      "score": 0.3671
     }
   ],
   "20-nginx-block-ip-notes": [
     {
-      "id": "15-wordpress-security-breach",
-      "title": "WordPress 维护：记录一次突发的入侵",
-      "score": 0.0832
-    },
-    {
-      "id": "3-gpg-key-fingerprint-gpu",
-      "title": "利用 gpg-fingerprint-filter-gpu 计算 GPG Key",
-      "score": 0.0721
-    },
-    {
-      "id": "2-openbmclapi-cloudflare-optimization",
-      "title": "使用 Cloudflare 优选为 OpenBMCLAPI 助力",
-      "score": 0.0653
+      "id": "6-wordpress-weather-shortcode",
+      "title": "利用简码实现一个 WordPress 天气小工具",
+      "score": 0.5036
     },
     {
       "id": "8-failed-blog-migration",
       "title": "记一次失败的博客迁移",
-      "score": 0.0618
+      "score": 0.4944
+    },
+    {
+      "id": "15-wordpress-security-breach",
+      "title": "WordPress 维护：记录一次突发的入侵",
+      "score": 0.4848
+    },
+    {
+      "id": "2-openbmclapi-cloudflare-optimization",
+      "title": "使用 Cloudflare 优选为 OpenBMCLAPI 助力",
+      "score": 0.4563
     }
   ],
   "21-dotnet-http3-unobserved-exception": [
     {
-      "id": "11-pcl-decompilation-encryption",
-      "title": "PCL 反编译——加密和解密原理记录",
-      "score": 0.091
-    },
-    {
-      "id": "14-remove-wpjam-verification",
-      "title": "如何彻底干掉 WPJAM 的公众号验证码",
-      "score": 0.0837
+      "id": "1-blog-revived",
+      "title": "盐木的小破窝复活辣！",
+      "score": 0.4579
     },
     {
       "id": "13-wordpress-weather-ajax-widget",
       "title": "通过 Ajax 实现一个更强的天气小工具",
-      "score": 0.0783
+      "score": 0.4089
     },
     {
-      "id": "15-wordpress-security-breach",
-      "title": "WordPress 维护：记录一次突发的入侵",
-      "score": 0.0742
+      "id": "20-nginx-block-ip-notes",
+      "title": "【随手记】借助 Nginx 拦截指定 IP 访问",
+      "score": 0.4087
+    },
+    {
+      "id": "8-failed-blog-migration",
+      "title": "记一次失败的博客迁移",
+      "score": 0.3677
     }
   ],
   "3-gpg-key-fingerprint-gpu": [
     {
-      "id": "2-openbmclapi-cloudflare-optimization",
-      "title": "使用 Cloudflare 优选为 OpenBMCLAPI 助力",
-      "score": 0.105
+      "id": "14-remove-wpjam-verification",
+      "title": "如何彻底干掉 WPJAM 的公众号验证码",
+      "score": 0.3382
     },
     {
-      "id": "19-openwrt-build-setup-guide",
-      "title": "OpenWRT 入门——构建、安装与配置",
-      "score": 0.104
+      "id": "2-openbmclapi-cloudflare-optimization",
+      "title": "使用 Cloudflare 优选为 OpenBMCLAPI 助力",
+      "score": 0.3316
     },
     {
       "id": "9-wordpress-openlitespeed-setup",
       "title": "使用 OpenLiteSpeed 搭建高性能 WordPress 站点",
-      "score": 0.0993
+      "score": 0.3282
     },
     {
-      "id": "10-world-of-warships-beginner-guide",
-      "title": "萌新入坑莱服战舰世界指南",
-      "score": 0.0922
+      "id": "11-pcl-decompilation-encryption",
+      "title": "PCL 反编译——加密和解密原理记录",
+      "score": 0.2972
     }
   ],
   "5-disable-mumu-emulator-ads": [
     {
-      "id": "19-openwrt-build-setup-guide",
-      "title": "OpenWRT 入门——构建、安装与配置",
-      "score": 0.1191
-    },
-    {
-      "id": "9-wordpress-openlitespeed-setup",
-      "title": "使用 OpenLiteSpeed 搭建高性能 WordPress 站点",
-      "score": 0.1113
-    },
-    {
-      "id": "15-wordpress-security-breach",
-      "title": "WordPress 维护：记录一次突发的入侵",
-      "score": 0.1068
+      "id": "7-azur-lane-beginner-intro",
+      "title": "碧蓝航线萌新系列——游戏简介",
+      "score": 0.4499
     },
     {
       "id": "10-world-of-warships-beginner-guide",
       "title": "萌新入坑莱服战舰世界指南",
-      "score": 0.1034
+      "score": 0.4242
+    },
+    {
+      "id": "14-remove-wpjam-verification",
+      "title": "如何彻底干掉 WPJAM 的公众号验证码",
+      "score": 0.3907
+    },
+    {
+      "id": "1-blog-revived",
+      "title": "盐木的小破窝复活辣！",
+      "score": 0.3729
     }
   ],
   "6-wordpress-weather-shortcode": [
     {
       "id": "13-wordpress-weather-ajax-widget",
       "title": "通过 Ajax 实现一个更强的天气小工具",
-      "score": 0.3608
+      "score": 0.5857
     },
     {
-      "id": "9-wordpress-openlitespeed-setup",
-      "title": "使用 OpenLiteSpeed 搭建高性能 WordPress 站点",
-      "score": 0.1061
+      "id": "20-nginx-block-ip-notes",
+      "title": "【随手记】借助 Nginx 拦截指定 IP 访问",
+      "score": 0.5036
     },
     {
       "id": "15-wordpress-security-breach",
       "title": "WordPress 维护：记录一次突发的入侵",
-      "score": 0.1048
+      "score": 0.4786
     },
     {
       "id": "2-openbmclapi-cloudflare-optimization",
       "title": "使用 Cloudflare 优选为 OpenBMCLAPI 助力",
-      "score": 0.0836
+      "score": 0.4368
     }
   ],
   "7-azur-lane-beginner-intro": [
     {
       "id": "10-world-of-warships-beginner-guide",
       "title": "萌新入坑莱服战舰世界指南",
-      "score": 0.128
-    },
-    {
-      "id": "2-openbmclapi-cloudflare-optimization",
-      "title": "使用 Cloudflare 优选为 OpenBMCLAPI 助力",
-      "score": 0.0921
-    },
-    {
-      "id": "17-wow-submarine-rework-25-7",
-      "title": "[烤肉] 战舰世界莱服封闭测试 25.7 — 潜艇机制大改",
-      "score": 0.0891
+      "score": 0.6395
     },
     {
       "id": "19-openwrt-build-setup-guide",
       "title": "OpenWRT 入门——构建、安装与配置",
-      "score": 0.0825
+      "score": 0.4742
+    },
+    {
+      "id": "5-disable-mumu-emulator-ads",
+      "title": "如何关闭 MuMu 模拟器弹窗广告",
+      "score": 0.4499
+    },
+    {
+      "id": "18-wow-carrier-support-25-8",
+      "title": "[烤肉] 战舰世界莱服封闭测试 25.8 — 航母支援中队",
+      "score": 0.3789
     }
   ],
   "8-failed-blog-migration": [
     {
-      "id": "9-wordpress-openlitespeed-setup",
-      "title": "使用 OpenLiteSpeed 搭建高性能 WordPress 站点",
-      "score": 0.1627
-    },
-    {
-      "id": "19-openwrt-build-setup-guide",
-      "title": "OpenWRT 入门——构建、安装与配置",
-      "score": 0.0908
-    },
-    {
       "id": "15-wordpress-security-breach",
       "title": "WordPress 维护：记录一次突发的入侵",
-      "score": 0.0835
+      "score": 0.5492
+    },
+    {
+      "id": "9-wordpress-openlitespeed-setup",
+      "title": "使用 OpenLiteSpeed 搭建高性能 WordPress 站点",
+      "score": 0.5025
     },
     {
       "id": "20-nginx-block-ip-notes",
       "title": "【随手记】借助 Nginx 拦截指定 IP 访问",
-      "score": 0.0618
+      "score": 0.4944
+    },
+    {
+      "id": "1-blog-revived",
+      "title": "盐木的小破窝复活辣！",
+      "score": 0.4759
     }
   ],
   "9-wordpress-openlitespeed-setup": [
     {
       "id": "8-failed-blog-migration",
       "title": "记一次失败的博客迁移",
-      "score": 0.1627
+      "score": 0.5025
     },
     {
-      "id": "19-openwrt-build-setup-guide",
-      "title": "OpenWRT 入门——构建、安装与配置",
-      "score": 0.1405
+      "id": "6-wordpress-weather-shortcode",
+      "title": "利用简码实现一个 WordPress 天气小工具",
+      "score": 0.4304
+    },
+    {
+      "id": "13-wordpress-weather-ajax-widget",
+      "title": "通过 Ajax 实现一个更强的天气小工具",
+      "score": 0.4276
     },
     {
       "id": "15-wordpress-security-breach",
       "title": "WordPress 维护：记录一次突发的入侵",
-      "score": 0.1358
-    },
-    {
-      "id": "2-openbmclapi-cloudflare-optimization",
-      "title": "使用 Cloudflare 优选为 OpenBMCLAPI 助力",
-      "score": 0.1325
+      "score": 0.4238
     }
   ]
 }
