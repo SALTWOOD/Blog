@@ -202,14 +202,9 @@ jobs:
               body: msg,
             });
 
-            if (!entry) {
-              await reply("未能根据分支名找到对应的友链条目（slug: `" + originalSlug + "`），跳过同步。");
-              return;
-            }
-            if (!name || !url || !description || !slug) {
-              await reply("无法从 PR 描述的表格中解析出全部字段，请保持表格结构（博客名称 / 网址 / 简介 / 标识）。");
-              return;
-            }
+            // Data read failures (missing entry or unparseable table) stay silent.
+            if (!entry) return;
+            if (!name || !url || !description || !slug) return;
 
             const errors = [];
             try { new URL(url); } catch { errors.push("网址格式不合法: " + url); }
