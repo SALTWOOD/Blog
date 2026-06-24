@@ -1,0 +1,49 @@
+name: 友链修改
+description: 申请修改你已加入的友链信息
+title: "chore(links): modify <标识>"
+labels: ["request"]
+body:
+  - type: input
+    id: slug
+    attributes:
+      label: 原标识
+      description: 要修改的友链标识（slug），见 src/links/links.json
+      placeholder: "my-blog"
+    validations:
+      required: true
+
+  - type: input
+    id: name
+    attributes:
+      label: 新博客名称
+      description: 留空表示不修改
+      placeholder: "咕咕咕……"
+    validations:
+      required: false
+
+  - type: input
+    id: url
+    attributes:
+      label: 新网址
+      description: 留空表示不修改
+      placeholder: "https://example.com"
+    validations:
+      required: false
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 新简介
+      description: 留空表示不修改
+      placeholder: "一句话介绍你的网站"
+    validations:
+      required: false
+
+  - type: input
+    id: icon
+    attributes:
+      label: 新图标 URL
+      description: 可选。正方形 WebP 格式。留空表示不修改。仅供 PR 审核使用，无需长期有效。
+      placeholder: "https://example.com/avatar.webp"
+    validations:
+      required: false
