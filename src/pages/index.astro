@@ -11,13 +11,24 @@ import { SITE_ALTERNATE_NAME, SITE_COORDS, SITE_DESCRIPTION, SITE_TITLE } from '
 import { authorPerson } from '../lib/schema';
 import { readingStats } from '../lib/reading';
 
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const all = await getCollection('blog');
+// Featured/pinned posts: higher `pinned` first, then by publish date.
+const pinned = all
+	.filter((post) => (post.data.pinned ?? 0) > 0)
+	.sort((a, b) => {
+		const pa = a.data.pinned ?? 0;
+		const pb = b.data.pinned ?? 0;
+		if (pb !== pa) return pb - pa;
+		return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+	});
+// Remaining timeline posts (excludes pinned), newest first.
+const posts = all
+	.filter((post) => !((post.data.pinned ?? 0) > 0))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 // Reading estimates per post, keyed by collection id, so the cards can show
 // the same CJK-aware word count / reading time as the article page.
-const stats = new Map(posts.map((post) => [post.id, readingStats(post.body ?? '')]));
+const stats = new Map(all.map((post) => [post.id, readingStats(post.body ?? '')]));
 
 const websiteJsonLd = {
 	'@context': 'https://schema.org',
@@ -203,6 +214,99 @@ const websiteJsonLd = {
 				color: rgb(var(--ink-soft));
 			}
 
+			/* Featured / pinned block — sits above the timeline, framed with a
+			   persistent brass top border so it reads as hand-picked, not just
+			   another log entry. */
+			.featured {
+				margin-bottom: 2.5rem;
+			}
+			.featured-head {
+				display: flex;
+				align-items: baseline;
+				justify-content: space-between;
+				gap: 1em;
+				margin: 0 0 1.5rem;
+				padding-bottom: 0.6rem;
+				border-bottom: 1px solid var(--brass);
+			}
+			.featured-head .eyebrow {
+				font-family: var(--font-mono);
+				font-size: 0.82rem;
+				font-weight: 600;
+				letter-spacing: 0.18em;
+				text-transform: uppercase;
+				color: var(--brass);
+			}
+			.featured-head .count {
+				font-family: var(--font-mono);
+				font-size: 0.82rem;
+				color: rgb(var(--ink-soft));
+			}
+			ul.featured-grid {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				gap: 1.5rem;
+				list-style-type: none;
+				margin: 0;
+				padding: 0;
+			}
+			ul.featured-grid li {
+				min-width: 0;
+			}
+			.featured-card {
+				position: relative;
+				display: block;
+				box-sizing: border-box;
+				text-decoration: none;
+				background: var(--paper-raised);
+				border: 1px solid var(--rule);
+				border-top: 3px solid var(--brass);
+				border-radius: var(--r-md);
+				padding: 1.25rem 1.4rem;
+				transition: transform 0.2s ease, box-shadow 0.2s ease;
+				height: 100%;
+			}
+			.featured-card:hover {
+				transform: translateY(-3px);
+				box-shadow: 0 12px 30px rgba(var(--brass-rgb), 0.18), var(--shadow-card);
+			}
+			.featured-card :global(img) {
+				width: calc(100% + 2.8rem);
+				height: auto;
+				margin: 0 -1.4rem 1.1rem;
+				display: block;
+				border-radius: 0;
+				border-bottom: 1px solid var(--rule);
+			}
+			/* The brass badge floats in the top-right corner; reads cleanly over
+			   the card header or a hero cover image alike. */
+			.featured-card .pin-badge {
+				position: absolute;
+				top: 0.7rem;
+				right: 0.8rem;
+				z-index: 2;
+				display: inline-flex;
+				align-items: center;
+				gap: 0.3em;
+				padding: 0.18rem 0.6rem 0.18rem 0.5rem;
+				border-radius: var(--r-pill);
+				background: rgba(var(--brass-rgb), 0.95);
+				color: #fff7e8;
+				font-family: var(--font-mono);
+				font-size: 0.66rem;
+				font-weight: 600;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+			}
+			.featured-card .pin-badge svg {
+				width: 0.82em;
+				height: 0.82em;
+			}
+			.featured-card .title {
+				font-size: 1.55rem;
+			}
+
 			/* Post list — dated log entries, CSS-columns masonry */
 			ul.entries {
 				column-count: 2;
@@ -305,6 +409,9 @@ const websiteJsonLd = {
 					column-count: 1;
 					column-gap: 0;
 				}
+				ul.featured-grid {
+					grid-template-columns: 1fr;
+				}
 				.hero {
 					padding: 5rem 1.25rem 3rem;
 				}
@@ -331,6 +438,54 @@ const websiteJsonLd = {
 			<div class="home-layout">
 				<Sidebar blocks={homeSidebar} />
 				<section class="home-content">
+					{pinned.length > 0 && (
+						<section class="featured">
+							<div class="featured-head">
+								<span class="eyebrow">Pinned · 置顶</span>
+								<span class="count">{pinned.length} 篇记录</span>
+							</div>
+							<ul class="featured-grid">
+								{
+									pinned.map((post) => (
+										<li>
+											<a class="featured-card" href={`/blog/${post.id}/`}>
+												<span class="pin-badge">
+													<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+														<line x1="12" y1="17" x2="12" y2="22" />
+														<path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z" />
+													</svg>
+													置顶
+												</span>
+												{post.data.heroImage && (
+													<Image width={720} height={360} src={post.data.heroImage} alt={post.data.title} />
+												)}
+												<div class="entry-meta">
+													<time><FormattedDate date={post.data.pubDate} /></time>
+													{post.data.category && (
+														<>
+															<span class="dot">/</span>
+															<span class="cat">{post.data.category}</span>
+														</>
+													)}
+													<span class="dot">/</span>
+													<span>{stats.get(post.id)?.minutes ?? 1} 分钟</span>
+													<span class="dot">/</span>
+													<span>{stats.get(post.id)?.wordCount ?? 0} 字</span>
+												</div>
+												<h2 class="title">{post.data.title}</h2>
+												{post.data.description && <p class="desc">{post.data.description}</p>}
+												{post.data.tags.length > 0 && (
+													<div class="entry-tags">
+														{post.data.tags.slice(0, 3).map((tag) => <span class="tag-chip">#{tag}</span>)}
+													</div>
+												)}
+											</a>
+										</li>
+									))
+								}
+							</ul>
+						</section>
+					)}
 					<div class="log-head">
 						<h2>航行日志</h2>
 						<span class="count">{posts.length} 篇记录</span>

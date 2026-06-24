@@ -16,6 +16,9 @@ const blog = defineCollection({
 				heroImage: z.optional(image()),
 				tags: z.array(z.string()).default([]),
 				category: z.string().optional(),
+				// 0 = not pinned; higher number floats the post to the top of the
+				// homepage featured block. Default 0 so existing posts are unaffected.
+				pinned: z.number().default(0),
 			}),
 });
 
