@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Lightweight article-management CLI for the blog.
 //   pnpm new    — scaffold a new post (CJK→pinyin slug + auto-numbered prefix)
+//   pnpm pin    — toggle the pinned/featured priority of an existing post
 //   pnpm stats  — quick inventory (count, word total, category breakdown)
 //
 // Deliberately plain Node + @inquirer/prompts — no ink/React TUI like koharu.
@@ -11,7 +12,7 @@ import { readdir, readFile, writeFile, access } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { basename, extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { input } from '@inquirer/prompts';
+import { input, select, number } from '@inquirer/prompts';
 import { slugify } from 'transliteration';
 import matter from 'gray-matter';
 
@@ -76,6 +77,13 @@ async function newPost() {
 				.filter(Boolean)
 		: [];
 
+	const pinnedInput = await number({
+		message: '置顶优先级（0=不置顶，数字越大越靠前）:',
+		default: 0,
+		validate: (v) => v == null || (Number.isInteger(v) && v >= 0) || '请输入 0 或正整数',
+	});
+	const pinned = Number.isFinite(pinnedInput) ? Math.max(0, Math.floor(pinnedInput)) : 0;
+
 	const slug = slugify(title, { separator: '-' }) || 'post';
 	const filename = `${nextNumber(posts)}-${slug}.md`;
 	const filepath = join(BLOG_DIR, filename);
@@ -95,6 +103,7 @@ async function newPost() {
 		category: category || '',
 	};
 	if (tags.length) fm.tags = tags;
+	if (pinned) fm.pinned = pinned;
 
 	await writeFile(filepath, matter.stringify('', fm));
 	console.log(`✓ 已创建 ${filepath}`);
@@ -121,9 +130,58 @@ async function stats() {
 	}
 }
 
+async function setPin() {
+	const posts = await listPosts();
+	if (!posts.length) {
+		console.log('还没有文章。');
+		return;
+	}
+	// Pinned first (higher priority first), then by numeric id desc — so the
+	// posts you're most likely pinning sit near the top of the list.
+	posts.sort((a, b) => {
+		const pa = Number(a.data.pinned) || 0;
+		const pb = Number(b.data.pinned) || 0;
+		if (pb !== pa) return pb - pa;
+		return b.id.localeCompare(a.id, 'en', { numeric: true });
+	});
+
+	const post = await select({
+		message: '选择要置顶/取消置顶的文章:',
+		choices: posts.map((p) => ({
+			name: `${p.data.title ?? p.id}  ${Number(p.data.pinned) ? `(已置顶 p=${p.data.pinned})` : ''}`.trim(),
+			value: p,
+			description: p.file,
+		})),
+	});
+
+	const current = Number(post.data.pinned) || 0;
+	const next = await number({
+		message: '置顶优先级（0=不置顶，数字越大越靠前）:',
+		default: current,
+		validate: (v) => v == null || (Number.isInteger(v) && v >= 0) || '请输入 0 或正整数',
+	});
+	const priority = Number.isFinite(next) ? Math.max(0, Math.floor(next)) : current;
+
+	// Round-trip via gray-matter so the post body is preserved verbatim and we
+	// only touch the frontmatter. Drop the key entirely when 0 to keep files clean.
+	const parsed = matter(post.raw);
+	if (priority > 0) parsed.data.pinned = priority;
+	else delete parsed.data.pinned;
+	await writeFile(join(BLOG_DIR, post.file), matter.stringify(parsed.content, parsed.data));
+
+	console.log(
+		priority > 0 ? `✓ ${post.id} 已置顶 (p=${priority})` : `✓ ${post.id} 已取消置顶`,
+	);
+}
+
 const cmd = process.argv[2];
 if (cmd === 'new') {
 	newPost().catch((e) => {
+		console.error(e?.message || e);
+		process.exit(1);
+	});
+} else if (cmd === 'pin') {
+	setPin().catch((e) => {
 		console.error(e?.message || e);
 		process.exit(1);
 	});
@@ -133,5 +191,5 @@ if (cmd === 'new') {
 		process.exit(1);
 	});
 } else {
-	console.log('用法:\n  pnpm new    新建文章\n  pnpm stats  统计概览');
+	console.log('用法:\n  pnpm new    新建文章\n  pnpm pin    置顶 / 取消置顶\n  pnpm stats  统计概览');
 }
