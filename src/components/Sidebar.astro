@@ -6,7 +6,9 @@ import {
 	SITE_AUTHOR,
 	SITE_BIO,
 	SITE_COORDS,
+	SOCIAL_LINKS,
 } from '../consts';
+import { SOCIAL_ICONS } from '../config/social-icons';
 import type { SidebarBlock } from '../config/sidebar';
 
 interface Props {
@@ -42,6 +44,30 @@ const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 						</div>
 						<p class="bio">{SITE_BIO}</p>
 						<span class="coords">◆ {SITE_COORDS}</span>
+							{SOCIAL_LINKS.length > 0 && (
+								<ul class="social-row" aria-label="社交媒体">
+									{SOCIAL_LINKS.map((s) => {
+										const icon = SOCIAL_ICONS[s.name];
+										if (!icon) return null;
+										const external = /^https?:\/\//.test(s.url);
+										const label = s.label ?? icon.label;
+										return (
+											<li>
+												<a
+													class="social-link"
+													href={s.url}
+													target={external ? '_blank' : undefined}
+													rel={external ? 'noopener noreferrer' : undefined}
+													style={`--brand:${icon.color}`}
+													aria-label={label}
+													title={label}
+													set:html={icon.svg}
+												/>
+											</li>
+										);
+									})}
+								</ul>
+							)}
 					</section>
 				)}
 
@@ -212,6 +238,53 @@ const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 		font-size: 0.68rem;
 		letter-spacing: 0.08em;
 		color: var(--sea);
+	}
+
+	/* Social icon row — static brass/sea, brand color lights up on hover */
+	.author .social-row {
+		list-style: none;
+		margin: 0.7rem 0 0;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.4rem;
+	}
+	.author .social-row li {
+		margin: 0;
+		padding: 0;
+	}
+	.author .social-link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 34px;
+		height: 34px;
+		border: 1px solid var(--rule);
+		border-radius: var(--r-sm);
+		background: var(--paper-chip);
+		color: rgb(var(--ink-soft));
+		text-decoration: none;
+		transition: color 0.15s ease, border-color 0.15s ease,
+			background 0.15s ease, transform 0.15s ease;
+	}
+	.author .social-link :global(svg) {
+		width: 18px;
+		height: 18px;
+		display: block;
+	}
+	.author .social-link:hover {
+		color: var(--brand);
+		border-color: var(--brand);
+		background: color-mix(in srgb, var(--brand) 14%, var(--paper-raised));
+		transform: translateY(-1px);
+	}
+	.author .social-link:focus-visible {
+		outline: 2px solid var(--brand);
+		outline-offset: 1px;
+	}
+	[data-theme='dark'] .author .social-link {
+		color: var(--brass-soft);
 	}
 
 	/* Stats (site + reading) */

@@ -10,3 +10,14 @@ export const SITE_BIO = '咕咕咕……';
 export const SITE_COORDS = '009.14°S · 159.56°E';
 export const BACKGROUND_IMAGE_LIGHT = '/background-light.webp';
 export const BACKGROUND_IMAGE_DARK = '/background-dark.webp';
+
+export interface SocialLink {
+	name: string;
+	url: string;
+	label?: string;
+}
+
+export const SOCIAL_LINKS: SocialLink[] = [
+	{ name: 'github', url: 'https://github.com/SALTWOOD' },
+	{ name: 'rss', url: '/rss.xml' },
+];
