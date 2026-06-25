@@ -13,6 +13,7 @@ import { shikiMetaTransformer } from './src/lib/markdown/shiki-meta';
 import { rehypeFigure } from './src/lib/markdown/rehype-figure';
 import { remarkFold } from './src/lib/markdown/remark-fold';
 import { remarkTabs } from './src/lib/markdown/remark-tabs';
+import { remarkCdnImages } from './src/lib/markdown/remark-cdn-images';
 
 // https://astro.build/config
 export default defineConfig({
@@ -23,7 +24,7 @@ export default defineConfig({
 	integrations: [mdx(), sitemap(), pagefind(), mermaid()],
 	markdown: {
 		syntaxHighlight: 'shiki',
-		remarkPlugins: [remarkAlert, remarkMath, remarkDirective, remarkFold, remarkTabs],
+		remarkPlugins: [remarkCdnImages, remarkAlert, remarkMath, remarkDirective, remarkFold, remarkTabs],
 		rehypePlugins: [rehypeKatex, rehypeFigure],
 		shikiConfig: {
 			transformers: [shikiMetaTransformer()],
