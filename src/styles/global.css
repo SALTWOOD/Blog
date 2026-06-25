@@ -139,20 +139,20 @@ body {
 }
 
 /* === Background layer on :root (so <body>'s entrance transform can't break
-   its position:fixed). The image URL comes from the BACKGROUND_IMAGE constant
-   in src/consts.ts, inlined as --bg-image by BaseHead.astro. The invert filter
-   is tuned for the star map (dropped in dark theme). === */
+   its position:fixed). Image URLs come from the BACKGROUND_IMAGE_LIGHT /
+   BACKGROUND_IMAGE_DARK constants in src/consts.ts, inlined as
+   --bg-image-light / --bg-image-dark by BaseHead.astro. Each theme shows its
+   own image, so no invert filter is needed. === */
 
 :root::before {
 	content: '';
 	position: fixed;
 	inset: 0;
 	z-index: -2;
-	background: var(--bg-image) center / cover no-repeat;
-	filter: invert(1) brightness(0.97);
+	background: var(--bg-image-light) center / cover no-repeat;
 }
 :root[data-theme='dark']::before {
-	filter: none;
+	background: var(--bg-image-dark) center / cover no-repeat;
 }
 :root::after {
 	content: '';
