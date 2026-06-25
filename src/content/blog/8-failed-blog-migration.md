@@ -49,7 +49,7 @@ mysql -u root -p wordpress_db < wp_db.sql
 
 这个没什么很好的解决方案，我的建议是加内存或者换 Nginx。
 
-![](https://static.ski.ink/blog-uploads/8/images/1.webp)
+![](1.webp)
 
 看了看发现 MySQL 占用也挺大的，换 **MariaDB** 也可以省下很多内存。
 

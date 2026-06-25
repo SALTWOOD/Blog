@@ -30,7 +30,7 @@ TaskScheduler.UnobservedTaskException += (_, e) =>
 
 正常来说，这个异常是不会弹出弹窗的，也只是因为我是源码构建，所以才会出现这个弹窗。正式版应该只有一个 hint
 
-![正式版表现](https://static.ski.ink/blog-uploads/21/images/2.webp)
+![正式版表现](2.webp)
 
 这边也给不知道的读者简单介绍一下未观测异常：`UnobservedTaskException` 的机制是：当一个 `Task` 出现异常，且这个异常既没人 await 它、也没人读它的 `.Exception` 属性时，在这个 Task 被 GC 回收、finalizer 运行的时候，异常会被重新抛出。
 

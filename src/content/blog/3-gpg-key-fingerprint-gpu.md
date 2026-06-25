@@ -19,7 +19,7 @@ category: ''
 
 这就和有人想要一个 QQ 靓号或者电话靓号一样的道理。
 
-![](https://static.ski.ink/blog-uploads/3/images/1.webp)
+![](1.webp)
 
 如图，这是**米露大佬**的 GPG Key 在签名提交时的显示。这里的"号"指的是一个 Key 的 ID。
 
@@ -43,11 +43,11 @@ category: ''
 
 先使用命令 `git clone https://github.com/cuihaoleo/gpg-fingerprint-filter-gpu.git` 克隆项目下来。
 
-![](https://static.ski.ink/blog-uploads/3/images/2.webp)
+![](2.webp)
 
 下载下来大概是这么个结构。此时，**Shift** + 右键空白处，点击"在此处打开 Linux shell(L)"
 
-![](https://static.ski.ink/blog-uploads/3/images/3.webp)
+![](3.webp)
 
 然后在弹出的窗口执行 `make`。
 
@@ -74,15 +74,15 @@ source ~/.bashrc
 
 安装完之后，执行 `nvcc --version`，检查输出——
 
-![](https://static.ski.ink/blog-uploads/3/images/4.webp)
+![](4.webp)
 
 然后，回到上面的地方，再次执行 `make`。
 
-![](https://static.ski.ink/blog-uploads/3/images/5.webp)
+![](5.webp)
 
 如图这样就是成功了。此时我们执行 `ls` 就能看到一个叫 `gpg-fingerprint-filter-gpu`、闪着绿光的文件。执行 `./gpg-fingerprint-filter-gpu`，应该能看到这样的输出——
 
-![](https://static.ski.ink/blog-uploads/3/images/6.webp)
+![](6.webp)
 
 这样就是成功构建程序了，接下来就是传入参数，让它算号了。
 
@@ -103,7 +103,7 @@ source ~/.bashrc
 
 同时，在计算的时候会显示计算速率。作为参考，我的 **RTX 2060super** 的计算速率如下：
 
-![](https://static.ski.ink/blog-uploads/3/images/7.webp)
+![](7.webp)
 
 一般来说，如果你的速度很低，那就是不正常。
 
@@ -124,4 +124,4 @@ git config --global user.signingkey <这里填写你算出来的 Key 的短 ID>
 
 这是我的成果：
 
-![](https://static.ski.ink/blog-uploads/3/images/8.webp)
+![](8.webp)
