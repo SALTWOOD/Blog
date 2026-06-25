@@ -76,15 +76,6 @@ const websiteJsonLd = {
 				box-sizing: border-box;
 				position: relative;
 			}
-			.hero::before {
-				/* Soft halo behind the title so it stays legible over the star map. */
-				content: '';
-				position: absolute;
-				inset: 0;
-				background: radial-gradient(circle at 50% 42%, var(--paper) 0%, transparent 42%);
-				pointer-events: none;
-			}
-
 			.bearing {
 				position: relative;
 				display: inline-flex;
@@ -94,7 +85,8 @@ const websiteJsonLd = {
 				font-size: 0.82rem;
 				letter-spacing: 0.18em;
 				text-transform: uppercase;
-				color: var(--brass);
+				color: rgba(255, 255, 255, 0.8);
+				text-shadow: var(--text-veil);
 				margin-bottom: 1.5rem;
 			}
 			.bearing::before,
@@ -111,7 +103,8 @@ const websiteJsonLd = {
 				position: relative;
 				font-weight: 600;
 				letter-spacing: -0.01em;
-				color: rgb(var(--ink));
+				color: #fff;
+				text-shadow: var(--text-veil);
 				margin: 0 0 1.25rem;
 				line-height: 1.12;
 				font-size: clamp(2.6rem, 7vw, 4.2rem);
@@ -122,7 +115,8 @@ const websiteJsonLd = {
 				font-family: var(--font-display);
 				font-style: italic;
 				font-weight: 400;
-				color: var(--sea);
+				color: rgba(255, 255, 255, 0.82);
+				text-shadow: var(--text-veil);
 				font-size: clamp(1rem, 2vw, 1.25rem);
 				margin-bottom: 0.75rem;
 				letter-spacing: 0;
@@ -132,7 +126,8 @@ const websiteJsonLd = {
 				max-width: 40rem;
 				font-size: 1.1rem;
 				line-height: 1.7;
-				color: rgb(var(--ink-soft));
+				color: rgba(255, 255, 255, 0.82);
+				text-shadow: var(--text-veil);
 				margin: 0 0 2.25rem;
 			}
 			.hero-cta {
@@ -206,12 +201,14 @@ const websiteJsonLd = {
 				margin: 0;
 				font-size: 1.3rem;
 				font-weight: 600;
-				color: rgb(var(--ink));
+				color: #fff;
+				text-shadow: var(--text-veil);
 			}
 			.log-head .count {
 				font-family: var(--font-mono);
 				font-size: 0.85rem;
-				color: rgb(var(--ink-soft));
+				color: rgba(255, 255, 255, 0.7);
+				text-shadow: var(--text-veil);
 			}
 
 			/* Featured / pinned block — sits above the timeline, framed with a
@@ -235,12 +232,14 @@ const websiteJsonLd = {
 				font-weight: 600;
 				letter-spacing: 0.18em;
 				text-transform: uppercase;
-				color: var(--brass);
+				color: rgba(255, 255, 255, 0.82);
+				text-shadow: var(--text-veil);
 			}
 			.featured-head .count {
 				font-family: var(--font-mono);
 				font-size: 0.82rem;
-				color: rgb(var(--ink-soft));
+				color: rgba(255, 255, 255, 0.7);
+				text-shadow: var(--text-veil);
 			}
 			ul.featured-grid {
 				display: grid;
