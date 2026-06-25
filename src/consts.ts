@@ -8,3 +8,4 @@ export const SITE_AUTHOR = 'SALTWOOD';
 export const SITE_AUTHOR_ALTERNATE_NAME = '盐木';
 export const SITE_BIO = '咕咕咕……';
 export const SITE_COORDS = '009.14°S · 159.56°E';
+export const BACKGROUND_IMAGE = '/sky_view.svg';

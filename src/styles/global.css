@@ -138,18 +138,18 @@ body {
 	text-rendering: optimizeLegibility;
 }
 
-/* === Background layers on :root (so <body>'s entrance transform can't break
-   their position:fixed). Two user-selectable modes via [data-bg]:
-   sky (star map, default) · photo (background.webp). === */
+/* === Background layer on :root (so <body>'s entrance transform can't break
+   its position:fixed). The image URL comes from the BACKGROUND_IMAGE constant
+   in src/consts.ts, inlined as --bg-image by BaseHead.astro. The invert filter
+   is tuned for the star map (dropped in dark theme). === */
 
 :root::before {
 	content: '';
 	position: fixed;
 	inset: 0;
 	z-index: -2;
-	background: url('/sky_view.svg') center / cover no-repeat;
+	background: var(--bg-image) center / cover no-repeat;
 	filter: invert(1) brightness(0.97);
-	will-change: transform;
 }
 :root[data-theme='dark']::before {
 	filter: none;
@@ -161,34 +161,6 @@ body {
 	z-index: -1;
 	background: radial-gradient(ellipse at center, transparent 58%, rgba(0, 0, 0, 0.4) 100%);
 	pointer-events: none;
-}
-
-/* Photo mode — background.webp under a paper-tinted veil so text stays
-   legible over a busy image (light veil by day, dark veil by night). */
-:root[data-bg='photo']::before {
-	background: url('/background.webp') center / cover no-repeat;
-	filter: none;
-}
-:root[data-bg='photo']::after {
-	background: rgba(var(--paper-rgb), 0.55);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-	:root::before {
-		animation: sky-breathe 26s ease-in-out infinite;
-	}
-	:root[data-bg='photo']::before {
-		animation: none;
-	}
-}
-@keyframes sky-breathe {
-	0%,
-	100% {
-		transform: scale(1);
-	}
-	50% {
-		transform: scale(1.05);
-	}
 }
 
 main {

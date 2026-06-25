@@ -4,7 +4,7 @@
 import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/og-default.png';
-import { SITE_AUTHOR, SITE_TITLE } from '../consts';
+import { BACKGROUND_IMAGE, SITE_AUTHOR, SITE_TITLE } from '../consts';
 import { Font } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 
@@ -61,21 +61,12 @@ const {
 		}
 	} catch (e) {}
 </script>
-<!-- Background choice (sky / photo / grid) — applied before paint to avoid a
-     flash of the wrong background. The header button cycles + persists it. -->
-<script is:inline>
-	(function () {
-		try {
-			var bg = localStorage.getItem('bg');
-			document.documentElement.setAttribute(
-				'data-bg',
-				bg === 'photo' ? 'photo' : 'sky'
-			);
-		} catch (e) {
-			document.documentElement.setAttribute('data-bg', 'sky');
-		}
-	})();
-</script>
+<!-- Background image — set from the BACKGROUND_IMAGE constant in consts.ts
+     (no runtime toggle). Inlined as a static CSS custom property so it is
+     available before first paint and survives SPA swaps (it is a global
+     head <style>, which ClientRouter persists — unlike a runtime <html>
+     attribute). -->
+<style is:inline set:html={`:root{--bg-image:url("${BACKGROUND_IMAGE}")}`}></style>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="icon" href="/favicon.ico" />
 <link rel="sitemap" href="/sitemap-index.xml" />
@@ -91,8 +82,8 @@ const {
 <Font cssVariable="--font-body" preload />
 
 <!-- Client-side navigation: in-site links swap <body> without a full reload.
-     The <html> element (and so data-theme / data-bg / the background layers)
-     persists across swaps. -->
+     The <html> element (and so data-theme) persists across swaps; the
+     background is a static global <style>, so it persists too. -->
 <ClientRouter />
 
 <!-- Canonical URL -->

@@ -2,7 +2,6 @@
 import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 import ThemeToggle from './ThemeToggle.astro';
-import BgToggle from './BgToggle.astro';
 
 // Replicate HeaderLink's active logic for the plain <a> used in the mobile menu.
 const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
@@ -30,7 +29,6 @@ const isActive = (href: string) =>
 		</div>
 		<div class="social-links">
 			<div class="toggle-slot" data-toggle-slot="desktop">
-				<BgToggle />
 				<ThemeToggle />
 			</div>
 			<a href="https://github.com/SALTWOOD" target="_blank">
