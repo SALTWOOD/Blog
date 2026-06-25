@@ -24,6 +24,7 @@ body:
     attributes:
       label: 简介
       placeholder: "一句话介绍你的网站"
+      description: 单行，不支持 Markdown 格式
     validations:
       required: true
 
@@ -41,6 +42,6 @@ body:
     attributes:
       label: 图标 URL
       placeholder: "https://example.com/avatar.webp"
-      description: 可选。正方形图片，支持 WebP / PNG / JPEG / GIF / BMP，将自动转换为 WebP。仅供 PR 创建使用，无需长期有效。若无公开链接，可在提交 Issue 后在评论区发送图片，由维护者协助添加。
+      description: 可选。正方形图片，支持常见图片格式，将自动转换为 WebP。仅供 PR 创建使用，无需长期有效。若无公开链接，可在提交 Issue 后在评论区发送图片，由维护者协助添加。
     validations:
       required: false
