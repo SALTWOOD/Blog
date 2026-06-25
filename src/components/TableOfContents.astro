@@ -29,10 +29,6 @@ const filtered = headings.filter((h) => h.depth === 2 || h.depth === 3);
 }
 
 <style>
-	.toc {
-		border-left: 2px solid var(--rule);
-		padding-left: 1em;
-	}
 	.toc-title {
 		font-family: var(--font-mono);
 		font-size: 0.72rem;
@@ -58,7 +54,6 @@ const filtered = headings.filter((h) => h.depth === 2 || h.depth === 3);
 		color: rgb(var(--ink-soft));
 		padding: 0.2em 0 0.2em 0.5em;
 		border-left: 2px solid transparent;
-		margin-left: -1.1em;
 		transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
 	}
 	.toc a:hover {

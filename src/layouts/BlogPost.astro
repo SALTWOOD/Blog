@@ -108,7 +108,7 @@ const breadcrumbLd = {
 			}
 			.hero-image {
 				width: 100%;
-				max-width: 1240px;
+				max-width: 1400px;
 				margin: 0 auto;
 				padding: 0 1em;
 				box-sizing: border-box;
@@ -124,8 +124,8 @@ const breadcrumbLd = {
 			}
 			.content-wrapper {
 				display: flex;
-				gap: 2.25em;
-				max-width: 1240px;
+				gap: 1.75em;
+				max-width: 1400px;
 				margin: 0 auto;
 				padding: 2.5em 1em;
 				box-sizing: border-box;
@@ -134,9 +134,19 @@ const breadcrumbLd = {
 			.prose {
 				flex: 1;
 				min-width: 0;
-				max-width: 720px;
+				max-width: 840px;
 				margin: 0 auto;
+				box-sizing: border-box;
+				padding: 1.75em 1.5em;
 				color: rgb(var(--ink));
+				/* Translucent parchment panel over the chart background — lets the
+				   star-map read through the veil so the page sits on the chart
+				   rather than hiding it. --paper-rgb is themed, so the mask adapts
+				   to dark mode. */
+				background: rgba(var(--paper-rgb), 0.76);
+				border: 1px solid var(--rule);
+				border-radius: var(--r-lg);
+				box-shadow: var(--shadow-card);
 			}
 			.toc-sidebar {
 				width: 208px;
@@ -146,6 +156,14 @@ const breadcrumbLd = {
 				align-self: flex-start;
 				max-height: calc(100vh - 6em);
 				overflow-y: auto;
+				box-sizing: border-box;
+				padding: 1em 1.2em;
+				/* Same translucent mask as the article body, so the TOC reads as a
+				   sibling panel floating on the chart. */
+				background: rgba(var(--paper-rgb), 0.76);
+				border: 1px solid var(--rule);
+				border-radius: var(--r-lg);
+				box-shadow: var(--shadow-card);
 			}
 			/* Left sider is hidden by its own component below 1200px; drop the
 			   TOC too once the viewport can't hold a 3-column row. */
@@ -170,6 +188,7 @@ const breadcrumbLd = {
 				   scroll inside themselves (pre/table/katex) instead. */
 				.prose {
 					width: 100%;
+					padding: 1.25em 1.25em;
 				}
 			}
 
