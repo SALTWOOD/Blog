@@ -99,7 +99,7 @@ const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 
 				{block.type === 'recent' && (
 					<section class="sb-card recent">
-						<h3 class="sb-title">{block.title ?? '近期日志'}</h3>
+						<h2 class="sb-title">{block.title ?? '近期日志'}</h2>
 						<ul>
 							{recentPool.slice(0, block.count ?? 4).map((p) => (
 								<li>
@@ -117,7 +117,7 @@ const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 
 				{block.type === 'tags' && (
 					<section class="sb-card tags">
-						<h3 class="sb-title">{block.title ?? '标签'}</h3>
+						<h2 class="sb-title">{block.title ?? '标签'}</h2>
 						<ul class="tag-cloud">
 							{tags.slice(0, block.limit ?? 12).map(([tag, count]) => (
 								<li>
@@ -132,7 +132,7 @@ const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 
 				{block.type === 'nav' && block.items && (
 					<section class="sb-card nav">
-						{block.title && <h3 class="sb-title">{block.title}</h3>}
+						{block.title && <h2 class="sb-title">{block.title}</h2>}
 						<ul>
 							{block.items.map((item) => (
 								<li>
@@ -152,7 +152,7 @@ const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 
 				{block.type === 'note' && block.body && (
 					<section class="sb-card note">
-						{block.title && <h3 class="sb-title">{block.title}</h3>}
+						{block.title && <h2 class="sb-title">{block.title}</h2>}
 						<p set:html={block.body} />
 					</section>
 				)}
