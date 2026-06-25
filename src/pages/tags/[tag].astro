@@ -42,7 +42,7 @@ const { tag, posts } = Astro.props;
 				{
 					posts.map((post) => (
 						<li>
-							<a href={`/blog/${post.id}/`}>{post.data.title}</a>
+							<a href={`/blog/${post.id}/`}>{post.data.encrypted ? `🔒 ${post.data.title}` : post.data.title}</a>
 							<time>
 								<FormattedDate date={post.data.pubDate} />
 							</time>

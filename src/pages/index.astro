@@ -471,7 +471,7 @@ const websiteJsonLd = {
 													<span class="dot">/</span>
 													<span>{stats.get(post.id)?.wordCount ?? 0} 字</span>
 												</div>
-												<h2 class="title">{post.data.title}</h2>
+												<h2 class="title">{post.data.encrypted ? `🔒 ${post.data.title}` : post.data.title}</h2>
 												{post.data.description && <p class="desc">{post.data.description}</p>}
 												{post.data.tags.length > 0 && (
 													<div class="entry-tags">
@@ -510,7 +510,7 @@ const websiteJsonLd = {
 											<span class="dot">/</span>
 											<span>{stats.get(post.id)?.wordCount ?? 0} 字</span>
 										</div>
-										<h2 class="title">{post.data.title}</h2>
+										<h2 class="title">{post.data.encrypted ? `🔒 ${post.data.title}` : post.data.title}</h2>
 										{post.data.description && <p class="desc">{post.data.description}</p>}
 										{post.data.tags.length > 0 && (
 											<div class="entry-tags">

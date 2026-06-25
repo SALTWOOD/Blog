@@ -9,8 +9,13 @@ export async function GET(context) {
 		description: SITE_DESCRIPTION,
 		site: context.site,
 		items: posts.map((post) => ({
-			...post.data,
+			// Map fields explicitly — `...post.data` would also dump the
+			// encrypted post's encMd / wrappedKey / ivMd into the feed.
+			title: post.data.encrypted ? `🔒 ${post.data.title}` : post.data.title,
+			description: post.data.description,
+			pubDate: post.data.pubDate,
 			link: `/blog/${post.id}/`,
+			categories: post.data.tags,
 		})),
 	});
 }
