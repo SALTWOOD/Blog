@@ -13,9 +13,12 @@
     "astro": "astro",
     "gen:similarities": "node src/scripts/generate-similarities.mjs",
     "gen:summaries": "node src/scripts/generate-summaries.mjs",
-    "new": "node scripts/cli.mjs new",
-    "pin": "node scripts/cli.mjs pin",
-    "stats": "node scripts/cli.mjs stats"
+    "new": "tsx scripts/cli.mjs new",
+    "pin": "tsx scripts/cli.mjs pin",
+    "stats": "tsx scripts/cli.mjs stats",
+    "keygen": "tsx scripts/cli.mjs keygen",
+    "lock": "tsx scripts/cli.mjs lock",
+    "unlock": "tsx scripts/cli.mjs unlock"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.2.0",
@@ -35,11 +38,15 @@
     "@node-rs/jieba": "^2.0.1",
     "astro-mermaid": "^2.0.4",
     "gray-matter": "^4.0.3",
+    "hast-util-to-html": "^9.0.5",
     "katex": "^0.17.0",
     "rehype-katex": "^7.0.1",
     "remark-directive": "^4.0.0",
     "remark-math": "^6.0.0",
+    "remark-parse": "^11.0.0",
     "transliteration": "^2.6.1",
+    "tsx": "^4.22.4",
+    "unified": "^11.0.5",
     "unist-util-visit": "^5.1.0"
   }
 }

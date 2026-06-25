@@ -14,6 +14,8 @@ import { rehypeFigure } from './src/lib/markdown/rehype-figure';
 import { remarkFold } from './src/lib/markdown/remark-fold';
 import { remarkTabs } from './src/lib/markdown/remark-tabs';
 import { remarkCdnImages } from './src/lib/markdown/remark-cdn-images';
+import { remarkDecrypt } from './src/lib/markdown/remark-decrypt';
+import { rehypeReencrypt } from './src/lib/markdown/rehype-reencrypt';
 
 // https://astro.build/config
 export default defineConfig({
@@ -24,8 +26,8 @@ export default defineConfig({
 	integrations: [mdx(), sitemap(), pagefind(), mermaid()],
 	markdown: {
 		syntaxHighlight: 'shiki',
-		remarkPlugins: [remarkCdnImages, remarkAlert, remarkMath, remarkDirective, remarkFold, remarkTabs],
-		rehypePlugins: [rehypeKatex, rehypeFigure],
+		remarkPlugins: [remarkDecrypt, remarkCdnImages, remarkAlert, remarkMath, remarkDirective, remarkFold, remarkTabs],
+		rehypePlugins: [rehypeKatex, rehypeFigure, rehypeReencrypt],
 		shikiConfig: {
 			transformers: [shikiMetaTransformer()],
 		},

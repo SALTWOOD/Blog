@@ -1,0 +1,238 @@
+---
+/**
+ * Browser-side unlock gate for encrypted posts.
+ *
+ * The build emits an inert `<div class="encrypted-post" data-cipher
+ * data-wrapped data-iv>` (see rehype-reencrypt). This component ships a lock
+ * card as an inert `<template>` plus a bundled script that, on each page load,
+ * clones the card into every such div and wires up decryption with the
+ * reader-supplied RSA private key.
+ *
+ * Only included on encrypted pages (BlogPost renders it conditionally), so the
+ * crypto bundle isn't loaded elsewhere.
+ */
+type Props = Record<string, never>;
+const {} = Astro.props as Props;
+---
+
+<template id="encrypted-gate-tpl">
+	<div class="enc-gate">
+		<div class="enc-gate-lock" aria-hidden="true">🔒</div>
+		<h2 class="enc-gate-title">此文章已加密</h2>
+		<p class="enc-gate-sub">请输入与本文配套的私钥以解锁内容。</p>
+		<textarea
+			class="enc-gate-key"
+			rows="6"
+			spellcheck="false"
+			autocomplete="off"
+			aria-label="私钥 PEM"
+			placeholder="-----BEGIN PRIVATE KEY-----&#10;…&#10;-----END PRIVATE KEY-----"></textarea>
+		<label class="enc-gate-file">
+			或选择私钥文件
+			<input type="file" accept=".pem,.key,.txt" hidden />
+		</label>
+		<div class="enc-gate-actions">
+			<label class="enc-gate-remember">
+				<input type="checkbox" />
+				记住此浏览器
+			</label>
+			<button type="button" class="enc-gate-btn">解锁</button>
+		</div>
+		<p class="enc-gate-err" hidden>解密失败：私钥不匹配或密文已损坏。</p>
+	</div>
+</template>
+
+<script>
+	import { decryptString, importPrivateKey, unwrapDataKey } from '../lib/crypto';
+
+	const LS_KEY = 'blog:enc-private-key';
+
+	function mountGates() {
+		const tpl = document.getElementById('encrypted-gate-tpl');
+		if (!tpl || !(tpl instanceof HTMLTemplateElement)) return;
+
+		/** Each inert encrypted div gets a cloned unlock card. */
+		for (const host of document.querySelectorAll<HTMLElement>('.encrypted-post[data-cipher]')) {
+			if (host.dataset.gateMounted === '1') continue;
+			host.dataset.gateMounted = '1';
+			const card = tpl.content.firstElementChild?.cloneNode(true) as HTMLElement | null;
+			if (!card) continue;
+			host.append(card);
+			wire(host, card);
+		}
+	}
+
+	function wire(host: HTMLElement, card: HTMLElement) {
+		const ta = card.querySelector<HTMLTextAreaElement>('.enc-gate-key')!;
+		const file = card.querySelector<HTMLInputElement>('input[type=file]')!;
+		const btn = card.querySelector<HTMLButtonElement>('.enc-gate-btn')!;
+		const err = card.querySelector<HTMLElement>('.enc-gate-err')!;
+		const remember = card.querySelector<HTMLInputElement>('.enc-gate-remember input')!;
+
+		const saved = localStorage.getItem(LS_KEY);
+		if (saved) {
+			ta.value = saved;
+			remember.checked = true;
+		}
+
+		file.addEventListener('change', async () => {
+			const f = file.files?.[0];
+			if (f) ta.value = await f.text();
+		});
+
+		async function attempt() {
+			const pem = ta.value.trim();
+			if (!pem) {
+				ta.focus();
+				return;
+			}
+			btn.disabled = true;
+			const label = btn.textContent;
+			btn.textContent = '解密中…';
+			err.hidden = true;
+			try {
+				const priv = await importPrivateKey(pem);
+				const dk = await unwrapDataKey(host.dataset.wrapped ?? '', priv);
+				const html = await decryptString(host.dataset.cipher ?? '', dk, host.dataset.iv ?? '');
+				if (html == null) throw new Error('decrypt failed');
+				if (remember.checked) localStorage.setItem(LS_KEY, pem);
+				else localStorage.removeItem(LS_KEY);
+
+				// Reveal: strip the inert markers and swap in the real HTML.
+				host.removeAttribute('data-cipher');
+				host.removeAttribute('data-wrapped');
+				host.removeAttribute('data-iv');
+				host.classList.remove('encrypted-post');
+				host.innerHTML = html;
+				// Let BlogPost re-run its markdown enhancements (tabs, copy
+				// buttons) over the freshly-injected DOM.
+				document.dispatchEvent(new CustomEvent('blog:content-decrypted'));
+			} catch {
+				card.classList.add('enc-gate-shake');
+				setTimeout(() => card.classList.remove('enc-gate-shake'), 500);
+				err.hidden = false;
+			} finally {
+				btn.disabled = false;
+				btn.textContent = label;
+			}
+		}
+
+		btn.addEventListener('click', attempt);
+		ta.addEventListener('keydown', (e) => {
+			if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) attempt();
+		});
+	}
+
+	// ClientRouter fires `astro:page-load` on initial load and every view
+	// transition, so the gate re-mounts on SPA navigation.
+	document.addEventListener('astro:page-load', mountGates);
+</script>
+
+<style is:global>
+	.encrypted-post {
+		/* Reserve nothing fancy; the gate card is injected as its child. */
+	}
+
+	.enc-gate {
+		max-width: 480px;
+		margin: 2em auto;
+		padding: 2em 1.75em;
+		background: var(--paper-raised);
+		border: 1px solid var(--rule);
+		border-top: 3px solid var(--brass);
+		border-radius: var(--r-lg);
+		box-shadow: var(--shadow-card);
+		text-align: center;
+		font-family: var(--font-body);
+	}
+	.enc-gate-lock {
+		font-size: 2.5rem;
+		line-height: 1;
+		margin-bottom: 0.4em;
+	}
+	.enc-gate-title {
+		font-family: var(--font-display);
+		font-size: 1.4rem;
+		margin: 0 0 0.25em;
+		color: rgb(var(--ink));
+	}
+	.enc-gate-sub {
+		font-size: 0.9rem;
+		color: rgb(var(--ink-soft));
+		margin: 0 0 1.25em;
+	}
+	.enc-gate-key {
+		width: 100%;
+		box-sizing: border-box;
+		font-family: var(--font-mono);
+		font-size: 0.76rem;
+		line-height: 1.4;
+		padding: 0.6em;
+		border: 1px solid var(--rule);
+		border-radius: var(--r-md);
+		background: var(--paper);
+		color: rgb(var(--ink));
+		resize: vertical;
+	}
+	.enc-gate-key:focus {
+		outline: none;
+		border-color: var(--sea);
+	}
+	.enc-gate-file {
+		display: inline-block;
+		margin: 0.75em 0 0;
+		font-size: 0.8rem;
+		color: var(--sea);
+		cursor: pointer;
+		text-decoration: underline;
+	}
+	.enc-gate-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5em 1em;
+		align-items: center;
+		justify-content: space-between;
+		margin-top: 1em;
+	}
+	.enc-gate-remember {
+		font-size: 0.78rem;
+		color: rgb(var(--ink-soft));
+		display: flex;
+		align-items: center;
+		gap: 0.4em;
+		cursor: pointer;
+	}
+	.enc-gate-btn {
+		font-family: var(--font-mono);
+		font-size: 0.85rem;
+		letter-spacing: 0.03em;
+		padding: 0.55em 1.5em;
+		border: none;
+		border-radius: var(--r-sm);
+		background: var(--sea);
+		color: #fff;
+		cursor: pointer;
+		transition: background 0.15s ease;
+	}
+	.enc-gate-btn:hover:not(:disabled) {
+		background: var(--sea-deep);
+	}
+	.enc-gate-btn:disabled {
+		opacity: 0.6;
+		cursor: progress;
+	}
+	.enc-gate-err {
+		color: var(--brass);
+		font-size: 0.82rem;
+		margin: 0.9em 0 0;
+	}
+	@keyframes enc-gate-shake {
+		10%, 90% { transform: translateX(-2px); }
+		20%, 80% { transform: translateX(3px); }
+		30%, 50%, 70% { transform: translateX(-5px); }
+		40%, 60% { transform: translateX(5px); }
+	}
+	.enc-gate-shake {
+		animation: enc-gate-shake 0.5s;
+	}
+</style>

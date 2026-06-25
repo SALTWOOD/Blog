@@ -10,6 +10,7 @@ import TableOfContents from '../components/TableOfContents.astro';
 import Comments from '../components/Comments.astro';
 import Sidebar from '../components/Sidebar.astro';
 import RelatedPosts from '../components/RelatedPosts.astro';
+import EncryptedGate from '../components/EncryptedGate.astro';
 import { articleSidebar } from '../config/sidebar';
 import FallbackImage from '../assets/og-default.png';
 import { SITE_TITLE } from '../consts';
@@ -31,7 +32,7 @@ type Props = CollectionEntry<'blog'>['data'] & {
 	currentId?: string;
 };
 
-const { title, description, pubDate, updatedDate, heroImage, tags = [], category, headings = [], showComments, readingMinutes = 0, wordCount = 0, currentId } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, tags = [], category, headings = [], showComments, readingMinutes = 0, wordCount = 0, currentId, encrypted } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const imageUrl = new URL((heroImage ?? FallbackImage).src, Astro.site);
@@ -300,6 +301,7 @@ const breadcrumbLd = {
 			</article>
 		</main>
 		<Footer />
+		{encrypted && <EncryptedGate />}
 		<script is:inline data-astro-rerun>
 			// Markdown enhancements (Phase 2): build tab buttons from panel
 			// data-titles, and add a copy button to every code block. Plain
@@ -364,6 +366,9 @@ const breadcrumbLd = {
 			} else {
 				enhanceMarkdown();
 			}
+			// Encrypted posts inject their real HTML after the reader unlocks;
+			// re-run then so tabs / copy buttons get built on the new DOM.
+			document.addEventListener('blog:content-decrypted', enhanceMarkdown);
 		</script>
 	</body>
 </html>

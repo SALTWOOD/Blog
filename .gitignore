@@ -17,6 +17,9 @@ pnpm-debug.log*
 .env
 .env.production
 
+# article-encryption private key — NEVER commit (off-repo; distributed to readers)
+.blog-private.pem
+
 # macOS-specific files
 .DS_Store
 
