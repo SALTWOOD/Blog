@@ -148,5 +148,11 @@
     "name": "雪的日记",
     "url": "https://blog.snowptr.top/",
     "description": "等待来年, 春花儿飘~"
+  },
+  {
+    "slug": "nexora-studios",
+    "name": "NEXORA Studios Blog",
+    "url": "https://nexora-studios.tech/",
+    "description": "探索未来，创新无限，让创意落地，让未来发生。"
   }
 ]
