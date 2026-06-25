@@ -457,7 +457,7 @@ const websiteJsonLd = {
 													置顶
 												</span>
 												{post.data.heroImage && (
-													<Image width={720} height={360} src={post.data.heroImage} alt={post.data.title} />
+													<Image width={720} height={360} src={post.data.heroImage} alt={post.data.title} transition:name={`hero-${post.id}`} />
 												)}
 												<div class="entry-meta">
 													<time><FormattedDate date={post.data.pubDate} /></time>
@@ -496,7 +496,7 @@ const websiteJsonLd = {
 								<li>
 									<a class="entry" href={`/blog/${post.id}/`}>
 										{post.data.heroImage && (
-											<Image width={720} height={360} src={post.data.heroImage} alt={post.data.title} />
+											<Image width={720} height={360} src={post.data.heroImage} alt={post.data.title} transition:name={`hero-${post.id}`} />
 										)}
 										<div class="entry-meta">
 											<time><FormattedDate date={post.data.pubDate} /></time>

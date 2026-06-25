@@ -17,7 +17,9 @@ const REMARK_SITE_ID = 'blog';
 <section class="comments" data-pagefind-ignore>
 	<h2 class="comments-title">评论</h2>
 	<div id="remark42">Comments loading...</div>
-	<script is:inline define:vars={{ REMARK_URL, REMARK_SITE_ID }}>
+	<script is:inline define:vars={{ REMARK_URL, REMARK_SITE_ID }} data-astro-rerun>
+		// Refresh remark_config on every arrival (incl. client-side swaps via
+		// <ClientRouter />) so the widget picks up the current theme.
 		window.remark_config = {
 			host: REMARK_URL,
 			site_id: REMARK_SITE_ID,
@@ -26,32 +28,49 @@ const REMARK_SITE_ID = 'blog';
 			locale: 'zh',
 		};
 
-		// Load the Remark42 embed script.
-		!(function (e, n) {
-			for (var o = 0; o < e.length; o++) {
-				var r = n.createElement('script'),
-					c = '.js',
-					d = n.head || n.body;
-				if ('noModule' in r) {
-					r.type = 'module';
-					c = '.mjs';
-				} else {
-					r.async = true;
+		(function () {
+			var node = document.getElementById('remark42');
+			if (!node) return;
+			// SPA navigation: the library is already loaded, so mount a fresh
+			// widget into the new (empty) #remark42 node instead of re-injecting
+			// the loader script.
+			if (window.REMARK42 && typeof window.REMARK42.createWidget === 'function') {
+				node.innerHTML = '';
+				window.REMARK42.createWidget({ node: node, component: 'embed' });
+				return;
+			}
+			// First load: inject the Remark42 embed script, which auto-creates
+			// the widget once it finishes loading.
+			!(function (e, n) {
+				for (var o = 0; o < e.length; o++) {
+					var r = n.createElement('script'),
+						c = '.js',
+						d = n.head || n.body;
+					if ('noModule' in r) {
+						r.type = 'module';
+						c = '.mjs';
+					} else {
+						r.async = true;
+					}
+					r.defer = true;
+					r.src = remark_config.host + '/web/' + e[o] + c;
+					d.appendChild(r);
 				}
-				r.defer = true;
-				r.src = remark_config.host + '/web/' + e[o] + c;
-				d.appendChild(r);
-			}
-		})(remark_config.components || ['embed'], document);
+			})(remark_config.components || ['embed'], document);
+		})();
 	</script>
-	<script is:inline>
-		// Sync Remark42 theme with the site's theme system.
-		window.addEventListener('theme-change', function () {
-			if (window.REMARK42 && window.REMARK42.changeTheme) {
-				var currentTheme = document.documentElement.dataset.theme || 'light';
-				window.REMARK42.changeTheme(currentTheme);
-			}
-		});
+	<script is:inline data-astro-rerun>
+		// Sync Remark42 theme with the site's theme system. Registered once —
+		// the listener lives on window, which survives client-side swaps.
+		if (!window.__remarkThemeSynced) {
+			window.__remarkThemeSynced = true;
+			window.addEventListener('theme-change', function () {
+				if (window.REMARK42 && window.REMARK42.changeTheme) {
+					var currentTheme = document.documentElement.dataset.theme || 'light';
+					window.REMARK42.changeTheme(currentTheme);
+				}
+			});
+		}
 	</script>
 </section>
 

@@ -53,10 +53,14 @@ import Footer from '../components/Footer.astro';
 				<p class="lede">在全部日志里查找关键词。</p>
 			</header>
 			<div id="search"></div>
-			<script is:inline type="module">
+			<script is:inline type="module" data-astro-rerun>
 				try {
-					const { PagefindUI } = await import('/pagefind/pagefind-ui.js');
-					new PagefindUI({
+					// pagefind-ui.js is a UMD/global bundle, not an ESM — import()
+					// runs its IIFE and attaches the constructor to window, so read
+					// it from window (destructuring the module namespace yields
+					// undefined). data-astro-rerun re-runs this on SPA navigation.
+					await import('/pagefind/pagefind-ui.js');
+					new window.PagefindUI({
 						element: '#search',
 						showSubResults: true,
 					});
