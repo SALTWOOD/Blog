@@ -43,7 +43,7 @@ body:
     id: icon
     attributes:
       label: 新图标 URL
-      description: 可选。正方形 WebP 格式。留空表示不修改。仅供 PR 创建使用，无需长期有效。
+      description: 可选。正方形图片，支持 WebP / PNG / JPEG / GIF / BMP，将自动转换为 WebP。留空表示不修改。仅供 PR 创建使用，无需长期有效。
       placeholder: "https://example.com/avatar.webp"
     validations:
       required: false
