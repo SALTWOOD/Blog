@@ -20,4 +20,5 @@ export interface SocialLink {
 export const SOCIAL_LINKS: SocialLink[] = [
 	{ name: 'github', url: 'https://github.com/SALTWOOD' },
 	{ name: 'rss', url: '/rss.xml' },
+	{ name: 'bilibili', url: 'https://space.bilibili.com/521343512' },
 ];
