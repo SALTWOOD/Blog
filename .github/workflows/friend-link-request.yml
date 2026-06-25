@@ -23,6 +23,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install WebP tools
+        run: |
+          if ! command -v cwebp >/dev/null 2>&1; then
+            sudo apt-get update && sudo apt-get install -y webp
+          fi
+
       - name: Parse, validate, and process
         uses: actions/github-script@v7
         with:
@@ -33,6 +39,56 @@ jobs:
               const regex = new RegExp(`### ${title}\\s*\\n+([\\s\\S]*?)(?=\\n###|$)`, "i");
               const match = body.match(regex);
               return match?.[1]?.trim() ?? "";
+            }
+
+            const fs = require("fs");
+            const path = require("path");
+            const os = require("os");
+            const { execSync } = require("child_process");
+
+            const SUPPORTED_FORMATS = ["webp", "png", "jpeg", "gif", "bmp"];
+
+            // Sniff the real format from magic bytes (more reliable than Content-Type).
+            function detectImageFormat(buf) {
+              if (!buf || buf.length < 12) return null;
+              const ascii = (start, len) => buf.subarray(start, start + len).toString("ascii");
+              if (ascii(0, 4) === "RIFF" && ascii(8, 4) === "WEBP") return "webp";
+              if (buf[0] === 0x89 && ascii(1, 3) === "PNG") return "png";
+              if (buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) return "jpeg";
+              const gifSig = ascii(0, 6);
+              if (gifSig === "GIF89a" || gifSig === "GIF87a") return "gif";
+              if (buf[0] === 0x42 && buf[1] === 0x4d) return "bmp"; // "BM"
+              return null;
+            }
+
+            // Download the icon and return it as a WebP buffer, converting if needed.
+            async function prepareWebpAvatar(url) {
+              let resp;
+              try {
+                resp = await fetch(url);
+              } catch (e) {
+                return { error: "无法访问图标 URL: " + e.message };
+              }
+              if (!resp.ok) return { error: "图标 URL 返回了非成功状态码: " + resp.status };
+
+              const buf = Buffer.from(await resp.arrayBuffer());
+              const format = detectImageFormat(buf);
+              if (!format) {
+                return { error: "图标格式不受支持，支持的格式: " + SUPPORTED_FORMATS.join(" / ").toUpperCase() };
+              }
+              if (format === "webp") return { buffer: buf };
+
+              const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "avatar-"));
+              const inPath = path.join(tmpDir, "input." + format);
+              const outPath = path.join(tmpDir, "output.webp");
+              fs.writeFileSync(inPath, buf);
+              try {
+                execSync(`cwebp -quiet -q 90 "${inPath}" -o "${outPath}"`, { stdio: "pipe" });
+                return { buffer: fs.readFileSync(outPath) };
+              } catch (e) {
+                const detail = e.stderr ? e.stderr.toString().trim() : e.message;
+                return { error: "图标转换为 WebP 失败: " + detail };
+              }
             }
 
             const name = extractField("博客名称");
@@ -62,20 +118,13 @@ jobs:
               try { new URL(iconUrl); } catch { errors.push("图标 URL 格式不合法: " + iconUrl); }
             }
 
+            let avatarBuffer = null;
             if (errors.length === 0) {
-              try {
-                const resp = await fetch(iconUrl, { method: "HEAD" });
-                const contentType = resp.headers.get("content-type") || "";
-                if (!contentType.startsWith("image/webp")) {
-                  errors.push("图标 URL 返回的 Content-Type 不是 image/webp，当前为: " + contentType);
-                }
-              } catch (e) {
-                errors.push("无法访问图标 URL: " + e.message);
-              }
+              const result = await prepareWebpAvatar(iconUrl);
+              if (result.error) errors.push(result.error);
+              else avatarBuffer = result.buffer;
             }
 
-            const fs = require("fs");
-            const path = require("path");
             const linksPath = path.join(process.env.GITHUB_WORKSPACE, "src", "data", "links.json");
 
             let linksData = [];
@@ -108,8 +157,6 @@ jobs:
               return;
             }
 
-            const avatarResp = await fetch(iconUrl);
-            const avatarBuffer = Buffer.from(await avatarResp.arrayBuffer());
             const avatarPath = path.join(process.env.GITHUB_WORKSPACE, "src", "assets", "friends", slug + ".webp");
             fs.mkdirSync(path.dirname(avatarPath), { recursive: true });
             fs.writeFileSync(avatarPath, avatarBuffer);
@@ -117,7 +164,6 @@ jobs:
             linksData.push({ slug, name, url, description });
             fs.writeFileSync(linksPath, JSON.stringify(linksData, null, 2) + "\n", "utf-8");
 
-            const { execSync } = require("child_process");
             const branchName = "friend-link/" + slug + "-" + Date.now();
             execSync("git config user.name 'github-actions[bot]'");
             execSync("git config user.email 'github-actions[bot]@users.noreply.github.com'");
