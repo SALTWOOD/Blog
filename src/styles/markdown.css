@@ -31,18 +31,11 @@
 	pointer-events: none;
 }
 
-/* Highlighted line — a brass-tinted band with a short brass left accent.
-   Negative margins equal to the block's horizontal padding so the band spans
-   the full content width; box-decoration-break keeps it correct when a long
-   line wraps across visual rows. */
 .prose pre .line-mark {
-	display: block;
-	background: rgba(var(--brass-rgb), 0.12);
+	background: rgba(var(--brass-rgb), 0.15);
 	box-shadow: inset 2px 0 0 var(--brass);
-	margin-left: -1.3em;
-	margin-right: -1.3em;
-	padding-left: 1.3em;
-	padding-right: 1.3em;
+	margin: 0 -1.3em;
+	padding: 0.04em 1.3em;
 	-webkit-box-decoration-break: clone;
 	box-decoration-break: clone;
 }

@@ -299,7 +299,7 @@ pre {
 	border: 1px solid rgba(var(--sea-rgb), 0.25);
 	border-left: 3px solid var(--brass);
 	box-shadow: var(--shadow-card);
-	line-height: 1.6;
+	line-height: 1.05;
 }
 pre > code {
 	all: unset;
