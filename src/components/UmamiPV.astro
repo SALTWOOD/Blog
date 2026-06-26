@@ -1,0 +1,115 @@
+---
+
+import { ANALYTICS } from '../consts';
+
+const u = ANALYTICS.umami;
+const sd = u.statisticsDisplay;
+const active = u.enabled && !!u.websiteId && !!sd?.enabled && !!sd?.token;
+const apiBase = active ? new URL(u.src).origin : '';
+const websiteId = u.websiteId;
+const token = sd?.token ?? '';
+---
+
+{
+	active && (
+		<script
+			is:inline
+			define:vars={{ apiBase, websiteId, token }}
+		>
+			(function () {
+				var W = window;
+				if (W.__UMAMI_PV_INIT__) return;
+				W.__UMAMI_PV_INIT__ = true;
+
+				var TTL_JWT = 30 * 60 * 1000; // 30 min
+				var TTL_PV = 5 * 60 * 1000; // 5 min
+				if (!W.__umamiJwt) W.__umamiJwt = { token: null, expiresAt: 0 };
+				if (!W.__umamiPvCache) W.__umamiPvCache = new Map();
+
+				function getJwt() {
+					if (W.__umamiJwt.token && W.__umamiJwt.expiresAt > Date.now()) {
+						return Promise.resolve(W.__umamiJwt.token);
+					}
+					return fetch(apiBase + '/api/share/' + encodeURIComponent(token), {
+						headers: { accept: 'application/json' },
+					})
+						.then(function (r) {
+							if (!r.ok) throw new Error('umami share ' + r.status);
+							return r.json();
+						})
+						.then(function (d) {
+							W.__umamiJwt.token = d.token;
+							W.__umamiJwt.expiresAt = Date.now() + TTL_JWT;
+							return d.token;
+						});
+				}
+
+				function getPv(path) {
+					var cached = W.__umamiPvCache.get(path);
+					if (cached && cached.expiresAt > Date.now()) return Promise.resolve(cached.value);
+					return getJwt()
+						.then(function (jwt) {
+							var qs = new URLSearchParams();
+							qs.set('startAt', '0');
+							qs.set('endAt', String(Date.now()));
+							qs.set('path', path);
+							return fetch(
+								apiBase + '/api/websites/' + encodeURIComponent(websiteId) + '/stats?' + qs.toString(),
+								{ headers: { accept: 'application/json', 'x-umami-share-token': jwt } },
+							);
+						})
+						.then(function (r) {
+							if (!r.ok) throw new Error('umami stats ' + r.status);
+							return r.json();
+						})
+						.then(function (d) {
+							// Umami v2: { pageviews: { value } }; older: bare number.
+							var pv =
+								typeof d.pageviews === 'number'
+									? d.pageviews
+									: d.pageviews && typeof d.pageviews.value === 'number'
+										? d.pageviews.value
+										: 0;
+							W.__umamiPvCache.set(path, { value: pv, expiresAt: Date.now() + TTL_PV });
+							return pv;
+						});
+				}
+
+				function fmt(n) {
+					if (n >= 10000) return Math.floor(n / 1000) + 'k';
+					if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+					return String(n);
+				}
+
+				function fill(el) {
+					var path = el.getAttribute('data-umami-pv');
+					el.textContent = '…';
+					getPv(path)
+						.then(function (pv) {
+							el.textContent = fmt(pv);
+							el.title = pv.toLocaleString() + ' 次浏览';
+						})
+						.catch(function () {
+							// Most likely a CORS block on the Umami API, or a bad
+							// share slug / path mismatch. Counts just show '-'.
+							el.textContent = '-';
+						});
+				}
+
+				function scan() {
+					document
+						.querySelectorAll('[data-umami-pv]:not([data-umami-pv-done])')
+						.forEach(function (el) {
+							el.setAttribute('data-umami-pv-done', '1');
+							fill(el);
+						});
+				}
+
+				// astro:page-load fires on the first load and after every View
+				// Transition swap, so newly-navigated cards get filled. Caches live
+				// on `window`, so in-site navigation reuses results within the TTL.
+				document.addEventListener('astro:page-load', scan);
+			})();
+		</script>
+	)
+}

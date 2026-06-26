@@ -13,10 +13,16 @@ export const BACKGROUND_IMAGE_DARK = '/background-dark.webp';
 
 // Visitor analytics. Flip `umami.enabled` to turn tracking on/off site-wide;
 // when off, no analytics script is injected and no outbound requests are made.
+export interface UmamiStatsDisplay {
+	enabled: boolean;
+	token: string;
+}
+
 export interface UmamiConfig {
 	enabled: boolean;
 	src: string;
 	websiteId: string;
+	statisticsDisplay?: UmamiStatsDisplay;
 }
 
 export const ANALYTICS: { umami: UmamiConfig } = {
@@ -24,6 +30,10 @@ export const ANALYTICS: { umami: UmamiConfig } = {
 		enabled: true,
 		src: 'https://saltwood.top:3033/script.js',
 		websiteId: 'c15bf019-58c5-4c8a-baca-331ca2674e92',
+		statisticsDisplay: {
+			enabled: true,
+			token: '9dghBqhjRspN82mo',
+		},
 	},
 };
 

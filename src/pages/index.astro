@@ -7,7 +7,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import Sidebar from '../components/Sidebar.astro';
 import { homeSidebar } from '../config/sidebar';
-import { SITE_ALTERNATE_NAME, SITE_COORDS, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { ANALYTICS, SITE_ALTERNATE_NAME, SITE_COORDS, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { authorPerson } from '../lib/schema';
 import { readingStats } from '../lib/reading';
 
@@ -29,6 +29,11 @@ const posts = all
 // Reading estimates per post, keyed by collection id, so the cards can show
 // the same CJK-aware word count / reading time as the article page.
 const stats = new Map(all.map((post) => [post.id, readingStats(post.body ?? '')]));
+
+// Per-article pageviews (Umami) — render the eye/count span only when the
+// share slug is configured in consts.ts. The client engine fills the counts.
+const umamiSd = ANALYTICS.umami.statisticsDisplay;
+const showPv = ANALYTICS.umami.enabled && !!ANALYTICS.umami.websiteId && !!umamiSd?.enabled && !!umamiSd?.token;
 
 const websiteJsonLd = {
 	'@context': 'https://schema.org',
@@ -361,6 +366,16 @@ const websiteJsonLd = {
 			.entry-meta .dot {
 				color: var(--rule);
 			}
+			.entry-meta .pv {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.3em;
+				color: rgb(var(--ink-soft));
+			}
+			.entry-meta .pv svg {
+				width: 1em;
+				height: 1em;
+			}
 			.title {
 				margin: 0;
 				color: rgb(var(--ink));
@@ -469,7 +484,7 @@ const websiteJsonLd = {
 													<span class="dot">/</span>
 													<span>{stats.get(post.id)?.minutes ?? 1} 分钟</span>
 													<span class="dot">/</span>
-													<span>{stats.get(post.id)?.wordCount ?? 0} 字</span>
+													<span>{stats.get(post.id)?.wordCount ?? 0} 字</span>{showPv && (<> <span class="dot">/</span><span class="pv" title="浏览量"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg><span data-umami-pv={`/blog/${post.id}/`}>…</span></span> </>)}
 												</div>
 												<h2 class="title">{post.data.encrypted ? `🔒 ${post.data.title}` : post.data.title}</h2>
 												{post.data.description && <p class="desc">{post.data.description}</p>}
@@ -508,7 +523,7 @@ const websiteJsonLd = {
 											<span class="dot">/</span>
 											<span>{stats.get(post.id)?.minutes ?? 1} 分钟</span>
 											<span class="dot">/</span>
-											<span>{stats.get(post.id)?.wordCount ?? 0} 字</span>
+											<span>{stats.get(post.id)?.wordCount ?? 0} 字</span>{showPv && (<> <span class="dot">/</span><span class="pv" title="浏览量"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg><span data-umami-pv={`/blog/${post.id}/`}>…</span></span> </>)}
 										</div>
 										<h2 class="title">{post.data.encrypted ? `🔒 ${post.data.title}` : post.data.title}</h2>
 										{post.data.description && <p class="desc">{post.data.description}</p>}

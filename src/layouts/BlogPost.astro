@@ -13,7 +13,7 @@ import RelatedPosts from '../components/RelatedPosts.astro';
 import EncryptedGate from '../components/EncryptedGate.astro';
 import { articleSidebar } from '../config/sidebar';
 import FallbackImage from '../assets/og-default.png';
-import { SITE_TITLE } from '../consts';
+import { ANALYTICS, SITE_TITLE } from '../consts';
 import { authorPerson } from '../lib/schema';
 import 'katex/dist/katex.min.css';
 import '../styles/markdown.css';
@@ -33,6 +33,9 @@ type Props = CollectionEntry<'blog'>['data'] & {
 };
 
 const { title, description, pubDate, updatedDate, heroImage, tags = [], category, headings = [], showComments, readingMinutes = 0, wordCount = 0, currentId, encrypted } = Astro.props;
+
+const umamiSd = ANALYTICS.umami.statisticsDisplay;
+const showPv = ANALYTICS.umami.enabled && !!ANALYTICS.umami.websiteId && !!umamiSd?.enabled && !!umamiSd?.token;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const imageUrl = new URL((heroImage ?? FallbackImage).src, Astro.site);
@@ -216,6 +219,16 @@ const breadcrumbLd = {
 			.entry-head .meta .dot {
 				color: var(--rule);
 			}
+			.entry-head .meta .pv {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.3em;
+				color: rgb(var(--ink-soft));
+			}
+			.entry-head .meta .pv svg {
+				width: 1em;
+				height: 1em;
+			}
 			.entry-head h1 {
 				margin: 0 0 0.5em 0;
 				font-size: clamp(1.9rem, 4.5vw, 2.6rem);
@@ -285,6 +298,15 @@ const breadcrumbLd = {
 									<>
 										<span class="dot">/</span>
 										<span class="cat">{category}</span>
+									</>
+								)}
+								{showPv && (
+									<>
+										<span class="dot">/</span>
+										<span class="pv" title="浏览量">
+											<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>
+											<span data-umami-pv={`/blog/${currentId}/`}>…</span>
+										</span>
 									</>
 								)}
 							</div>
