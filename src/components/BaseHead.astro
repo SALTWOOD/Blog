@@ -4,7 +4,7 @@
 import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/og-default.png';
-import { BACKGROUND_IMAGE_DARK, BACKGROUND_IMAGE_LIGHT, SITE_AUTHOR, SITE_TITLE } from '../consts';
+import { ANALYTICS, BACKGROUND_IMAGE_DARK, BACKGROUND_IMAGE_LIGHT, SITE_AUTHOR, SITE_TITLE } from '../consts';
 import { Font } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 
@@ -33,6 +33,11 @@ const {
 	tags = [],
 	section,
 } = Astro.props;
+
+// Umami analytics is only injected when enabled in consts.ts (and both the
+// script URL and website id are present). Disabled => no script, no requests.
+const umami = ANALYTICS.umami;
+const umamiEnabled = umami.enabled && !!umami.src && !!umami.websiteId;
 ---
 
 <!-- Global Metadata -->
@@ -118,15 +123,19 @@ const {
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image.src, Astro.url)} />
 
-<!-- Umami -->
-<script defer src="https://saltwood.top:3033/script.js" data-website-id="c15bf019-58c5-4c8a-baca-331ca2674e92"></script>
-<!-- Report SPA navigations to Umami. astro:after-swap fires only on
-     client-side navigations (not the first load), so the initial view
-     counted by the loader above isn't double-counted. -->
-<script is:inline>
-	document.addEventListener('astro:after-swap', function () {
-		if (window.umami && typeof window.umami.track === 'function') {
-			window.umami.track();
-		}
-	});
-</script>
+<!-- Umami visitor analytics (toggleable via ANALYTICS.umami in consts.ts) -->
+{umamiEnabled && (
+	<>
+		<script is:inline defer src={umami.src} data-website-id={umami.websiteId}></script>
+		<!-- Report SPA navigations to Umami. astro:after-swap fires only on
+		     client-side navigations (not the first load), so the initial view
+		     counted by the loader above isn't double-counted. -->
+		<script is:inline>
+			document.addEventListener('astro:after-swap', function () {
+				if (window.umami && typeof window.umami.track === 'function') {
+					window.umami.track();
+				}
+			});
+		</script>
+	</>
+)}

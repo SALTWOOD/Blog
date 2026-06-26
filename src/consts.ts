@@ -11,6 +11,22 @@ export const SITE_COORDS = '009.14°S · 159.56°E';
 export const BACKGROUND_IMAGE_LIGHT = '/background-light.webp';
 export const BACKGROUND_IMAGE_DARK = '/background-dark.webp';
 
+// Visitor analytics. Flip `umami.enabled` to turn tracking on/off site-wide;
+// when off, no analytics script is injected and no outbound requests are made.
+export interface UmamiConfig {
+	enabled: boolean;
+	src: string;
+	websiteId: string;
+}
+
+export const ANALYTICS: { umami: UmamiConfig } = {
+	umami: {
+		enabled: true,
+		src: 'https://saltwood.top:3033/script.js',
+		websiteId: 'c15bf019-58c5-4c8a-baca-331ca2674e92',
+	},
+};
+
 export interface SocialLink {
 	name: string;
 	url: string;
