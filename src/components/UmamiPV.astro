@@ -55,7 +55,13 @@ const token = sd?.token ?? '';
 							qs.set('path', path);
 							return fetch(
 								apiBase + '/api/websites/' + encodeURIComponent(websiteId) + '/stats?' + qs.toString(),
-								{ headers: { accept: 'application/json', 'x-umami-share-token': jwt } },
+								{
+									headers: {
+										accept: 'application/json',
+										'x-umami-share-token': jwt,
+										'x-umami-share-context': '1'
+									}
+								},
 							);
 						})
 						.then(function (r) {
