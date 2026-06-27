@@ -1,13 +1,15 @@
 ---
-// KonamiGlass — a hidden easter egg that panes the whole screen in glass.
-// Trigger: the Konami code  ↑ ↑ ↓ ↓ ← → ← → B A Enter  (typed anywhere on
-// the site, outside of form fields). On trigger the viewport is tiled with the
-// Minecraft glass texture (public/glass.png) as a fixed, click-through overlay
-// — the blog underneath stays fully visible (the texture's transparency) and
-// fully interactive (pointer-events: none). Entering the code again, or
-// pressing Esc, removes it.
+// KonamiGlass — hidden easter egg: the Konami code seals the screen in glass.
+// Trigger: ↑ ↑ ↓ ↓ ← → ← → B A Enter (typed anywhere on the site, outside of
+// form fields). The viewport is tiled with glass blocks that BLOCK input until
+// clicked; clicking a tile shatters it — a random glass-break sound plus a
+// burst of flying shards — and that spot no longer blocks, revealing the page
+// beneath. Break the whole screen open, tile by tile. Re-enter the code, or
+// press Esc, to clear everything.
 //
-// Loaded globally through <BaseHead />. The overlay is appended to <html>
+// Assets live in /glass/ (glass.png + glass1/2/3.ogg).
+//
+// Loaded globally through <BaseHead />. The board layer is appended to <html>
 // (not <body>) so it survives Astro view-transition swaps, and the key listener
 // lives on `window`, which also persists across swaps.
 ---
@@ -15,15 +17,15 @@
 <style is:global>
 	/* kg- prefix keeps this self-contained; styles are global because the
 	   overlay is built in JS (scoped <style> wouldn't reach it). */
-	.kg-glass {
+	.kg-field {
 		position: fixed;
 		inset: 0;
 		z-index: 999999;
-		pointer-events: none; /* clicks/scroll/focus all pass straight through to the page */
-		background-image: url('/glass.png');
-		background-repeat: repeat;
-		background-size: var(--kg-tile, 80px) var(--kg-tile, 80px);
-		image-rendering: pixelated;
+		/* The field itself never catches pointer events — only the tiles do.
+		   So a shattered tile leaves a real hole that passes clicks through to
+		   the page underneath. */
+		pointer-events: none;
+		overflow: hidden;
 		opacity: 0;
 		animation: kg-in 0.4s ease forwards;
 	}
@@ -32,8 +34,44 @@
 			opacity: 1;
 		}
 	}
+
+	.kg-tile {
+		position: absolute;
+		box-sizing: border-box;
+		background-image: url('/glass/glass.png');
+		background-size: 100% 100%;
+		image-rendering: pixelated;
+		pointer-events: auto; /* blocks clicks until shattered */
+		cursor: pointer;
+		transition: filter 0.12s ease;
+	}
+	.kg-tile:hover {
+		filter: brightness(1.16) contrast(1.04);
+	}
+
+	/* Glass chips flung out from a shattering tile. */
+	.kg-shard {
+		position: absolute;
+		background-image: url('/glass/glass.png');
+		background-size: 100% 100%;
+		image-rendering: pixelated;
+		pointer-events: none;
+		animation: kg-shard var(--dur, 0.45s) cubic-bezier(0.3, 0.7, 0.4, 1) forwards;
+		will-change: transform, opacity;
+	}
+	@keyframes kg-shard {
+		from {
+			transform: translate(0, 0) rotate(0deg) scale(1);
+			opacity: 1;
+		}
+		to {
+			transform: translate(var(--tx, 0px), var(--ty, 0px)) rotate(var(--rot, 90deg)) scale(0.15);
+			opacity: 0;
+		}
+	}
+
 	@media (prefers-reduced-motion: reduce) {
-		.kg-glass {
+		.kg-field {
 			animation: none;
 			opacity: 1;
 		}
@@ -51,10 +89,15 @@
 			'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
 			'b', 'a', 'Enter',
 		];
+		const TILE = 80; // px — matches the earlier "2× original" sizing
+		const SHARDS = 6;
+		const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-		let glass = null; // the overlay element, null when dismissed
+		let field = null; // overlay element; null when dismissed
+		let sounds = null; // preloaded break sounds (persistent across toggles)
 		const buf = [];
 
+		// ---- helpers --------------------------------------------------------
 		function normKey(e) {
 			let k = e.key;
 			if (k === ' ') return 'Space';
@@ -66,25 +109,98 @@
 			return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || t.isContentEditable;
 		}
 
-		function show() {
-			if (!glass) {
-				glass = document.createElement('div');
-				glass.className = 'kg-glass';
-				glass.setAttribute('aria-hidden', 'true');
-				document.documentElement.appendChild(glass);
+		// ---- sound ----------------------------------------------------------
+		function ensureSounds() {
+			if (sounds) return;
+			sounds = [1, 2, 3].map((n) => {
+				const a = new Audio(`/glass/glass${n}.ogg`);
+				a.preload = 'auto';
+				return a;
+			});
+		}
+		function playRandom() {
+			if (!sounds) return;
+			// Clone so rapid shatters overlap instead of cutting each other off.
+			const a = sounds[(Math.random() * sounds.length) | 0].cloneNode();
+			a.volume = 0.8;
+			a.play().catch(() => {});
+		}
+
+		// ---- board ----------------------------------------------------------
+		function buildTiles() {
+			const vw = window.innerWidth;
+			const vh = window.innerHeight;
+			const cols = Math.ceil(vw / TILE) + 1; // +1 overscan stays covered on resize
+			const rows = Math.ceil(vh / TILE) + 1;
+			const frag = document.createDocumentFragment();
+			for (let r = 0; r < rows; r++) {
+				for (let c = 0; c < cols; c++) {
+					const t = document.createElement('div');
+					t.className = 'kg-tile';
+					t.style.left = c * TILE + 'px';
+					t.style.top = r * TILE + 'px';
+					t.style.width = TILE + 'px';
+					t.style.height = TILE + 'px';
+					frag.appendChild(t);
+				}
 			}
+			field.appendChild(frag);
+		}
+
+		function shatter(tile) {
+			playRandom();
+			const cx = parseFloat(tile.style.left) + TILE / 2;
+			const cy = parseFloat(tile.style.top) + TILE / 2;
+			tile.remove(); // leaves a click-through hole
+			if (REDUCED) return;
+
+			const frag = document.createDocumentFragment();
+			for (let i = 0; i < SHARDS; i++) {
+				const s = document.createElement('div');
+				s.className = 'kg-shard';
+				const size = 16 + ((Math.random() * 16) | 0); // 16–31px chip
+				const ang = Math.random() * Math.PI * 2;
+				const dist = 38 + Math.random() * 58;
+				const rot = Math.random() * 540 - 270;
+				const dur = 0.38 + Math.random() * 0.22;
+				s.style.left = cx - size / 2 + 'px';
+				s.style.top = cy - size / 2 + 'px';
+				s.style.width = size + 'px';
+				s.style.height = size + 'px';
+				s.style.setProperty('--tx', Math.cos(ang) * dist + 'px');
+				s.style.setProperty('--ty', Math.sin(ang) * dist + 'px');
+				s.style.setProperty('--rot', rot + 'deg');
+				s.style.setProperty('--dur', dur + 's');
+				s.addEventListener('animationend', () => s.remove(), { once: true });
+				frag.appendChild(s);
+			}
+			field.appendChild(frag);
+		}
+
+		// ---- lifecycle ------------------------------------------------------
+		function show() {
+			ensureSounds();
+			field = document.createElement('div');
+			field.className = 'kg-field';
+			field.setAttribute('aria-hidden', 'true');
+			field.addEventListener('click', (e) => {
+				const t = e.target.closest && e.target.closest('.kg-tile');
+				if (t) shatter(t);
+			});
+			document.documentElement.appendChild(field);
+			buildTiles();
 		}
 		function hide() {
-			if (glass) {
-				glass.remove();
-				glass = null;
+			if (field) {
+				field.remove();
+				field = null;
 			}
 		}
 
+		// ---- trigger --------------------------------------------------------
 		window.addEventListener('keydown', (e) => {
-			// Esc always dismisses the glass if it's up.
 			if (e.key === 'Escape') {
-				if (glass) hide();
+				if (field) hide();
 				return;
 			}
 			if (isTyping(e.target)) return;
@@ -96,8 +212,7 @@
 				if (buf[i] !== SEQ[i]) return;
 			}
 			buf.length = 0;
-			// Toggle: entering the code again takes the glass back off.
-			if (glass) hide();
+			if (field) hide();
 			else show();
 		});
 	})();
