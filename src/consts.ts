@@ -28,7 +28,7 @@ export interface UmamiConfig {
 export const ANALYTICS: { umami: UmamiConfig } = {
 	umami: {
 		enabled: true,
-		src: 'https://saltwood.top:3033/script.js',
+		src: 'https://stats.ski.ink/script.js',
 		websiteId: 'c15bf019-58c5-4c8a-baca-331ca2674e92',
 		statisticsDisplay: {
 			enabled: true,
