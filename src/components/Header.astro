@@ -7,6 +7,7 @@ import ThemeToggle from './ThemeToggle.astro';
 const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
 const subpath = pathname.match(/[^/]+/g);
 const mobileLinks = [
+	{ href: '/search', label: '搜索' },
 	{ href: '/', label: '文章' },
 	{ href: '/tags', label: '标签' },
 	{ href: 'https://travellings.cn', label: '开往' },
@@ -28,6 +29,23 @@ const isActive = (href: string) =>
 			<HeaderLink href="/friends">友链</HeaderLink>
 		</div>
 		<div class="social-links">
+			<a href="/search" title="搜索">
+				<span class="sr-only">搜索</span>
+				<svg
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+					width="24"
+					height="24"
+				>
+					<circle cx="11" cy="11" r="8"></circle>
+					<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+				</svg>
+			</a>
 			<div class="toggle-slot" data-toggle-slot="desktop">
 				<ThemeToggle />
 			</div>
