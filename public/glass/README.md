@@ -1,0 +1,1 @@
+Disclaimer: This folder contains assets (glass block texture and sound effects) that are the property of Mojang Studios. I do not claim ownership of these assets. If their use in this project infringes upon any copyright or violates Mojang's Terms of Use, please contact me immediately, and I will remove them promptly.
