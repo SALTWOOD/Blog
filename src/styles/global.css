@@ -135,6 +135,13 @@ body {
 	color: rgb(var(--ink));
 	background-color: transparent;
 	position: relative;
+	/* Sticky-footer: body is a column flex track so a short page's <main>
+	   can grow to fill leftover viewport height and keep the footer pinned
+	   to the bottom instead of floating up mid-page. */
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	min-height: 100svh;
 	isolation: isolate; /* contain the background layers' stacking */
 	font-size: 18px;
 	line-height: 1.7;
@@ -174,8 +181,10 @@ body {
 main {
 	width: 720px;
 	max-width: calc(100% - 2em);
-	margin: auto;
+	margin: 0 auto; /* horizontal centre only — vertical auto would absorb the
+	   free space that flex-grow needs to push the footer down */
 	padding: 3em 1em;
+	flex: 1 0 auto; /* grow into leftover viewport height on short pages */
 }
 
 /* Typography — display serif carries the headings, sans carries the body */
