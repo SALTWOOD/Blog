@@ -1,0 +1,409 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+
+// A 404 is a dead-end for crawlers — don't index it.
+---
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead
+			title={`404 · NOT FOUND — ${SITE_TITLE}`}
+			description="404 Not Found"
+		/>
+		<meta name="robots" content="noindex" />
+		<style>
+			main.lost {
+				width: 100%;
+				max-width: 100%;
+				margin: 0;
+				min-height: calc(100vh - 3.4em);
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				gap: 1.4rem;
+				text-align: center;
+				padding: 4rem 1.5rem 6rem;
+				box-sizing: border-box;
+				position: relative;
+				isolation: isolate;
+			}
+			main.lost::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				z-index: -1;
+				background: radial-gradient(
+					ellipse at center,
+					rgba(11, 20, 26, 0.28) 0%,
+					rgba(11, 20, 26, 0.5) 100%
+				);
+			}
+
+			.bearing {
+				position: relative;
+				display: inline-flex;
+				align-items: center;
+				gap: 0.7em;
+				font-family: var(--font-mono);
+				font-size: 0.78rem;
+				letter-spacing: 0.2em;
+				text-transform: uppercase;
+				color: rgba(255, 255, 255, 0.8);
+				text-shadow: var(--text-veil);
+			}
+			.bearing::before,
+			.bearing::after {
+				content: '';
+				width: 2.4rem;
+				height: 1px;
+				background: linear-gradient(to right, transparent, var(--brass));
+			}
+			.bearing::after {
+				background: linear-gradient(to left, transparent, var(--brass));
+			}
+
+			.scope {
+				position: relative;
+				width: clamp(150px, 22vw, 200px);
+				height: clamp(150px, 22vw, 200px);
+				margin: 0.4rem 0 0.2rem;
+			}
+			.radar {
+				position: absolute;
+				inset: 0;
+				border-radius: 50%;
+				border: 1px solid rgba(var(--brass-rgb), 0.55);
+				box-shadow:
+					0 0 0 4px rgba(0, 0, 0, 0.18),
+					inset 0 0 28px rgba(11, 61, 74, 0.5),
+					0 14px 44px rgba(0, 0, 0, 0.4);
+				background:
+					radial-gradient(
+						circle at center,
+						rgba(11, 61, 74, 0.6) 0%,
+						rgba(14, 21, 27, 0.4) 70%,
+						rgba(14, 21, 27, 0.1) 100%
+					);
+				overflow: hidden;
+			}
+			.radar::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				border-radius: 50%;
+				background:
+					radial-gradient(
+						circle,
+						transparent 32.4%,
+						rgba(var(--brass-rgb), 0.3) 33% 33.7%,
+						transparent 34.2%,
+						transparent 65.7%,
+						rgba(var(--brass-rgb), 0.24) 66% 66.7%,
+						transparent 67.2%
+					);
+			}
+			.cross {
+				position: absolute;
+				inset: 0;
+			}
+			.cross::before,
+			.cross::after {
+				content: '';
+				position: absolute;
+				background: rgba(var(--brass-rgb), 0.32);
+			}
+			.cross::before {
+				left: 10%;
+				right: 10%;
+				top: 50%;
+				height: 1px;
+				transform: translateY(-50%);
+			}
+			.cross::after {
+				top: 10%;
+				bottom: 10%;
+				left: 50%;
+				width: 1px;
+				transform: translateX(-50%);
+			}
+			.sweep {
+				position: absolute;
+				inset: 0;
+				border-radius: 50%;
+				background: conic-gradient(
+					from 0deg,
+					rgba(var(--brass-rgb), 0.5),
+					rgba(var(--brass-rgb), 0.14) 55deg,
+					transparent 120deg,
+					transparent 360deg
+				);
+			}
+			.dot {
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				width: 5px;
+				height: 5px;
+				border-radius: 50%;
+				background: rgba(var(--brass-rgb), 0.92);
+				transform: translate(-50%, -50%);
+			}
+			.blip {
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				width: 11px;
+				height: 11px;
+				border-radius: 50%;
+				background: var(--brass);
+				box-shadow: 0 0 14px rgba(var(--brass-rgb), 0.9);
+				transform: translate(-50%, -50%);
+			}
+			@media (prefers-reduced-motion: no-preference) {
+				.sweep {
+					animation: radar-sweep 4.5s linear infinite;
+				}
+				.blip {
+					animation: blip 2.8s ease-out infinite;
+				}
+			}
+			@keyframes radar-sweep {
+				to {
+					transform: rotate(360deg);
+				}
+			}
+			@keyframes blip {
+				0% {
+					transform: translate(-50%, -50%) scale(0.5);
+					opacity: 0.95;
+				}
+				70% {
+					opacity: 0.2;
+				}
+				100% {
+					transform: translate(-50%, -50%) scale(1.15);
+					opacity: 0;
+				}
+			}
+			.cardinals {
+				position: absolute;
+				inset: 0;
+				pointer-events: none;
+			}
+			.cardinals span {
+				position: absolute;
+				font-family: var(--font-mono);
+				font-size: 0.72rem;
+				font-weight: 600;
+				color: rgba(var(--brass-rgb), 0.9);
+				text-shadow: var(--text-veil);
+			}
+			.cardinals .n {
+				top: 0;
+				left: 50%;
+				transform: translate(-50%, -1.55em);
+			}
+			.cardinals .s {
+				bottom: 0;
+				left: 50%;
+				transform: translate(-50%, 1.55em);
+			}
+			.cardinals .e {
+				right: 0;
+				top: 50%;
+				transform: translate(1.4em, -50%);
+			}
+			.cardinals .w {
+				left: 0;
+				top: 50%;
+				transform: translate(-1.4em, -50%);
+			}
+
+			.readout {
+				position: relative;
+				max-width: 38rem;
+			}
+			.code {
+				font-family: var(--font-display);
+				font-size: clamp(5.5rem, 20vw, 11rem);
+				font-weight: 600;
+				line-height: 0.88;
+				letter-spacing: -0.04em;
+				margin: 0;
+				color: rgba(255, 255, 255, 0.97);
+				text-shadow: var(--text-veil);
+				filter: drop-shadow(0 0 26px rgba(var(--brass-rgb), 0.28));
+			}
+			.kicker {
+				font-family: var(--font-display);
+				font-style: italic;
+				font-weight: 400;
+				font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+				color: rgba(var(--brass-soft), 0.95);
+				text-shadow: var(--text-veil);
+				margin: 0.4rem 0 0;
+				letter-spacing: 0.01em;
+			}
+			.lede {
+				font-size: 1.05rem;
+				line-height: 1.75;
+				color: rgba(255, 255, 255, 0.82);
+				text-shadow: var(--text-veil);
+				margin: 1.2rem auto 0;
+			}
+
+			.actions {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				align-items: center;
+				gap: 0.9rem 1.4rem;
+				margin-top: 2rem;
+			}
+			.cta {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.55rem;
+				padding: 0.78rem 1.6rem;
+				border-radius: var(--r-pill);
+				background: var(--brass);
+				color: #fff7e8;
+				font-family: var(--font-body);
+				font-weight: 600;
+				text-decoration: none;
+				letter-spacing: 0.02em;
+				transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+				box-shadow: 0 6px 20px rgba(var(--brass-rgb), 0.35);
+			}
+			.cta:hover {
+				color: #fff7e8;
+				background: var(--sea-deep);
+				transform: translateY(-2px);
+				box-shadow: 0 10px 28px rgba(var(--sea-rgb), 0.4);
+			}
+			.cta:active {
+				transform: scale(0.97);
+			}
+			.cta svg {
+				width: 1.05em;
+				height: 1.05em;
+				transition: transform 0.2s ease;
+			}
+			.cta:hover svg {
+				transform: translateX(-3px);
+			}
+			.quiet {
+				font-family: var(--font-body);
+				font-size: 0.95rem;
+				color: rgba(255, 255, 255, 0.82);
+				text-decoration-color: rgba(var(--brass-rgb), 0.5);
+				text-underline-offset: 0.22em;
+				transition: color 0.15s ease, text-decoration-color 0.15s ease;
+			}
+			.quiet:hover {
+				color: #fff;
+				text-decoration-color: var(--brass);
+			}
+
+			.log {
+				font-family: var(--font-mono);
+				font-size: 0.74rem;
+				letter-spacing: 0.14em;
+				text-transform: uppercase;
+				color: rgba(255, 255, 255, 0.5);
+				text-shadow: var(--text-veil);
+				margin: 2.2rem 0 0;
+			}
+			.log .sep {
+				color: rgba(var(--brass-rgb), 0.7);
+				margin: 0 0.5em;
+			}
+
+			@media (prefers-reduced-motion: no-preference) {
+				.bearing,
+				.scope,
+				.code,
+				.kicker,
+				.lede,
+				.actions,
+				.log {
+					animation: risein 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+				}
+				.bearing {
+					animation-delay: 0.05s;
+				}
+				.scope {
+					animation-delay: 0.13s;
+				}
+				.code {
+					animation-delay: 0.21s;
+				}
+				.kicker {
+					animation-delay: 0.29s;
+				}
+				.lede {
+					animation-delay: 0.37s;
+				}
+				.actions {
+					animation-delay: 0.45s;
+				}
+				.log {
+					animation-delay: 0.53s;
+				}
+			}
+
+			@media (max-width: 720px) {
+				.log .sep {
+					display: block;
+					height: 0.3em;
+					margin: 0;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main class="lost">
+			<span class="bearing">TRACK LOST</span>
+			<!--
+			<div class="scope rise">
+				<div class="radar">
+					<div class="cross"></div>
+					<div class="sweep"></div>
+					<span class="dot"></span>
+					<span class="blip"></span>
+				</div>
+				<div class="cardinals" aria-hidden="true">
+					<span class="n">N</span>
+					<span class="e">E</span>
+					<span class="s">S</span>
+					<span class="w">W</span>
+				</div>
+			</div>
+			-->
+			<div class="readout">
+				<h1 class="code">404</h1>
+				<p class="kicker">TRACK LOST</p>
+				<p class="lede">
+					这里只有数据的汪洋大海。
+				</p>
+				<div class="actions">
+					<a class="cta" href="/">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<line x1="19" y1="12" x2="5" y2="12"></line>
+							<polyline points="12 19 5 12 12 5"></polyline>
+						</svg>
+						返回母港
+					</a>
+					<a class="quiet" href="/search">搜索海图</a>
+					<a class="quiet" href="/tags">检索标签</a>
+				</div>
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>
