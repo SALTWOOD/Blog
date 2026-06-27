@@ -9,6 +9,7 @@ import { Font } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 import UmamiPV from './UmamiPV.astro';
 import KonamiGlass from './KonamiGlass.astro';
+import ConsoleBanner from './ConsoleBanner.astro';
 
 interface Props {
 	title: string;
@@ -147,3 +148,6 @@ const umamiEnabled = umami.enabled && !!umami.src && !!umami.websiteId;
 
 <!-- Hidden easter egg. Trigger: ↑ ↑ ↓ ↓ ← → ← → B A Enter panes the screen in glass. -->
 <KonamiGlass />
+
+<!-- ASCII banner in the DevTools console (runs once per full page load). -->
+<ConsoleBanner />
