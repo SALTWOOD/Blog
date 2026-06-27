@@ -8,6 +8,7 @@ import { ANALYTICS, BACKGROUND_IMAGE_DARK, BACKGROUND_IMAGE_LIGHT, SITE_AUTHOR, 
 import { Font } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 import UmamiPV from './UmamiPV.astro';
+import KonamiGlass from './KonamiGlass.astro';
 
 interface Props {
 	title: string;
@@ -143,3 +144,6 @@ const umamiEnabled = umami.enabled && !!umami.src && !!umami.websiteId;
 		<UmamiPV />
 	</>
 )}
+
+<!-- Hidden easter egg. Trigger: ↑ ↑ ↓ ↓ ← → ← → B A Enter panes the screen in glass. -->
+<KonamiGlass />

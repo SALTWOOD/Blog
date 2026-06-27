@@ -1,0 +1,104 @@
+---
+// KonamiGlass — a hidden easter egg that panes the whole screen in glass.
+// Trigger: the Konami code  ↑ ↑ ↓ ↓ ← → ← → B A Enter  (typed anywhere on
+// the site, outside of form fields). On trigger the viewport is tiled with the
+// Minecraft glass texture (public/glass.png) as a fixed, click-through overlay
+// — the blog underneath stays fully visible (the texture's transparency) and
+// fully interactive (pointer-events: none). Entering the code again, or
+// pressing Esc, removes it.
+//
+// Loaded globally through <BaseHead />. The overlay is appended to <html>
+// (not <body>) so it survives Astro view-transition swaps, and the key listener
+// lives on `window`, which also persists across swaps.
+---
+
+<style is:global>
+	/* kg- prefix keeps this self-contained; styles are global because the
+	   overlay is built in JS (scoped <style> wouldn't reach it). */
+	.kg-glass {
+		position: fixed;
+		inset: 0;
+		z-index: 999999;
+		pointer-events: none; /* clicks/scroll/focus all pass straight through to the page */
+		background-image: url('/glass.png');
+		background-repeat: repeat;
+		background-size: var(--kg-tile, 80px) var(--kg-tile, 80px);
+		image-rendering: pixelated;
+		opacity: 0;
+		animation: kg-in 0.4s ease forwards;
+	}
+	@keyframes kg-in {
+		to {
+			opacity: 1;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.kg-glass {
+			animation: none;
+			opacity: 1;
+		}
+	}
+</style>
+
+<script>
+	(() => {
+		if (window.__konamiGlassReady) return;
+		window.__konamiGlassReady = true;
+
+		// Konami code + Enter: ↑ ↑ ↓ ↓ ← → ← → B A Enter
+		const SEQ = [
+			'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+			'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
+			'b', 'a', 'Enter',
+		];
+
+		let glass = null; // the overlay element, null when dismissed
+		const buf = [];
+
+		function normKey(e) {
+			let k = e.key;
+			if (k === ' ') return 'Space';
+			return k.length === 1 ? k.toLowerCase() : k;
+		}
+		function isTyping(t) {
+			if (!t) return false;
+			const tag = t.tagName;
+			return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || t.isContentEditable;
+		}
+
+		function show() {
+			if (!glass) {
+				glass = document.createElement('div');
+				glass.className = 'kg-glass';
+				glass.setAttribute('aria-hidden', 'true');
+				document.documentElement.appendChild(glass);
+			}
+		}
+		function hide() {
+			if (glass) {
+				glass.remove();
+				glass = null;
+			}
+		}
+
+		window.addEventListener('keydown', (e) => {
+			// Esc always dismisses the glass if it's up.
+			if (e.key === 'Escape') {
+				if (glass) hide();
+				return;
+			}
+			if (isTyping(e.target)) return;
+			const k = normKey(e);
+			buf.push(k);
+			if (buf.length > SEQ.length) buf.shift();
+			if (buf.length < SEQ.length) return;
+			for (let i = 0; i < SEQ.length; i++) {
+				if (buf[i] !== SEQ[i]) return;
+			}
+			buf.length = 0;
+			// Toggle: entering the code again takes the glass back off.
+			if (glass) hide();
+			else show();
+		});
+	})();
+</script>
