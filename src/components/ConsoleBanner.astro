@@ -1,9 +1,9 @@
 <script>
 	// @ts-ignore
-	if (window.__saltwoodBanner) return;
-	// @ts-ignore
-	window.__saltwoodBanner = true;
-	const art = String.raw
+	if (!window.__saltwoodBanner) {
+		// @ts-ignore
+		window.__saltwoodBanner = true;
+		const art = String.raw
 `   _____   __ __   ____      ____  _  __  __ __
   / ___/  / //_/  /  _/     /  _/ / | / / / //_/
   \__ \  / ,<     / /       / /  /  |/ / / ,<
@@ -12,9 +12,9 @@
 
         	Made by SALTWOOD | Open-source!`;
 
-	console.log(
-		`\n%c${art}\n`,
-		'color:#d9a441;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;line-height:1.0'
-	);
-	
+		console.log(
+			`\n%c${art}\n`,
+			'color:#d9a441;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;line-height:1.0'
+		);
+	}
 </script>
