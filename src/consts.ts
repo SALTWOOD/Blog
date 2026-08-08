@@ -2,6 +2,7 @@
 // You can import this data from anywhere in your site by using the `import` keyword.
 
 export const SITE_TITLE = '盐林格勒';
+export const SITE_KICKER = 'Салтлинград';
 export const SITE_ALTERNATE_NAME = '盐木';
 export const SITE_DESCRIPTION = '梦想是成为一位厉害的曲师！ヽ(≧∀≦)ﾉ';
 export const SITE_AUTHOR = 'SALTWOOD';

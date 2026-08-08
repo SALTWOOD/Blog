@@ -7,7 +7,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import Sidebar from '../components/Sidebar.astro';
 import { homeSidebar } from '../config/sidebar';
-import { ANALYTICS, SITE_ALTERNATE_NAME, SITE_COORDS, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { ANALYTICS, SITE_ALTERNATE_NAME, SITE_COORDS, SITE_DESCRIPTION, SITE_KICKER, SITE_TITLE } from '../consts';
 import { authorPerson } from '../lib/schema';
 import { readingStats } from '../lib/reading';
 
@@ -437,7 +437,7 @@ const websiteJsonLd = {
 		<section class="hero">
 			<span class="bearing">{SITE_COORDS}</span>
 			<h1>
-				<span class="kicker">SALTWOOD&apos;s Log</span>
+				<span class="kicker">{SITE_KICKER}</span>
 				{SITE_TITLE}
 			</h1>
 			<p class="lede">{SITE_DESCRIPTION}</p>
