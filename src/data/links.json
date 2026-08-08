@@ -42,12 +42,6 @@
     "description": "一只鸽子的博客"
   },
   {
-    "slug": "dongyan",
-    "name": "冬烟の小窝",
-    "url": "https://blog.45m.fun/",
-    "description": "你猜，我猜你肯定猜不到嘿嘿……"
-  },
-  {
     "slug": "pysio",
     "name": "熊猫的小窝",
     "url": "https://www.pysio.online/",
@@ -64,12 +58,6 @@
     "name": "阿龙的笔记",
     "url": "https://www.alongw.cn",
     "description": "阿巴阿巴…"
-  },
-  {
-    "slug": "ningmeng",
-    "name": "柠檬的小窝",
-    "url": "https://www.ningmeng123.xin/",
-    "description": "生活嘛，开心就好"
   },
   {
     "slug": "luoyuan",
@@ -96,22 +84,10 @@
     "description": "永远相信美好的事情即将发生"
   },
   {
-    "slug": "aehxy",
-    "name": "Aehxy 的个人小站",
-    "url": "https://www.aehxy.com",
-    "description": "若知是梦何须醒，不比真如一相会。"
-  },
-  {
     "slug": "lincol29",
     "name": "Lincol29 的博客",
     "url": "https://www.lincol29.cn",
     "description": "一名 Java 转 C# 开发的码农，专注于 C# 编程技术、上位机开发，分享 docker 工具及 wordpress 建站教程的博客。"
-  },
-  {
-    "slug": "kk9",
-    "name": "KK9 小窝",
-    "url": "https://www.kk9.org.cn/",
-    "description": "给时光以生命，给岁月以文明"
   },
   {
     "slug": "enderluoxh",
