@@ -8,7 +8,7 @@ body:
     attributes:
       label: 移除标识
       description: 要移除的友链标识（slug），见 src/data/links.json
-      placeholder: "my-blog"
+      placeholder: "saltwood"
     validations:
       required: true
 

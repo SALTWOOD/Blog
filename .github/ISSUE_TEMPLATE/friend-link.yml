@@ -32,7 +32,7 @@ body:
     id: slug
     attributes:
       label: 标识
-      placeholder: "my-blog"
+      placeholder: "saltwood"
       description: 用作文件名和头像标识，仅允许英文字母、数字和连字符
     validations:
       required: true
