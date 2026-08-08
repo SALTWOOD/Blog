@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { SITE_TITLE } from '../../consts';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
@@ -30,7 +31,7 @@ const { category, posts } = Astro.props;
 <!doctype html>
 <html lang="zh-CN">
 	<head>
-		<BaseHead title={`${category} - 盐木的小破窝`} description={`分类「${category}」下的文章`} />
+		<BaseHead title={`${category} - ${SITE_TITLE}`} description={`分类「${category}」下的文章`} />
 	</head>
 	<body>
 		<Header />

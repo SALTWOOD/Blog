@@ -1,6 +1,7 @@
 ---
 import fs from 'node:fs';
 import path from 'node:path';
+import { SITE_TITLE } from '../consts';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
@@ -34,7 +35,7 @@ const friends = friendData
 <!doctype html>
 <html lang="zh-CN">
 	<head>
-		<BaseHead title="友链 - 盐木的小破窝" description="盐木的友链" />
+		<BaseHead title={`友链 - ${SITE_TITLE}`} description="Friend links" />
 		<style>
 			main {
 				width: 1100px;

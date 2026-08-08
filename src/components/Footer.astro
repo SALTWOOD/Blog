@@ -1,11 +1,12 @@
 ---
+import { SITE_TITLE } from '../consts';
 const today = new Date();
 ---
 
 <footer>
 	<div class="colophon">
 		<span class="mark" aria-hidden="true"></span>
-		&copy; {today.getFullYear()} 盐木的小破窝 · All rights reserved.
+		&copy; {today.getFullYear()} {SITE_TITLE} · All rights reserved.
 	</div>
 	<div class="social-links">
 		<a href="https://github.com/SALTWOOD" target="_blank">

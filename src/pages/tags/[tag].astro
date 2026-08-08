@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { SITE_TITLE } from '../../consts';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
@@ -28,7 +29,7 @@ const { tag, posts } = Astro.props;
 <!doctype html>
 <html lang="zh-CN">
 	<head>
-		<BaseHead title={`#${tag} - 盐木的小破窝`} description={`标签「${tag}」下的文章`} />
+		<BaseHead title={`#${tag} - ${SITE_TITLE}`} description={`标签「${tag}」下的文章`} />
 	</head>
 	<body>
 		<Header />

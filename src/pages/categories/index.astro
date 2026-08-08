@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { SITE_TITLE } from '../../consts';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
@@ -20,7 +21,7 @@ const categories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1]);
 <!doctype html>
 <html lang="zh-CN">
 	<head>
-		<BaseHead title="分类 - 盐木的小破窝" description="按分类浏览所有文章" />
+		<BaseHead title={`分类 - ${SITE_TITLE}`} description="按分类浏览所有文章" />
 	</head>
 	<body>
 		<Header />
