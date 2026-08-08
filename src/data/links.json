@@ -148,5 +148,11 @@
     "name": "天天的糖果屋",
     "url": "https://blog.rqwq.link",
     "description": "Walk softly through the world."
+  },
+  {
+    "slug": "cosine",
+    "name": "余弦の博客",
+    "url": "https://blog.cosine.ren/",
+    "description": "FE / ACG / 手工 / 深色模式强迫症 / INFP / 养两只猫的老宅女"
   }
 ]
