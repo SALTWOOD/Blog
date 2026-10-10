@@ -21,31 +21,26 @@
     "unlock": "tsx scripts/cli.mjs unlock"
   },
   "dependencies": {
-    "@astrojs/markdown-remark": "^7.2.0",
-    "@astrojs/mdx": "^6.0.3",
-    "@astrojs/rss": "^4.0.18",
-    "@astrojs/sitemap": "^3.7.3",
-    "astro": "^6.4.7",
-    "astro-pagefind": "^2.0.0",
-    "mermaid": "^11.15.0",
+    "@astrojs/markdown-remark": "^7.3.2",
+    "@astrojs/mdx": "^8.0.3",
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.3.8",
+    "astro-pagefind": "^2.0.1",
     "remark-github-blockquote-alert": "^2.1.0",
-    "sharp": "^0.35.1",
-    "simple-icons": "^16.24.0"
+    "sharp": "^0.35.5",
+    "simple-icons": "^16.34.0"
   },
   "devDependencies": {
-    "@huggingface/transformers": "^4.2.0",
-    "@inquirer/prompts": "^8.5.2",
-    "@node-rs/jieba": "^2.0.1",
-    "astro-mermaid": "^2.0.4",
+    "@huggingface/transformers": "^4.3.1",
+    "@inquirer/prompts": "^8.7.3",
+    "@node-rs/jieba": "^2.0.4",
     "gray-matter": "^4.0.3",
     "hast-util-to-html": "^9.0.5",
-    "katex": "^0.17.0",
-    "rehype-katex": "^7.0.1",
     "remark-directive": "^4.0.0",
-    "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",
     "transliteration": "^2.6.1",
-    "tsx": "^4.22.4",
+    "tsx": "^4.23.15",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.1.0"
   }
