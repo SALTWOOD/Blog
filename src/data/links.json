@@ -160,5 +160,11 @@
     "name": "Teror 的客栈",
     "url": "https://blog.trfox.top/",
     "description": "欢迎光临～"
+  },
+  {
+    "slug": "circlecrop",
+    "name": "CircleCrop Blog",
+    "url": "https://aiccrop.com/",
+    "description": "舟遥遥以轻飏，风飘飘而吹衣。"
   }
 ]
