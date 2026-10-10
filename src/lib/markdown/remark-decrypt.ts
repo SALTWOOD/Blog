@@ -5,23 +5,6 @@ import remarkParse from 'remark-parse';
 import { unified } from 'unified';
 import { decryptString, importPrivateKey, unwrapDataKey } from '../crypto';
 
-/**
- * Remark plugin — registered FIRST in the remark chain.
- *
- * Detects an encrypted post (frontmatter `encrypted: true` + `encMd` /
- * `wrappedKey` / `ivMd`) and, at build time, decrypts the body back to its
- * original markdown so the rest of the pipeline (Shiki, remark-fold /
- * tabs, rehype-figure, …) renders it exactly like any other post.
- *
- * The build needs the RSA private key (off-repo) to unwrap the data key. It is
- * read from, in order: `BLOG_PRIVATE_KEY` (PEM string), `BLOG_PRIVATE_KEY_FILE`
- * (path), or `./.blog-private.pem` at the repo root. A missing key is only an
- * error when an encrypted post is actually encountered, so normal builds are
- * unaffected.
- *
- * After decrypting, the data key + wrapped key are stashed on `file.data.__enc`
- * for {@link rehypeReencrypt} to re-encrypt the fully-rendered HTML.
- */
 type Node = any;
 
 interface EncFrontmatter {
@@ -80,13 +63,6 @@ export function remarkDecrypt() {
 			);
 		}
 
-		// Re-parse the recovered markdown and splice it in as the real body so
-		// every downstream remark/rehype plugin treats it as normal content.
-		// remark-directive is included because it extends the *parser* (it turns
-		// `:::x` into directive MDAST nodes); without it, remark-fold /
-		// remark-tabs would see the decrypted body as plain text. As a transform
-		// it is a no-op, so the same plugin running again later in Astro's chain
-		// is harmless.
 		const reparsed = unified().use(remarkParse).use(remarkDirective).parse(markdown);
 		tree.children = reparsed.children;
 
