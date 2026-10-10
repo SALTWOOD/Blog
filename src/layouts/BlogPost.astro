@@ -15,7 +15,6 @@ import { articleSidebar } from '../config/sidebar';
 import FallbackImage from '../assets/og-default.png';
 import { ANALYTICS, SITE_TITLE } from '../consts';
 import { authorPerson } from '../lib/schema';
-import 'katex/dist/katex.min.css';
 import '../styles/markdown.css';
 
 interface Heading {
@@ -188,7 +187,7 @@ const breadcrumbLd = {
 				   (max-content), so a long code line / wide table / equation
 				   stretches the whole page past the viewport and forces horizontal
 				   scrolling. With width:100% those children hit a definite bound and
-				   scroll inside themselves (pre/table/katex) instead. */
+				   scroll inside themselves (pre/table) instead. */
 				.prose {
 					width: 100%;
 					padding: 1.25em 1.25em;
@@ -380,7 +379,7 @@ const breadcrumbLd = {
 				document.querySelectorAll('.prose pre').forEach((pre) => {
 					if (pre.querySelector('.code-copy')) return;
 					const code = pre.querySelector('code');
-					if (!code) return; // skip mermaid / non-code pre
+					if (!code) return; // skip non-code pre
 					const btn = document.createElement('button');
 					btn.type = 'button';
 					btn.className = 'code-copy';

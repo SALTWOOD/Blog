@@ -93,38 +93,7 @@
 }
 
 /* ---------------------------------------------------------------------------
-   3. Math (KaTeX) — scroll rather than overflow the column.
-   ------------------------------------------------------------------------- */
-.prose .katex-display {
-	overflow-x: auto;
-	overflow-y: hidden;
-}
-
-/* ---------------------------------------------------------------------------
-   4. Mermaid diagrams — centered boxed panel.
-   ------------------------------------------------------------------------- */
-.prose .astro-mermaid,
-.prose .mermaid,
-.prose [data-mermaid] {
-	margin: 1.6em auto;
-	padding: 1.2em;
-	background: var(--paper-raised);
-	border: 1px solid var(--rule);
-	border-left: 4px solid var(--sea);
-	border-radius: var(--r-md);
-	overflow-x: auto;
-	text-align: center;
-}
-
-.prose .astro-mermaid svg,
-.prose .mermaid svg,
-.prose [data-mermaid] svg {
-	max-width: 100%;
-	height: auto;
-}
-
-/* ---------------------------------------------------------------------------
-   5. Collapsible <details class="fold">.
+   3. Collapsible <details class="fold">.
    ------------------------------------------------------------------------- */
 .prose details.fold {
 	margin: 1.4em 0;
@@ -159,7 +128,7 @@
 }
 
 /* ---------------------------------------------------------------------------
-   6. Tabs.
+   4. Tabs.
    ------------------------------------------------------------------------- */
 .prose .tab-group {
 	border: 1px solid var(--rule);

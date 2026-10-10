@@ -1,7 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import remarkDirective from 'remark-directive';
-import remarkMath from 'remark-math';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
 import { decryptString, importPrivateKey, unwrapDataKey } from '../crypto';
@@ -11,7 +10,7 @@ import { decryptString, importPrivateKey, unwrapDataKey } from '../crypto';
  *
  * Detects an encrypted post (frontmatter `encrypted: true` + `encMd` /
  * `wrappedKey` / `ivMd`) and, at build time, decrypts the body back to its
- * original markdown so the rest of the pipeline (Shiki, KaTeX, remark-fold /
+ * original markdown so the rest of the pipeline (Shiki, remark-fold /
  * tabs, rehype-figure, …) renders it exactly like any other post.
  *
  * The build needs the RSA private key (off-repo) to unwrap the data key. It is
@@ -83,12 +82,12 @@ export function remarkDecrypt() {
 
 		// Re-parse the recovered markdown and splice it in as the real body so
 		// every downstream remark/rehype plugin treats it as normal content.
-		// remark-directive / remark-math are included because they extend the
-		// *parser* (they turn `:::x` / `$x$` into directive/math MDAST nodes);
-		// without them, remark-fold / remark-tabs / rehype-katex would see the
-		// decrypted body as plain text. As transforms they are no-ops, so the
-		// same plugins running again later in Astro's chain are harmless.
-		const reparsed = unified().use(remarkParse).use(remarkMath).use(remarkDirective).parse(markdown);
+		// remark-directive is included because it extends the *parser* (it turns
+		// `:::x` into directive MDAST nodes); without it, remark-fold /
+		// remark-tabs would see the decrypted body as plain text. As a transform
+		// it is a no-op, so the same plugin running again later in Astro's chain
+		// is harmless.
+		const reparsed = unified().use(remarkParse).use(remarkDirective).parse(markdown);
 		tree.children = reparsed.children;
 
 		// Hand off to the rehype stage so it can re-encrypt the rendered HTML.

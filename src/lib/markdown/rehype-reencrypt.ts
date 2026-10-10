@@ -12,7 +12,7 @@ import { bytesToBase64, encryptString, generateIV } from '../crypto';
  * The browser supplies the RSA private key to unwrap the data key and decrypt.
  * `data-pagefind-ignore` keeps the ciphertext out of the search index.
  *
- * Must run after every other rehype plugin (Shiki, KaTeX, rehype-figure, …) so
+ * Must run after every other rehype plugin (Shiki, rehype-figure, …) so
  * the encrypted blob is the final, fully-rendered HTML.
  */
 type Node = any;
