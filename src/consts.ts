@@ -29,10 +29,10 @@ export const ANALYTICS: { umami: UmamiConfig } = {
 	umami: {
 		enabled: true,
 		src: 'https://stats.ski.ink/script.js',
-		websiteId: 'c15bf019-58c5-4c8a-baca-331ca2674e92',
+		websiteId: '97184747-f3f3-4a0b-83ed-9a08f53822b9',
 		statisticsDisplay: {
 			enabled: true,
-			token: '9dghBqhjRspN82mo',
+			token: 'r5NQXnxyztwkp4WQ',
 		},
 	},
 };
