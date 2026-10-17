@@ -48,15 +48,25 @@ const umamiEnabled = umami.enabled && !!umami.src && !!umami.websiteId;
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="author" content={author} />
 
-<!-- Prevent theme flash (FOUC) -->
 <script is:inline>
-	const theme = localStorage.getItem('theme');
-	const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-	if (theme === 'dark' || (!theme && prefersDark)) {
-		document.documentElement.setAttribute('data-theme', 'dark');
-	} else {
-		document.documentElement.setAttribute('data-theme', 'light');
-	}
+	(function () {
+		function resolveTheme() {
+			var stored = null;
+			try {
+				stored = localStorage.getItem('theme');
+			} catch (e) {}
+			if (stored === 'dark' || stored === 'light') return stored;
+			return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+		}
+		function applyTheme() {
+			document.documentElement.setAttribute('data-theme', resolveTheme());
+		}
+		applyTheme();
+		if (!window.__themeBoot) {
+			window.__themeBoot = true;
+			document.addEventListener('astro:after-swap', applyTheme);
+		}
+	})();
 </script>
 <!-- First-load entrance (blur + focus-pull): once per browser session, so it
      plays when entering the site but not on every in-site navigation. The
@@ -75,7 +85,6 @@ const umamiEnabled = umami.enabled && !!umami.src && !!umami.websiteId;
      global head <style>, which ClientRouter persists). global.css picks one per
      [data-theme]. -->
 <style is:inline set:html={`:root{--bg-image-light:url("${BACKGROUND_IMAGE_LIGHT}");--bg-image-dark:url("${BACKGROUND_IMAGE_DARK}")}`}></style>
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="icon" href="/favicon.ico" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link
@@ -86,7 +95,7 @@ const umamiEnabled = umami.enabled && !!umami.src && !!umami.websiteId;
 />
 <meta name="generator" content={Astro.generator} />
 
-<Font cssVariable="--font-display" preload />
+<Font cssVariable="--font-accent" />
 <Font cssVariable="--font-body" preload />
 
 <!-- Client-side navigation: in-site links swap <body> without a full reload.

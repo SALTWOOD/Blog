@@ -5,7 +5,6 @@ import {
 	SITE_ALTERNATE_NAME,
 	SITE_AUTHOR,
 	SITE_BIO,
-	SITE_COORDS,
 	SOCIAL_LINKS,
 } from '../consts';
 import { SOCIAL_ICONS } from '../config/social-icons';
@@ -43,7 +42,6 @@ const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 							<span class="handle">{SITE_AUTHOR}</span>
 						</div>
 						<p class="bio">{SITE_BIO}</p>
-						<span class="coords">◆ {SITE_COORDS}</span>
 							{SOCIAL_LINKS.length > 0 && (
 								<ul class="social-row" aria-label="社交媒体">
 									{SOCIAL_LINKS.map((s) => {
@@ -215,7 +213,7 @@ const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 		margin-top: 0.2rem;
 	}
 	.author .name {
-		font-family: var(--font-display);
+		font-family: var(--font-body);
 		font-size: 1.15rem;
 		font-weight: 600;
 		color: rgb(var(--ink));
@@ -231,13 +229,6 @@ const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 		font-size: 0.82rem;
 		color: rgb(var(--ink-soft));
 		line-height: 1.5;
-	}
-	.author .coords {
-		margin-top: 0.45rem;
-		font-family: var(--font-mono);
-		font-size: 0.68rem;
-		letter-spacing: 0.08em;
-		color: var(--sea);
 	}
 
 	/* Social icon row — static brass/sea, brand color lights up on hover */
@@ -300,7 +291,7 @@ const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 		gap: 0.1rem;
 	}
 	.stat b {
-		font-family: var(--font-display);
+		font-family: var(--font-body);
 		font-size: 1.5rem;
 		font-weight: 600;
 		color: var(--sea-deep);

@@ -8,7 +8,6 @@ export const SITE_DESCRIPTION = '梦想是成为一位厉害的曲师！ヽ(≧�
 export const SITE_AUTHOR = 'SALTWOOD';
 export const SITE_AUTHOR_ALTERNATE_NAME = '盐木';
 export const SITE_BIO = '咕咕咕……';
-export const SITE_COORDS = '009.14°S · 159.56°E';
 export const BACKGROUND_IMAGE_LIGHT = '/background-light.webp';
 export const BACKGROUND_IMAGE_DARK = '/background-dark.webp';
 

@@ -1,0 +1,33 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import WatchMe from '../../components/tools/WatchMe.vue';
+import { SITE_TITLE } from '../../consts';
+import '../../styles/glass.css';
+import '../../styles/tools.css';
+
+const title = '似了吗？';
+const description = '盐木的设备状态监控面板。';
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead title={`${title} - ${SITE_TITLE}`} description={description} />
+		<style>
+			main {
+				width: 1040px;
+				padding-top: 2em;
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1 class="sr-only">{title} - 设备状态监控</h1>
+			<WatchMe client:only="vue" />
+		</main>
+		<Footer />
+	</body>
+</html>

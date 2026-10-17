@@ -13,6 +13,8 @@
 //
 // 新增一种卡片：在 Sidebar.astro 里加一个 type 分支即可。
 
+import { TRAVELLINGS } from './footer';
+
 export interface NavItem {
 	label: string;
 	href: string;
@@ -45,9 +47,9 @@ export const homeSidebar: SidebarBlock[] = [
 		items: [
 			{ label: '标签', href: '/tags' },
 			{ label: '友链', href: '/friends' },
-			{ label: '关于', href: '/about' },
+			{ label: '工具', href: '/tools' },
 			{ label: 'GitHub', href: 'https://github.com/SALTWOOD', external: true },
-			{ label: '开往 · travellings', href: 'https://travellings.cn', external: true },
+			{ label: '开往 · travellings', href: TRAVELLINGS.href, external: true },
 		],
 	},
 	// { type: 'tags', title: '热门标签', limit: 14 },

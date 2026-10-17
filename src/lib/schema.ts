@@ -10,6 +10,6 @@ export function authorPerson(site?: URL) {
 		'@type': 'Person',
 		name: SITE_AUTHOR,
 		alternateName: SITE_AUTHOR_ALTERNATE_NAME,
-		url: new URL('/about/', site).href,
+		url: new URL('/', site).href,
 	};
 }

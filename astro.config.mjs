@@ -2,6 +2,8 @@
 
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import vue from '@astrojs/vue';
+import tailwindcss from '@tailwindcss/vite';
 import pagefind from 'astro-pagefind';
 import remarkDirective from 'remark-directive';
 import { remarkAlert } from 'remark-github-blockquote-alert';
@@ -16,11 +18,14 @@ import { rehypeReencrypt } from './src/lib/markdown/rehype-reencrypt';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://blog.ski.ink',
+	site: 'https://ski.ink',
 	redirects: {
-		'/blog': '/',
+		'/about': '/#about',
 	},
-	integrations: [mdx(), sitemap(), pagefind()],
+	integrations: [mdx(), sitemap(), pagefind(), vue()],
+	vite: {
+		plugins: [tailwindcss()],
+	},
 	markdown: {
 		syntaxHighlight: 'shiki',
 		remarkPlugins: [remarkDecrypt, remarkCdnImages, remarkAlert, remarkDirective, remarkFold, remarkTabs],
@@ -34,7 +39,7 @@ export default defineConfig({
 			// Display / headings — characterful optical-size serif (logbook voice)
 			provider: fontProviders.local(),
 			name: 'Fraunces',
-			cssVariable: '--font-display',
+			cssVariable: '--font-accent',
 			fallbacks: ['Georgia', 'Cambria', '"PingFang SC"', '"Microsoft YaHei"', 'serif'],
 			options: {
 				variants: [

@@ -1,0 +1,166 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { ICON_BODIES } from '../../components/ui/icons';
+import { SITE_TITLE } from '../../consts';
+import '../../styles/glass.css';
+
+const title = '工具';
+const tools = [
+	{
+		name: '视奸我',
+		href: '/tools/watchme',
+		icon: 'eye',
+		desc: '设备在线状态、屏幕与锁定状态、电量与心跳时间，每 10 秒自动刷新。',
+	},
+	{
+		name: '音乐控制',
+		href: '/tools/smtc',
+		icon: 'music',
+		desc: '连接桌面播放器，远程播放 / 暂停、切歌、拖动进度与调节音量。',
+	},
+];
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead title={`${title} - ${SITE_TITLE}`} description="盐木写的一些小工具。" />
+		<style>
+			main {
+				width: 1040px;
+			}
+
+			.page-intro {
+				margin: 0 0 1.75rem;
+				color: rgba(255, 255, 255, 0.88);
+				text-shadow: var(--text-veil);
+			}
+
+			.page-intro h1 {
+				margin: 0 0 0.4rem;
+				color: #fff;
+				text-shadow: var(--text-veil);
+				font-size: clamp(1.9rem, 4vw, 2.5rem);
+			}
+
+			.page-intro p {
+				margin: 0;
+				max-width: 42rem;
+				line-height: 1.7;
+			}
+
+			.tool-grid {
+				display: grid;
+				gap: 1.15rem;
+				grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+			}
+
+			.tool-card {
+				display: flex;
+				flex-direction: column;
+				gap: 0.9rem;
+				text-decoration: none;
+				color: inherit;
+				transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+			}
+
+			.tool-card:hover {
+				transform: translateY(-3px);
+				border-color: color-mix(in srgb, var(--brass) 55%, transparent);
+				box-shadow: 0 14px 34px rgba(var(--ink), 0.2);
+			}
+
+			.tool-head {
+				display: flex;
+				align-items: center;
+				gap: 0.75rem;
+			}
+
+			.tool-icon {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				width: 2.5rem;
+				height: 2.5rem;
+				flex-shrink: 0;
+				border-radius: 12px;
+				background: rgba(var(--brass-rgb), 0.14);
+				border: 1px solid rgba(var(--brass-rgb), 0.28);
+				color: var(--brass);
+			}
+
+			.tool-icon svg {
+				width: 1.35rem;
+				height: 1.35rem;
+			}
+
+			.tool-name {
+				margin: 0;
+				font-family: var(--font-body);
+				font-size: 1.2rem;
+				font-weight: 600;
+				color: rgb(var(--ink));
+			}
+
+			.tool-desc {
+				margin: 0;
+				color: rgb(var(--ink-soft));
+				font-size: 0.92rem;
+				line-height: 1.6;
+			}
+
+			.tool-open {
+				margin-top: auto;
+				display: inline-flex;
+				align-items: center;
+				gap: 0.35rem;
+				font-family: var(--font-mono);
+				font-size: 0.8rem;
+				letter-spacing: 0.04em;
+				color: var(--sea);
+			}
+
+			.tool-open svg {
+				width: 0.95rem;
+				height: 0.95rem;
+			}
+
+			@media (max-width: 640px) {
+				.tool-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="page-intro">
+				<h1>工具箱</h1>
+				<p>一些自用的小面板，都是纯前端实现，连接的是盐木自己跑的服务。</p>
+			</div>
+			<div class="tool-grid">
+				{
+					tools.map((tool) => (
+						<a class="glass-card tool-card" href={tool.href} data-astro-reload>
+							<div class="tool-head">
+								<span class="tool-icon">
+									<svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON_BODIES[tool.icon]} />
+								</span>
+								<h2 class="tool-name">{tool.name}</h2>
+							</div>
+							<p class="tool-desc">{tool.desc}</p>
+							<span class="tool-open">
+								打开
+								<svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON_BODIES['arrow-right']} />
+							</span>
+						</a>
+					))
+				}
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>

@@ -7,6 +7,7 @@ import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import FriendCard from '../components/FriendCard.astro';
 import Comments from '../components/Comments.astro';
+import '../styles/glass.css';
 
 const linksPath = path.resolve('src/data/links.json');
 let friendData: Array<{ slug: string; name: string; url: string; description: string }> = [];
@@ -54,9 +55,15 @@ const friends = friendData
 			.friends-grid li {
 				margin: 0;
 			}
-			.note {
+			.info-card {
 				margin-top: 2.5rem;
-				padding-top: 1.5rem;
+			}
+			.info-card pre {
+				margin: 0;
+			}
+			.note {
+				margin: 1.5rem 0 0;
+				padding-top: 1.25rem;
 				border-top: 1px solid var(--rule);
 				color: rgb(var(--ink-soft));
 				font-size: 0.92rem;
@@ -91,8 +98,11 @@ const friends = friendData
 				}
 			</script>
 
-			<main>
-				<h2>我的信息</h2>
+			<section class="glass-card info-card">
+				<div class="glass-head">
+					<h2>我的信息</h2>
+					<span class="meta">Info</span>
+				</div>
 				<pre><code>{'{'}
   "name": "盐林格勒 | Saltlingrad",
   "description": "卷土重来未可知",
@@ -101,9 +111,9 @@ const friends = friendData
   "owner": "SALTWOOD",
   "color": "#d9a441"
 {'}'}</code></pre>
-			</main>
+				<p class="note">添加友链，请在下方留言或访问<a href="https://github.com/SALTWOOD/Blog">此处</a>。</p>
+			</section>
 
-			<p class="note">添加友链，请在下方留言或访问<a href="https://github.com/SALTWOOD/Blog">此处</a>。</p>
 			<Comments />
 		</main>
 		<Footer />

@@ -1,5 +1,5 @@
 {
-  "name": "2",
+  "name": "saltlingrad",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -25,11 +25,16 @@
     "@astrojs/mdx": "^8.0.3",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
+    "@astrojs/vue": "^7.1.0",
+    "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.8",
     "astro-pagefind": "^2.0.1",
     "remark-github-blockquote-alert": "^2.1.0",
     "sharp": "^0.35.5",
-    "simple-icons": "^16.34.0"
+    "simple-icons": "^16.34.0",
+    "socket.io-client": "^4.8.4",
+    "tailwindcss": "^4.3.3",
+    "vue": "^3.5.44"
   },
   "devDependencies": {
     "@huggingface/transformers": "^4.3.1",

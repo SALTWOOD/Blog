@@ -1,39 +1,40 @@
 ---
-import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
+import {
+	siBun,
+	siCplusplus,
+	siDocker,
+	siDotnet,
+	siFsharp,
+	siGo,
+	siHtml5,
+	siJavascript,
+	siMariadb,
+	siMysql,
+	siNodedotjs,
+	siOpenjdk,
+	siPhp,
+	siPostgresql,
+	siPython,
+	siRedis,
+	siRust,
+	siTypescript,
+	siVuedotjs,
+	siVuetify,
+} from 'simple-icons';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
-import Sidebar from '../components/Sidebar.astro';
-import { homeSidebar } from '../config/sidebar';
-import { ANALYTICS, SITE_ALTERNATE_NAME, SITE_COORDS, SITE_DESCRIPTION, SITE_KICKER, SITE_TITLE } from '../consts';
+import { ICON_BODIES } from '../components/ui/icons';
+import { TRAVELLINGS } from '../config/footer';
+import { SITE_ALTERNATE_NAME, SITE_DESCRIPTION, SITE_KICKER, SITE_TITLE } from '../consts';
 import { authorPerson } from '../lib/schema';
-import { readingStats } from '../lib/reading';
+import '../styles/glass.css';
 
-const all = await getCollection('blog');
-// Featured/pinned posts: higher `pinned` first, then by publish date.
-const pinned = all
-	.filter((post) => (post.data.pinned ?? 0) > 0)
-	.sort((a, b) => {
-		const pa = a.data.pinned ?? 0;
-		const pb = b.data.pinned ?? 0;
-		if (pb !== pa) return pb - pa;
-		return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
-	});
-// Remaining timeline posts (excludes pinned), newest first.
-const posts = all
-	.filter((post) => !((post.data.pinned ?? 0) > 0))
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-// Reading estimates per post, keyed by collection id, so the cards can show
-// the same CJK-aware word count / reading time as the article page.
-const stats = new Map(all.map((post) => [post.id, readingStats(post.body ?? '')]));
-
-// Per-article pageviews (Umami) — render the eye/count span only when the
-// share slug is configured in consts.ts. The client engine fills the counts.
-const umamiSd = ANALYTICS.umami.statisticsDisplay;
-const showPv = ANALYTICS.umami.enabled && !!ANALYTICS.umami.websiteId && !!umamiSd?.enabled && !!umamiSd?.token;
+const posts = (await getCollection('blog'))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 5);
 
 const websiteJsonLd = {
 	'@context': 'https://schema.org',
@@ -45,6 +46,57 @@ const websiteJsonLd = {
 	inLanguage: 'zh-CN',
 	publisher: authorPerson(Astro.site),
 };
+
+const contacts = [
+	{ label: '邮箱', href: 'mailto:admin@ski.ink', icon: 'mail', external: false },
+	{ label: '博客', href: '/blog', icon: 'book-open', external: false },
+	{ label: 'GitHub', href: 'https://github.com/SALTWOOD', icon: 'github', external: true },
+	{ label: 'RSS', href: '/rss.xml', icon: 'rss', external: false },
+	{
+		label: '请给我钱',
+		href: 'monero:47AUhaafGKJKEiycvvSWtL4uYR3MKcWDbV9nWX6QzuXhMRvdjayxD4ELGwArcZYdPuJe6KgFc7tzsZYWbtTmcUChJagiWcZ',
+		icon: 'coins',
+		external: false,
+	},
+];
+
+const sites = [
+	{ label: '博客', href: '/blog', icon: 'book-open' },
+	{ label: '工具', href: '/tools', icon: 'wrench' },
+	{ label: '友链', href: '/friends', icon: 'users' },
+	{ label: '服务状态', href: 'https://saltwood.top:3001/status/all', icon: 'activity' },
+	{ label: '开往', href: TRAVELLINGS.href, icon: 'train-front' },
+];
+
+const techs = [
+	{ label: 'TypeScript', icon: siTypescript },
+	{ label: '.NET', icon: siDotnet },
+	{ label: 'F#', icon: siFsharp },
+	{ label: 'Python', icon: siPython },
+	{ label: 'PHP', icon: siPhp },
+	{ label: 'JavaScript', icon: siJavascript },
+	{ label: 'Java', icon: siOpenjdk },
+	{ label: 'Vue.js', icon: siVuedotjs },
+	{ label: 'Node.js', icon: siNodedotjs },
+	{ label: 'HTML5', icon: siHtml5 },
+	{ label: 'Bun', icon: siBun },
+	{ label: 'Go', icon: siGo },
+	{ label: 'Rust', icon: siRust },
+	{ label: 'Vuetify', icon: siVuetify },
+	{ label: 'Docker', icon: siDocker },
+	{ label: 'C++', icon: siCplusplus },
+	{ label: 'PostgreSQL', icon: siPostgresql },
+	{ label: 'MySQL', icon: siMysql },
+	{ label: 'MariaDB', icon: siMariadb },
+	{ label: 'Redis', icon: siRedis },
+];
+
+function brandColor(hex: string) {
+	const r = parseInt(hex.slice(0, 2), 16);
+	const g = parseInt(hex.slice(2, 4), 16);
+	const b = parseInt(hex.slice(4, 6), 16);
+	return r * 0.299 + g * 0.587 + b * 0.114 < 60 ? 'rgb(var(--ink))' : `#${hex}`;
+}
 ---
 
 <!doctype html>
@@ -53,486 +105,398 @@ const websiteJsonLd = {
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
 		<style>
-			main {
-				width: 1240px;
+			main.home {
+				width: 1080px;
 				max-width: calc(100% - 2em);
-			}
-			/* [sidebar | entries] — sidebar hides itself below 1200px */
-			.home-layout {
-				display: flex;
-				gap: 2.25em;
-				align-items: flex-start;
-			}
-			.home-content {
-				flex: 1;
-				min-width: 0;
+				padding: 0;
 			}
 
-			/* Hero — logbook landing */
 			.hero {
-				min-height: 100vh;
-				min-height: 100svh;
+				position: relative;
+				box-sizing: border-box;
 				display: flex;
 				flex-direction: column;
 				align-items: center;
 				justify-content: center;
 				text-align: center;
-				padding: 6rem 1.5rem 4rem;
-				box-sizing: border-box;
-				position: relative;
+				min-height: calc(100svh - 4.5rem);
+				padding: 3rem 1.25rem 6rem;
 			}
-			.bearing {
-				position: relative;
-				display: inline-flex;
-				align-items: center;
-				gap: 0.6em;
-				font-family: var(--font-mono);
-				font-size: 0.82rem;
-				letter-spacing: 0.18em;
-				text-transform: uppercase;
-				color: rgba(255, 255, 255, 0.8);
-				text-shadow: var(--text-veil);
-				margin-bottom: 1.5rem;
-			}
-			.bearing::before,
-			.bearing::after {
-				content: '';
-				width: 2.2rem;
-				height: 1px;
-				background: linear-gradient(to right, transparent, var(--brass));
-			}
-			.bearing::after {
-				background: linear-gradient(to left, transparent, var(--brass));
-			}
+
 			.hero h1 {
 				position: relative;
-				font-weight: 600;
-				letter-spacing: -0.01em;
+				margin: 0 0 1rem;
 				color: #fff;
 				text-shadow: var(--text-veil);
-				margin: 0 0 1.25rem;
-				line-height: 1.12;
 				font-size: clamp(2.6rem, 7vw, 4.2rem);
+				line-height: 1.12;
+				letter-spacing: -0.01em;
 			}
+
 			.hero .kicker {
-				position: relative;
 				display: block;
-				font-family: var(--font-display);
+				margin-bottom: 0.7rem;
+				font-family: var(--font-accent);
 				font-style: italic;
 				font-weight: 400;
+				font-size: clamp(1rem, 2vw, 1.25rem);
+				letter-spacing: 0;
 				color: rgba(255, 255, 255, 0.82);
 				text-shadow: var(--text-veil);
-				font-size: clamp(1rem, 2vw, 1.25rem);
-				margin-bottom: 0.75rem;
-				letter-spacing: 0;
 			}
-			.hero p.lede {
+
+			.hero .lede {
 				position: relative;
+				margin: 0 0 0.5rem;
 				max-width: 40rem;
 				font-size: 1.1rem;
 				line-height: 1.7;
-				color: rgba(255, 255, 255, 0.82);
+				color: rgba(255, 255, 255, 0.86);
 				text-shadow: var(--text-veil);
-				margin: 0 0 2.25rem;
 			}
+
+			.hero .sub {
+				position: relative;
+				margin: 0 0 2rem;
+				max-width: 38rem;
+				font-family: var(--font-body);
+				font-size: 0.92rem;
+				line-height: 1.7;
+				color: rgba(255, 255, 255, 0.7);
+				text-shadow: var(--text-veil);
+			}
+
 			.hero-cta {
 				position: relative;
-				display: inline-flex;
-				align-items: center;
-				gap: 0.55rem;
-				padding: 0.8rem 1.6rem;
-				border-radius: var(--r-pill);
-				background: var(--brass);
-				color: #fff7e8;
-				font-family: var(--font-body);
-				font-weight: 600;
-				text-decoration: none;
-				letter-spacing: 0.02em;
-				transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-				box-shadow: 0 6px 20px rgba(var(--brass-rgb), 0.35);
-			}
-			.hero-cta:hover {
-				color: #fff7e8;
-				background: var(--sea-deep);
-				transform: translateY(-2px);
-				box-shadow: 0 10px 28px rgba(var(--sea-rgb), 0.4);
-			}
-			.hero-cta:active {
-				transform: scale(0.97);
-			}
-			.hero-cta svg {
-				width: 1.05em;
-				height: 1.05em;
-				transition: transform 0.2s ease;
-			}
-			.hero-cta:hover svg {
-				transform: translateY(2px);
-			}
-
-			/* Staggered entrance for the landing — only the content, not the
-			   decorative .radar (whose centering transform must be preserved). */
-			@media (prefers-reduced-motion: no-preference) {
-				.hero > .bearing,
-				.hero > h1,
-				.hero > .lede,
-				.hero > .hero-cta {
-					animation: risein 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-				}
-				.hero > .bearing {
-					animation-delay: 0.05s;
-				}
-				.hero > h1 {
-					animation-delay: 0.15s;
-				}
-				.hero > .lede {
-					animation-delay: 0.25s;
-				}
-				.hero > .hero-cta {
-					animation-delay: 0.35s;
-				}
-			}
-
-			/* Log section heading */
-			.log-head {
 				display: flex;
-				align-items: baseline;
-				justify-content: space-between;
-				gap: 1em;
-				margin: 0 0 1.75rem;
-				padding-bottom: 0.75rem;
-				border-bottom: 1px solid var(--rule);
+				flex-wrap: wrap;
+				justify-content: center;
+				gap: 0.75rem;
 			}
-			.log-head h2 {
-				margin: 0;
+
+			.scroll-cue {
+				position: absolute;
+				bottom: 1.5rem;
+				left: 50%;
+				transform: translateX(-50%);
+				display: inline-flex;
+				padding: 0.35rem;
+				border-radius: 50%;
+				color: rgba(255, 255, 255, 0.72);
+				text-shadow: var(--text-veil);
+				animation: cue-bounce 2s ease-in-out infinite;
+			}
+
+			.scroll-cue svg {
+				width: 1.35rem;
+				height: 1.35rem;
+			}
+
+			@keyframes cue-bounce {
+				0%,
+				100% {
+					transform: translate(-50%, 0);
+				}
+				50% {
+					transform: translate(-50%, 8px);
+				}
+			}
+
+			.cards {
+				display: flex;
+				flex-direction: column;
+				gap: 1.2rem;
+				box-sizing: border-box;
+				padding: 0 1rem 4.5rem;
+				scroll-margin-top: 4.5rem;
+			}
+
+			#about {
+				scroll-margin-top: 4.5rem;
+			}
+
+			.person {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+				margin-bottom: 1.1rem;
+			}
+
+			.person .avatar {
+				width: 72px;
+				height: 72px;
+				flex-shrink: 0;
+				border-radius: 50%;
+				object-fit: cover;
+				border: 2px solid color-mix(in srgb, var(--brass) 45%, transparent);
+			}
+
+			.person-name {
+				font-family: var(--font-body);
 				font-size: 1.3rem;
 				font-weight: 600;
-				color: #fff;
-				text-shadow: var(--text-veil);
-			}
-			.log-head .count {
-				font-family: var(--font-mono);
-				font-size: 0.85rem;
-				color: rgba(255, 255, 255, 0.7);
-				text-shadow: var(--text-veil);
+				color: rgb(var(--ink));
 			}
 
-			/* Featured / pinned block — sits above the timeline, framed with a
-			   persistent brass top border so it reads as hand-picked, not just
-			   another log entry. */
-			.featured {
-				margin-bottom: 2.5rem;
+			.person-desc {
+				margin: 0.15rem 0 0;
+				font-size: 0.9rem;
+				line-height: 1.5;
+				color: rgb(var(--ink-soft));
 			}
-			.featured-head {
+
+			.contacts {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.6rem;
+				margin-top: 1.2rem;
+			}
+
+			.contacts .glass-btn {
+				min-height: 2.5rem;
+				padding: 0.45rem 0.9rem;
+				font-size: 0.9rem;
+			}
+
+			.posts {
+				display: flex;
+				flex-direction: column;
+			}
+
+			.post-row {
 				display: flex;
 				align-items: baseline;
-				justify-content: space-between;
-				gap: 1em;
-				margin: 0 0 1.5rem;
-				padding-bottom: 0.6rem;
-				border-bottom: 1px solid var(--brass);
-			}
-			.featured-head .eyebrow {
-				font-family: var(--font-mono);
-				font-size: 0.82rem;
-				font-weight: 600;
-				letter-spacing: 0.18em;
-				text-transform: uppercase;
-				color: rgba(255, 255, 255, 0.82);
-				text-shadow: var(--text-veil);
-			}
-			.featured-head .count {
-				font-family: var(--font-mono);
-				font-size: 0.82rem;
-				color: rgba(255, 255, 255, 0.7);
-				text-shadow: var(--text-veil);
-			}
-			ul.featured-grid {
-				display: grid;
-				grid-template-columns: repeat(2, 1fr);
-				gap: 1.5rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul.featured-grid li {
-				min-width: 0;
-			}
-			.featured-card {
-				position: relative;
-				display: block;
-				box-sizing: border-box;
+				gap: 0.85rem;
+				padding: 0.6rem 0.35rem;
+				border-radius: 8px;
+				border-bottom: 1px dashed color-mix(in srgb, var(--rule) 80%, transparent);
+				color: rgb(var(--ink));
 				text-decoration: none;
-				background: var(--paper-raised);
-				border: 1px solid var(--rule);
-				border-top: 3px solid var(--brass);
-				border-radius: var(--r-md);
-				padding: 1.25rem 1.4rem;
-				transition: transform 0.2s ease, box-shadow 0.2s ease;
-				height: 100%;
-			}
-			.featured-card:hover {
-				transform: translateY(-3px);
-				box-shadow: 0 12px 30px rgba(var(--brass-rgb), 0.18), var(--shadow-card);
-			}
-			.featured-card :global(img) {
-				width: calc(100% + 2.8rem);
-				height: auto;
-				margin: 0 -1.4rem 1.1rem;
-				display: block;
-				border-radius: 0;
-				border-bottom: 1px solid var(--rule);
-			}
-			/* The brass badge floats in the top-right corner; reads cleanly over
-			   the card header or a hero cover image alike. */
-			.featured-card .pin-badge {
-				position: absolute;
-				top: 0.7rem;
-				right: 0.8rem;
-				z-index: 2;
-				display: inline-flex;
-				align-items: center;
-				gap: 0.3em;
-				padding: 0.18rem 0.6rem 0.18rem 0.5rem;
-				border-radius: var(--r-pill);
-				background: rgba(var(--brass-rgb), 0.95);
-				color: #fff7e8;
-				font-family: var(--font-mono);
-				font-size: 0.66rem;
-				font-weight: 600;
-				letter-spacing: 0.1em;
-				text-transform: uppercase;
-				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
-			}
-			.featured-card .pin-badge svg {
-				width: 0.82em;
-				height: 0.82em;
-			}
-			.featured-card .title {
-				font-size: 1.55rem;
+				transition: background 0.15s ease;
 			}
 
-			/* Post list — dated log entries, CSS-columns masonry */
-			ul.entries {
-				column-count: 2;
-				column-gap: 1.75rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
+			.post-row:last-child {
+				border-bottom: none;
 			}
-			ul.entries li {
-				break-inside: avoid;
-				page-break-inside: avoid;
-				margin-bottom: 1.75rem;
-			}
-			.entry {
-				display: block;
-				box-sizing: border-box;
+
+			.post-row:hover {
+				background: rgba(var(--ink), 0.05);
+				color: rgb(var(--ink));
 				text-decoration: none;
-				background: var(--paper-raised);
-				border: 1px solid var(--rule);
-				border-left: 3px solid transparent;
-				border-radius: var(--r-md);
-				padding: 1.1rem 1.25rem;
-				transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-				height: 100%;
 			}
-			.entry:hover {
-				transform: translateY(-3px);
-				box-shadow: var(--shadow-card);
-				border-left-color: var(--brass);
-			}
-			.entry :global(img) {
-				width: calc(100% + 2.5rem);
-				height: auto;
-				margin: -1.1rem -1.25rem 1rem;
-				display: block;
-				border-radius: var(--r-md) var(--r-md) 0 0;
-				border-bottom: 1px solid var(--rule);
-			}
-			.entry-meta {
-				display: flex;
-				align-items: center;
-				gap: 0.5em;
+
+			.post-date {
+				flex-shrink: 0;
 				font-family: var(--font-mono);
 				font-size: 0.76rem;
 				letter-spacing: 0.02em;
 				color: rgb(var(--ink-soft));
-				margin-bottom: 0.4rem;
-				text-transform: uppercase;
 			}
-			.entry-meta .cat {
+
+			.post-title {
+				font-weight: 500;
+				line-height: 1.45;
+			}
+
+			.post-cat {
+				margin-left: auto;
+				flex-shrink: 0;
+				font-family: var(--font-mono);
+				font-size: 0.72rem;
 				color: var(--sea);
 			}
-			.entry-meta .dot {
-				color: var(--rule);
+
+			.tech-list {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.4rem;
+				list-style: none;
+				margin: 1rem 0 0;
+				padding: 0;
 			}
-			.entry-meta .pv {
+
+			.tech-chip {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.35rem;
+				padding: 0.28rem 0.6rem;
+				border: 1px solid color-mix(in srgb, var(--rule) 90%, transparent);
+				border-radius: var(--r-pill);
+				background: color-mix(in srgb, var(--paper-raised) 55%, transparent);
+				color: rgb(var(--ink-soft));
+				font-size: 0.8rem;
+				line-height: 1.4;
+			}
+
+			.tech-chip svg {
+				width: 0.95rem;
+				height: 0.95rem;
+				flex-shrink: 0;
+				color: var(--brand, currentColor);
+			}
+
+			.more-link {
 				display: inline-flex;
 				align-items: center;
 				gap: 0.3em;
-				color: rgb(var(--ink-soft));
-			}
-			.entry-meta .pv svg {
-				width: 1em;
-				height: 1em;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--ink));
-				line-height: 1.3;
-				font-size: 1.35rem;
-				font-family: var(--font-display);
-				font-weight: 600;
-				transition: color 0.15s ease;
-			}
-			.desc {
-				margin: 0.55rem 0 0;
-				color: rgb(var(--ink-soft));
-				font-size: 0.92rem;
-				line-height: 1.6;
-				display: -webkit-box;
-				-webkit-line-clamp: 3;
-				line-clamp: 3;
-				-webkit-box-orient: vertical;
-				overflow: hidden;
-			}
-			.entry-tags {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 0.35em;
-				margin-top: 0.75rem;
-			}
-			.entry-tags .tag-chip {
+				margin-top: 1rem;
 				font-family: var(--font-mono);
-				font-size: 0.7rem;
-				letter-spacing: 0.02em;
-				padding: 0.12em 0.5em;
-				border-radius: var(--r-sm);
-				background: var(--paper-chip);
-				border: 1px solid var(--rule);
-				color: rgb(var(--ink-soft));
-			}
-			.entry:hover .title {
+				font-size: 0.82rem;
 				color: var(--sea);
+				text-decoration: none;
 			}
-			[data-theme='dark'] .entry:hover .title {
-				color: var(--brass-soft);
+
+			.more-link:hover {
+				text-decoration: underline;
 			}
+
+			.more-link svg {
+				width: 0.95rem;
+				height: 0.95rem;
+			}
+
 			@media (max-width: 720px) {
-				ul.entries {
-					column-count: 1;
-					column-gap: 0;
-				}
-				ul.featured-grid {
-					grid-template-columns: 1fr;
-				}
 				.hero {
-					padding: 5rem 1.25rem 3rem;
+					min-height: calc(100svh - 4rem);
+					padding: 2rem 1rem 5rem;
+				}
+
+				.cards {
+					padding: 0 0 3.5rem;
+					gap: 0.9rem;
+				}
+
+				.person {
+					gap: 0.8rem;
+				}
+
+				.post-row {
+					flex-wrap: wrap;
+					gap: 0.2rem 0.7rem;
+				}
+
+				.post-cat {
+					display: none;
 				}
 			}
 		</style>
 	</head>
 	<body>
 		<Header />
-		<section class="hero">
-			<span class="bearing">{SITE_COORDS}</span>
-			<h1>
-				<span class="kicker">{SITE_KICKER}</span>
-				{SITE_TITLE}
-			</h1>
-			<p class="lede">{SITE_DESCRIPTION}</p>
-			<a class="hero-cta" href="#content-root">
-				浏览文章
-				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-					<polyline points="6 9 12 15 18 9"></polyline>
-				</svg>
-			</a>
-		</section>
-		<main id="content-root">
-			<div class="home-layout">
-				<Sidebar blocks={homeSidebar} />
-				<section class="home-content">
-					{pinned.length > 0 && (
-						<section class="featured">
-							<div class="featured-head">
-								<span class="eyebrow">Pinned · 置顶</span>
-								<span class="count">{pinned.length} 篇记录</span>
-							</div>
-							<ul class="featured-grid">
-								{
-									pinned.map((post) => (
-										<li>
-											<a class="featured-card" href={`/blog/${post.id}/`}>
-												<span class="pin-badge">
-													<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-														<line x1="12" y1="17" x2="12" y2="22" />
-														<path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z" />
-													</svg>
-													置顶
-												</span>
-												{post.data.heroImage && (
-													<Image width={720} height={360} src={post.data.heroImage} alt={post.data.title} transition:name={`hero-${post.id}`} />
-												)}
-												<div class="entry-meta">
-													<time><FormattedDate date={post.data.pubDate} /></time>
-													{post.data.category && (
-														<>
-															<span class="dot">/</span>
-															<span class="cat">{post.data.category}</span>
-														</>
-													)}
-													<span class="dot">/</span>
-													<span>{stats.get(post.id)?.minutes ?? 1} 分钟</span>
-													<span class="dot">/</span>
-													<span>{stats.get(post.id)?.wordCount ?? 0} 字</span>{showPv && (<> <span class="dot">/</span><span class="pv" title="浏览量"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg><span data-umami-pv={`/blog/${post.id}/`}>…</span></span> </>)}
-												</div>
-												<h2 class="title">{post.data.encrypted ? `🔒 ${post.data.title}` : post.data.title}</h2>
-												{post.data.description && <p class="desc">{post.data.description}</p>}
-												{post.data.tags.length > 0 && (
-													<div class="entry-tags">
-														{post.data.tags.slice(0, 3).map((tag) => <span class="tag-chip">#{tag}</span>)}
-													</div>
-												)}
-											</a>
-										</li>
-									))
-								}
-							</ul>
-						</section>
-					)}
-					<div class="log-head">
-						<h2>航行日志</h2>
-						<span class="count">{posts.length} 篇记录</span>
+		<main class="home">
+			<section class="hero">
+				<h1>
+					<span class="kicker">{SITE_KICKER}</span>
+					{SITE_TITLE}
+				</h1>
+				<p class="lede">欢迎光临，这里是盐木的小破窝~</p>
+				<p class="sub">{SITE_DESCRIPTION}</p>
+				<div class="hero-cta">
+					<a class="glass-btn solid" href="/blog">
+						<svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON_BODIES['book-open']} />
+						浏览文章
+					</a>
+					<a class="glass-btn" href="#about">
+						<svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON_BODIES.info} />
+						关于我
+					</a>
+				</div>
+				<a class="scroll-cue" href="#content" aria-label="向下浏览">
+					<svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON_BODIES['chevron-down']} />
+				</a>
+			</section>
+
+			<div class="cards" id="content">
+				<section class="glass-card" id="about">
+					<div class="glass-head">
+						<h2>关于</h2>
+						<span class="meta">About</span>
 					</div>
-					<ul class="entries">
+					<div class="person">
+						<img class="avatar" src="/avatar.webp" alt="SALTWOOD" width="72" height="72" />
+						<div>
+							<span class="person-name">SALTWOOD</span>
+							<p class="person-desc">来自广东省的一个废物高中生</p>
+							<p class="person-desc">爱折腾编程，喜欢聊天，啥都想干却啥都干不好</p>
+						</div>
+					</div>
+					<div class="glass-body">
+						<p>
+							来自广东省的一位学生，网名 <strong>SaltWood_233</strong>，大家可以叫我<strong>盐木</strong>！<br />
+							喜欢写写代码、玩玩游戏，和听歌~ 爱玩碧蓝航线之类的二游、部分音游、战舰世界和 Minecraft！
+						</p>
+						<p>
+							<a href="https://github.com/PCL-Community" target="_blank" rel="noopener">@PCL-Community</a> 成员，PCL2 的社区维护者之一，主要参与
+							<a href="https://github.com/PCL-Community/PCL-CE" target="_blank" rel="noopener"> PCL-CE</a> 的 C# 化重构。
+						</p>
+					</div>
+					<div class="contacts">
+						{
+							contacts.map((item) => (
+								<a class="glass-btn" href={item.href} target={item.external ? '_blank' : undefined} rel={item.external ? 'noopener' : undefined}>
+									<svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON_BODIES[item.icon]} />
+									{item.label}
+								</a>
+							))
+						}
+					</div>
+				</section>
+
+				<section class="glass-card">
+					<div class="glass-head">
+						<h2>去逛逛</h2>
+						<span class="meta">Sites</span>
+					</div>
+					<div class="glass-grid">
+						{
+							sites.map((site) => (
+								<a class="glass-btn" href={site.href} target={site.href.startsWith('http') ? '_blank' : undefined} rel={site.href.startsWith('http') ? 'noopener' : undefined}>
+									<svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON_BODIES[site.icon]} />
+									{site.label}
+								</a>
+							))
+						}
+					</div>
+				</section>
+
+				<section class="glass-card">
+					<div class="glass-head">
+						<h2>最近更新</h2>
+						<span class="meta">Log</span>
+					</div>
+					<div class="posts">
 						{
 							posts.map((post) => (
-								<li>
-									<a class="entry" href={`/blog/${post.id}/`}>
-										{post.data.heroImage && (
-											<Image width={720} height={360} src={post.data.heroImage} alt={post.data.title} transition:name={`hero-${post.id}`} />
-										)}
-										<div class="entry-meta">
-											<time><FormattedDate date={post.data.pubDate} /></time>
-											{post.data.category && (
-												<>
-													<span class="dot">/</span>
-													<span class="cat">{post.data.category}</span>
-												</>
-											)}
-											<span class="dot">/</span>
-											<span>{stats.get(post.id)?.minutes ?? 1} 分钟</span>
-											<span class="dot">/</span>
-											<span>{stats.get(post.id)?.wordCount ?? 0} 字</span>{showPv && (<> <span class="dot">/</span><span class="pv" title="浏览量"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg><span data-umami-pv={`/blog/${post.id}/`}>…</span></span> </>)}
-										</div>
-										<h2 class="title">{post.data.encrypted ? `🔒 ${post.data.title}` : post.data.title}</h2>
-										{post.data.description && <p class="desc">{post.data.description}</p>}
-										{post.data.tags.length > 0 && (
-											<div class="entry-tags">
-												{post.data.tags.slice(0, 3).map((tag) => <span class="tag-chip">#{tag}</span>)}
-											</div>
-										)}
-									</a>
+								<a class="post-row" href={`/blog/${post.id}/`}>
+									<span class="post-date"><FormattedDate date={post.data.pubDate} /></span>
+									<span class="post-title">{post.data.encrypted ? `🔒 ${post.data.title}` : post.data.title}</span>
+									{post.data.category && <span class="post-cat">{post.data.category}</span>}
+								</a>
+							))
+						}
+					</div>
+					<a class="more-link" href="/blog">
+						全部文章
+						<svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON_BODIES['arrow-right']} />
+					</a>
+				</section>
+
+				<section class="glass-card">
+					<div class="glass-head">
+						<h2>技术栈</h2>
+						<span class="meta">Stacks</span>
+					</div>
+					<div class="glass-body">
+						<p>比较擅长 <strong>C#</strong>、<strong>Python</strong> 与 <strong>TypeScript</strong>，也会一点别的（小声）。</p>
+					</div>
+					<ul class="tech-list">
+						{
+							techs.map((tech) => (
+								<li class="tech-chip" style={`--brand:${brandColor(tech.icon.hex)}`}>
+									<svg viewBox="0 0 24 24" aria-hidden="true">
+										<path d={tech.icon.path} fill="currentColor" />
+									</svg>
+									<span>{tech.label}</span>
 								</li>
 							))
 						}

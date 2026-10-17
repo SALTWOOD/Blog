@@ -1,0 +1,21 @@
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+*,
+::before,
+::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--ui-bg: var(--paper-raised);
+	--ui-bg-muted: var(--paper-chip);
+	--ui-bg-elevated: var(--paper-raised);
+	--ui-border: var(--rule);
+	--ui-border-muted: var(--rule);
+	--ui-text: rgb(var(--ink));
+	--ui-text-toned: rgb(var(--ink));
+	--ui-text-muted: rgb(var(--ink-soft));
+	--ui-text-dimmed: color-mix(in srgb, rgb(var(--ink-soft)) 68%, transparent);
+}
