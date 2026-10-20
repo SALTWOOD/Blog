@@ -5,7 +5,7 @@
   "engines": {
     "node": ">=22.12.0"
   },
-  "packageManager": "pnpm@12.10.1",
+  "packageManager": "pnpm@12.14.0",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -17,6 +17,7 @@
     "pin": "tsx scripts/cli.mjs pin",
     "stats": "tsx scripts/cli.mjs stats",
     "keygen": "tsx scripts/cli.mjs keygen",
+    "indexnow": "node scripts/indexnow.mjs",
     "lock": "tsx scripts/cli.mjs lock",
     "unlock": "tsx scripts/cli.mjs unlock"
   },

@@ -1,0 +1,93 @@
+name: IndexNow
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/content/blog/**'
+      - 'public/*.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: read
+
+concurrency:
+  group: indexnow
+  cancel-in-progress: false
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Collect changed files
+        id: changed
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "all=1" >> "$GITHUB_OUTPUT"
+          else
+            echo "all=0" >> "$GITHUB_OUTPUT"
+            base="${{ github.event.before }}"
+            if [ -z "$base" ] || ! git cat-file -e "$base^{commit}" 2>/dev/null; then
+              base="HEAD^"
+            fi
+            git diff --name-only "$base" HEAD > changed.txt || : > changed.txt
+            cat changed.txt
+          fi
+
+      # Cloudflare Pages deploys outside Actions; its GitHub App reports each build
+      # as a check run on the commit, so wait for that check before submitting.
+      - name: Wait for Cloudflare Pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+        run: |
+          start=$SECONDS
+          give_up_at=$((start + 600))
+          no_check_at=$((start + 180))
+
+          while [ $SECONDS -lt $give_up_at ]; do
+            state=$(gh api "repos/$REPO/commits/$SHA/check-runs?per_page=100" --jq '
+              [ .check_runs[]
+                | select(((.app.slug // "") | test("cloudflare"))
+                      or ((.app.name // "") | test("cloudflare pages"; "i"))
+                      or ((.name // "") | test("cloudflare pages"; "i"))) ]
+              | if length == 0 then "none"
+                elif any(.[]; .status != "completed") then "pending"
+                elif any(.[]; .conclusion != "success") then "failed"
+                else "success" end' 2>/dev/null || echo "none")
+
+            case "$state" in
+              success) echo "cloudflare pages: deployment complete"; exit 0 ;;
+              failed) echo "cloudflare pages: deployment failed"; exit 1 ;;
+            esac
+
+            # Pages only creates a check run when it actually starts a build.
+            if [ "$state" = "none" ] && [ $SECONDS -ge $no_check_at ]; then
+              echo "cloudflare pages: no check run reported, continuing without it"
+              exit 0
+            fi
+            sleep 15
+          done
+
+          echo "cloudflare pages: timed out waiting for the check run, continuing anyway"
+
+      - name: Submit to IndexNow
+        run: |
+          if [ "${{ steps.changed.outputs.all }}" = "1" ]; then
+            node scripts/indexnow.mjs --all --wait=180
+          else
+            node scripts/indexnow.mjs --files-from=changed.txt --wait=300
+          fi
