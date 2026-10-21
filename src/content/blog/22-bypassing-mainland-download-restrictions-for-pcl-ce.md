@@ -25,7 +25,7 @@ pinned: 1
 
 ## 2. 限制
 
-2026/10/20，[@Big-cake-jpg](https://github.com/Big-cake-jpg) 开启了 [#3673](https://github.com/PCL-Community/PCL-CE/pull/3673)，后经社区讨论决定，由我开启了 [#3676](https://github.com/PCL-Community/PCL-CE/pull/3676)，以此进一步增强对中国大陆地区的下载、安装限制，以避免相关问题。
+2026/10/20 17:56，[@Big-cake-jpg](https://github.com/Big-cake-jpg) 开启了 [#3673](https://github.com/PCL-Community/PCL-CE/pull/3673)，后经社区讨论决定，由我开启了 [#3676](https://github.com/PCL-Community/PCL-CE/pull/3676)，以此进一步增强对中国大陆地区的下载、安装限制，以避免相关问题。
 
 HMCL 侧，在 #7017 中，对版本下载和资源下载添加了地区判断；在 #7020 中，调整了网络判定逻辑。
 
