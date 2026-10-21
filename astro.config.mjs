@@ -14,6 +14,7 @@ import { remarkFold } from './src/lib/markdown/remark-fold';
 import { remarkTabs } from './src/lib/markdown/remark-tabs';
 import { remarkCdnImages } from './src/lib/markdown/remark-cdn-images';
 import { remarkDecrypt } from './src/lib/markdown/remark-decrypt';
+import { remarkDirectiveText } from './src/lib/markdown/remark-directive-text';
 import { rehypeReencrypt } from './src/lib/markdown/rehype-reencrypt';
 
 // https://astro.build/config
@@ -28,7 +29,17 @@ export default defineConfig({
 	},
 	markdown: {
 		syntaxHighlight: 'shiki',
-		remarkPlugins: [remarkDecrypt, remarkCdnImages, remarkAlert, remarkDirective, remarkFold, remarkTabs],
+		remarkPlugins: [
+			remarkDecrypt,
+			remarkCdnImages,
+			remarkAlert,
+			remarkDirective,
+			// After remarkDirective: turns stray `:00` / `std::` text directives
+			// back into literal text so prose colons are not eaten as markup.
+			remarkDirectiveText,
+			remarkFold,
+			remarkTabs,
+		],
 		rehypePlugins: [rehypeFigure, rehypeReencrypt],
 		shikiConfig: {
 			transformers: [shikiMetaTransformer()],
