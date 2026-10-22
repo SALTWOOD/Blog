@@ -2,7 +2,6 @@
 
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import vue from '@astrojs/vue';
 import tailwindcss from '@tailwindcss/vite';
 import pagefind from 'astro-pagefind';
 import remarkDirective from 'remark-directive';
@@ -23,7 +22,7 @@ export default defineConfig({
 	redirects: {
 		'/about': '/#about',
 	},
-	integrations: [mdx(), sitemap(), pagefind(), vue()],
+	integrations: [mdx(), sitemap(), pagefind()],
 	vite: {
 		plugins: [tailwindcss()],
 	},
