@@ -5,6 +5,7 @@ import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/og-default.png';
 import { ANALYTICS, BACKGROUND_IMAGE_DARK, BACKGROUND_IMAGE_LIGHT, SITE_AUTHOR, SITE_TITLE } from '../consts';
+import { TRANSLATE } from '../config/translate';
 import { Font } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 import UmamiPV from './UmamiPV.astro';
@@ -21,6 +22,8 @@ interface Props {
 	author?: string;
 	tags?: string[];
 	section?: string;
+	/** Load the opt-in article translator on this page. */
+	translate?: boolean;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -35,6 +38,7 @@ const {
 	author = SITE_AUTHOR,
 	tags = [],
 	section,
+	translate = false,
 } = Astro.props;
 
 // Umami analytics is only injected when enabled in consts.ts (and both the
@@ -134,6 +138,16 @@ const umamiEnabled = umami.enabled && !!umami.src && !!umami.websiteId;
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image.src, Astro.url)} />
+
+<!-- Opt-in article translation. Rendered before the deferred analytics
+     script: deferred scripts run in document order, so an unreachable
+     analytics host must not delay the translator bundle. -->
+{translate && TRANSLATE.enabled && (
+	<script>
+		import { initArticleTranslator } from '../lib/translate/client';
+		initArticleTranslator();
+	</script>
+)}
 
 <!-- Umami visitor analytics (toggleable via ANALYTICS.umami in consts.ts) -->
 {umamiEnabled && (

@@ -1,0 +1,340 @@
+---
+import { TRANSLATE } from '../config/translate';
+
+const { enabled, providerName, providerUrl } = TRANSLATE;
+---
+
+{
+	enabled && (
+		<div
+			id="tx-toast"
+			class="tx-toast"
+			data-no-translate
+			hidden
+			role="region"
+			aria-label="Article translation"
+		>
+			<div class="tx-top">
+				<span class="tx-kicker">LANGUAGE · 译</span>
+				<button
+					type="button"
+					class="tx-x"
+					data-tx-action="close"
+					data-tx-close
+					aria-label="Close"
+				>
+					×
+				</button>
+			</div>
+			<div class="tx-message" role="status" aria-live="polite" aria-atomic="true">
+				<p class="tx-title" data-tx-title>Translate this article?</p>
+				<p class="tx-body" data-tx-body></p>
+			</div>
+			<div class="tx-lang">
+				<label class="tx-lang-label" for="tx-lang-select">Translate into</label>
+				<select
+					class="tx-lang-select"
+					id="tx-lang-select"
+					data-tx-lang
+					aria-label="Target language"
+				></select>
+			</div>
+			<div
+				class="tx-progress"
+				data-tx-progress
+				hidden
+				role="progressbar"
+				aria-valuemin="0"
+				aria-valuemax="100"
+				aria-valuenow="0"
+				aria-label="Translation progress"
+			>
+				<span class="tx-percent" data-tx-percent>0%</span>
+			</div>
+			<div class="tx-actions" data-tx-actions></div>
+			<p class="tx-note">
+				Powered by{' '}
+				<a href={providerUrl} target="_blank" rel="noopener noreferrer">{providerName}</a>.
+				Article text is sent to Bilibili for translation.
+			</p>
+		</div>
+	)
+}
+
+<style is:global>
+	.tx-toast,
+	.tx-toast * {
+		box-sizing: border-box;
+	}
+
+	/* A paper slip pinned under the header — same parchment/brass language as
+	   the article panels, but narrow and deliberate so it reads as a note,
+	   not a modal. */
+	.tx-toast {
+		position: fixed;
+		top: 4.55rem;
+		right: 1rem;
+		z-index: 60;
+		width: min(360px, calc(100vw - 2rem));
+		padding: 0.85rem 1rem 0.75rem;
+		background: var(--paper-raised);
+		color: rgb(var(--ink));
+		border: 1px solid var(--rule);
+		border-top: 3px solid var(--brass);
+		border-radius: var(--r-lg);
+		box-shadow: var(--box-shadow);
+		font-family: var(--font-body);
+		font-size: 1rem;
+		line-height: 1.5;
+		opacity: 0;
+		transform: translateY(-8px);
+		transition:
+			opacity 0.18s ease,
+			transform 0.18s ease;
+	}
+	.tx-toast[hidden] {
+		display: none;
+	}
+	.tx-toast.is-visible {
+		opacity: 1;
+		transform: none;
+	}
+	.tx-toast[data-state='error'] {
+		border-top-color: var(--signal);
+	}
+	.tx-top {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+	}
+	.tx-kicker {
+		font-family: var(--font-mono);
+		font-size: 0.6rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--brass);
+	}
+	.tx-x {
+		appearance: none;
+		flex: none;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.6rem;
+		height: 1.6rem;
+		margin: -0.2rem -0.25rem -0.2rem 0;
+		padding: 0;
+		border: 0;
+		border-radius: var(--r-sm);
+		background: transparent;
+		color: rgb(var(--ink-soft));
+		font-family: var(--font-body);
+		font-size: 1.15rem;
+		line-height: 1;
+		cursor: pointer;
+	}
+	.tx-x:hover {
+		color: var(--sea);
+		background: rgba(var(--sea-rgb), 0.08);
+	}
+	.tx-title {
+		margin: 0.35rem 0 0.3rem;
+		font-family: var(--font-body);
+		font-size: 1.02rem;
+		font-weight: 600;
+		line-height: 1.3;
+		letter-spacing: -0.01em;
+		color: rgb(var(--ink));
+	}
+	.tx-body {
+		margin: 0;
+		font-size: 0.83rem;
+		line-height: 1.55;
+		color: rgb(var(--ink-soft));
+	}
+	.tx-lang {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+		margin-top: 0.7rem;
+	}
+	.tx-lang-label {
+		flex: none;
+		font-family: var(--font-mono);
+		font-size: 0.58rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: rgb(var(--ink-soft));
+	}
+	.tx-lang-select {
+		flex: 1 1 auto;
+		min-width: 0;
+		max-width: 72%;
+		padding: 0.32rem 0.45rem;
+		border: 1px solid var(--rule);
+		border-radius: var(--r-sm);
+		background: var(--paper);
+		color: rgb(var(--ink));
+		font-family: var(--font-body);
+		font-size: 0.78rem;
+		line-height: 1.2;
+		cursor: pointer;
+	}
+	.tx-lang-select:hover:not(:disabled) {
+		border-color: var(--sea);
+	}
+	.tx-lang-select:disabled {
+		opacity: 0.55;
+		cursor: default;
+	}
+	.tx-lang-select:focus-visible {
+		outline: 2px solid var(--sea);
+		outline-offset: 2px;
+	}
+	.tx-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		margin-top: 0.8rem;
+	}
+	.tx-btn {
+		appearance: none;
+		padding: 0.5rem 0.8rem;
+		border: 1px solid var(--rule);
+		border-radius: var(--r-sm);
+		background: transparent;
+		color: rgb(var(--ink));
+		font-family: var(--font-mono);
+		font-size: 0.66rem;
+		font-weight: 500;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+		cursor: pointer;
+		transition:
+			background 0.15s ease,
+			border-color 0.15s ease,
+			color 0.15s ease;
+	}
+	.tx-btn:hover {
+		border-color: var(--sea);
+		color: var(--sea);
+	}
+	.tx-btn.primary {
+		background: var(--sea);
+		border-color: var(--sea);
+		color: #fff;
+	}
+	.tx-btn.primary:hover {
+		background: var(--sea-deep);
+		border-color: var(--sea-deep);
+		color: #fff;
+	}
+	[data-theme='dark'] .tx-btn.primary {
+		background: var(--brass);
+		border-color: var(--brass);
+		color: #14202a;
+	}
+	[data-theme='dark'] .tx-btn.primary:hover {
+		background: var(--brass-soft);
+		border-color: var(--brass-soft);
+		color: #14202a;
+	}
+	.tx-btn:focus-visible,
+	.tx-x:focus-visible,
+	.tx-manual:focus-visible {
+		outline: 2px solid var(--sea);
+		outline-offset: 2px;
+	}
+	.tx-progress {
+		display: flex;
+		justify-content: flex-end;
+		margin-top: 0.55rem;
+	}
+	.tx-progress[hidden] {
+		display: none;
+	}
+	.tx-percent {
+		font-family: var(--font-mono);
+		font-size: 0.68rem;
+		letter-spacing: 0.06em;
+		color: var(--sea);
+	}
+	[data-theme='dark'] .tx-percent {
+		color: var(--brass-soft);
+	}
+	.tx-note {
+		margin: 0.7rem 0 0;
+		padding-top: 0.5rem;
+		border-top: 1px solid var(--rule);
+		font-family: var(--font-mono);
+		font-size: 0.58rem;
+		line-height: 1.5;
+		letter-spacing: 0.01em;
+		color: rgb(var(--ink-soft));
+	}
+	.tx-note a {
+		color: var(--sea);
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+	[data-theme='dark'] .tx-note a {
+		color: var(--brass-soft);
+	}
+
+	/* The quiet manual trigger in the article meta line. */
+	.tx-manual {
+		appearance: none;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		border-bottom: 1px dashed rgba(var(--sea-rgb), 0.45);
+		background: none;
+		color: var(--sea);
+		font-family: var(--font-mono);
+		font-size: inherit;
+		letter-spacing: inherit;
+		line-height: 1.2;
+		text-transform: uppercase;
+		cursor: pointer;
+	}
+	.tx-manual:hover {
+		color: var(--sea-deep);
+		border-bottom-color: var(--sea);
+	}
+	.tx-manual[aria-pressed='true'] {
+		color: var(--brass);
+		border-bottom-color: rgba(var(--brass-rgb), 0.5);
+	}
+	.tx-manual:disabled {
+		opacity: 0.45;
+		cursor: default;
+	}
+	[data-theme='dark'] .tx-manual {
+		color: var(--brass-soft);
+		border-bottom-color: rgba(var(--brass-rgb), 0.45);
+	}
+	[data-theme='dark'] .tx-manual:hover {
+		color: var(--brass);
+		border-bottom-color: var(--brass);
+	}
+	[data-theme='dark'] .tx-manual[aria-pressed='true'] {
+		color: var(--sea);
+		border-bottom-color: rgba(var(--sea-rgb), 0.5);
+	}
+
+	@media (max-width: 720px) {
+		.tx-toast {
+			top: 3.9rem;
+			left: 0.75rem;
+			right: 0.75rem;
+			width: auto;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.tx-toast {
+			transition: none;
+		}
+	}
+</style>

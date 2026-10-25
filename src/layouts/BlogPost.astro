@@ -11,6 +11,7 @@ import Comments from '../components/Comments.astro';
 import Sidebar from '../components/Sidebar.astro';
 import RelatedPosts from '../components/RelatedPosts.astro';
 import EncryptedGate from '../components/EncryptedGate.astro';
+import ArticleTranslator from '../components/ArticleTranslator.astro';
 import { articleSidebar } from '../config/sidebar';
 import FallbackImage from '../assets/og-default.png';
 import { ANALYTICS, SITE_TITLE } from '../consts';
@@ -98,6 +99,7 @@ const breadcrumbLd = {
 			modifiedTime={updatedDate}
 			tags={tags}
 			section={category}
+			translate
 		/>
 		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 		<script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />
@@ -341,6 +343,7 @@ const breadcrumbLd = {
 			</article>
 		</main>
 		<Footer />
+		<ArticleTranslator />
 		{encrypted && <EncryptedGate />}
 		<script is:inline data-astro-rerun>
 			// Markdown enhancements (Phase 2): build tab buttons from panel
