@@ -1,6 +1,6 @@
 ---
-title: 进行一个入站的申请
-description: 加入「我的世界小站」的入站申请文章，记录本人自 2020 年以来在 Minecraft 相关领域的技术发展与游戏历程。
+title: "[归档] 进行一个入站的申请"
+description: 加入我的世界小站的入站申请文章，记录本人自 2020 年以来在 Minecraft 相关领域的技术发展与游戏历程。
 pubDate: '2026-10-27T14:12:46.000Z'
 heroImage: '../../assets/23.webp'
 category: ""
