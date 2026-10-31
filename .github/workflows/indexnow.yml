@@ -31,7 +31,25 @@ jobs:
         with:
           node-version: 22
 
+      # A commit message containing [skip indexnow] opts out of submission,
+      # e.g. for metadata-only changes (tag merges, typo fixes in frontmatter).
+      - name: Check commit message
+        id: guard
+        run: |
+          if [ "${{ github.event_name }}" != "push" ]; then
+            echo "skip=0" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          message="$(git log -1 --pretty=%B)"
+          if printf '%s' "$message" | grep -qiE '\[skip[ -]indexnow\]'; then
+            echo "skip=1" >> "$GITHUB_OUTPUT"
+            echo "::notice::IndexNow skipped: commit message contains [skip indexnow]"
+          else
+            echo "skip=0" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Collect changed files
+        if: steps.guard.outputs.skip != '1'
         id: changed
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
@@ -49,6 +67,7 @@ jobs:
       # Cloudflare Pages deploys outside Actions; its GitHub App reports each build
       # as a check run on the commit, so wait for that check before submitting.
       - name: Wait for Cloudflare Pages
+        if: steps.guard.outputs.skip != '1'
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
@@ -85,6 +104,7 @@ jobs:
           echo "cloudflare pages: timed out waiting for the check run, continuing anyway"
 
       - name: Submit to IndexNow
+        if: steps.guard.outputs.skip != '1'
         run: |
           if [ "${{ steps.changed.outputs.all }}" = "1" ]; then
             node scripts/indexnow.mjs --all --wait=180
