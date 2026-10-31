@@ -24,14 +24,6 @@
 		var records = [];
 		var observer = null;
 		var buffer = '';
-		var STORAGE_KEY = 'cipher-egg';
-
-		function remember(on) {
-			try {
-				if (on) sessionStorage.setItem(STORAGE_KEY, '1');
-				else sessionStorage.removeItem(STORAGE_KEY);
-			} catch (e) {}
-		}
 
 		// CJK ideographs plus the punctuation/symbol blocks that belong to the
 		// same typographic system. Kana, Hangul, Latin and digits stay intact.
@@ -178,13 +170,11 @@
 			if (active) return;
 			active = true;
 			records = [];
-			remember(true);
 			apply();
 		}
 
 		function restore() {
 			active = false;
-			remember(false);
 			if (observer) {
 				observer.disconnect();
 				observer = null;
@@ -234,20 +224,6 @@
 			records = [];
 			apply();
 		});
-
-		// A full reload starts a fresh document: reapply if the egg was left on
-		// earlier in this tab (the trigger words still switch it off).
-		var persisted = false;
-		try {
-			persisted = sessionStorage.getItem(STORAGE_KEY) === '1';
-		} catch (e) {}
-		if (persisted) {
-			if (document.readyState === 'loading') {
-				document.addEventListener('DOMContentLoaded', activate);
-			} else {
-				activate();
-			}
-		}
 	})();
 </script>
 
