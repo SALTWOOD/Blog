@@ -1,13 +1,10 @@
-/*
-  Design system: "航行日志" — a maritime logbook.
-  Deep-ocean ink + compass brass, a faint nautical chart grid, dated entries
-  set like log headings, monospace for metadata. Grounded in the blog's own
-  world (two naval games + a log of RE/ops/security notes).
-
-  Palette tokens keep the legacy variable names (--accent, --black, --gray*,
-  --box-shadow) so existing components inherit the new look unchanged; the
-  signature colours live in --sea / --brass / --signal.
-*/
+@font-face {
+	font-family: 'BlogFont';
+	src: url('https://blog-uploads.ski.ink/BlogFont-Regular.woff2') format('woff2');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
 
 :root {
 	color-scheme: light;
@@ -60,6 +57,7 @@
 	--r-pill: 999px;
 
 	/* Type */
+	--font-brand: 'BlogFont', 'Fraunces', Georgia, Cambria, 'PingFang SC', 'Microsoft YaHei', serif;
 	--font-accent: 'Fraunces', Georgia, Cambria, 'PingFang SC', 'Microsoft YaHei', serif;
 	--font-body: 'IBM Plex Sans', 'Helvetica Neue', Helvetica, 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
 	--font-mono: ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SF Mono', Menlo, Consolas, 'Liberation Mono', 'PingFang SC', 'Microsoft YaHei', monospace;
