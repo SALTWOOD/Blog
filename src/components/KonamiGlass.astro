@@ -1,19 +1,3 @@
----
-// KonamiGlass — hidden easter egg: the Konami code seals the screen in glass.
-// Trigger: ↑ ↑ ↓ ↓ ← → ← → B A Enter (typed anywhere on the site, outside of
-// form fields). The viewport is tiled with glass blocks that BLOCK input until
-// clicked; clicking a tile shatters it — a random glass-break sound plus a
-// burst of flying shards — and that spot no longer blocks, revealing the page
-// beneath. Break the whole screen open, tile by tile. Re-enter the code, or
-// press Esc, to clear everything.
-//
-// Assets live in /glass/ (glass.png + glass1/2/3.ogg).
-//
-// Loaded globally through <BaseHead />. The board layer is appended to <html>
-// (not <body>) so it survives Astro view-transition swaps, and the key listener
-// lives on `window`, which also persists across swaps.
----
-
 <style is:global>
 	/* kg- prefix keeps this self-contained; styles are global because the
 	   overlay is built in JS (scoped <style> wouldn't reach it). */
@@ -38,7 +22,7 @@
 	.kg-tile {
 		position: absolute;
 		box-sizing: border-box;
-		background-image: url('/glass/glass.png');
+		background-image: url('/easter/glass/glass.png');
 		background-size: 100% 100%;
 		image-rendering: pixelated;
 		pointer-events: auto; /* blocks clicks until shattered */
@@ -52,7 +36,7 @@
 	/* Glass chips flung out from a shattering tile. */
 	.kg-shard {
 		position: absolute;
-		background-image: url('/glass/glass.png');
+		background-image: url('/easter/glass/glass.png');
 		background-size: 100% 100%;
 		image-rendering: pixelated;
 		pointer-events: none;
@@ -113,7 +97,7 @@
 		function ensureSounds() {
 			if (sounds) return;
 			sounds = [1, 2, 3].map((n) => {
-				const a = new Audio(`/glass/glass${n}.ogg`);
+				const a = new Audio(`/easter/glass/glass${n}.ogg`);
 				a.preload = 'auto';
 				return a;
 			});
