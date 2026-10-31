@@ -1,6 +1,7 @@
 // @ts-check
 
 import mdx from '@astrojs/mdx';
+import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import pagefind from 'astro-pagefind';
@@ -22,7 +23,7 @@ export default defineConfig({
 	redirects: {
 		'/about': '/#about',
 	},
-	integrations: [mdx(), sitemap(), pagefind()],
+	integrations: [react(), mdx(), sitemap(), pagefind()],
 	vite: {
 		plugins: [tailwindcss()],
 	},

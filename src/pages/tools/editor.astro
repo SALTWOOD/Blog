@@ -1,0 +1,71 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import EditorRoot from '../../components/editor/EditorRoot';
+import { SITE_TITLE } from '../../consts';
+import '../../styles/glass.css';
+import '../../styles/markdown.css';
+
+const title = '写作室';
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead
+			title={`${title} - ${SITE_TITLE}`}
+			description="本地 Markdown 写作室：实时预览、草稿自动保存、复制/下载与 WebDAV 上传。"
+		/>
+		<style>
+			main {
+				width: min(1440px, calc(100% - 2em));
+				padding-top: 2rem;
+			}
+
+			.page-intro {
+				margin: 0 0 1.15rem;
+				color: rgba(255, 255, 255, 0.88);
+				text-shadow: var(--text-veil);
+			}
+
+			.page-intro h1 {
+				margin: 0 0 0.35rem;
+				color: #fff;
+				text-shadow: var(--text-veil);
+				font-size: clamp(1.8rem, 4vw, 2.4rem);
+			}
+
+			.page-intro p {
+				margin: 0;
+				max-width: 52rem;
+				line-height: 1.7;
+			}
+
+			@media (max-width: 720px) {
+				main {
+					padding-left: 0.6em;
+					padding-right: 0.6em;
+				}
+
+				.page-intro {
+					padding: 0 0.4rem;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="page-intro">
+				<h1>写作室</h1>
+				<p>实时预览、自动保存草稿，支持复制/下载 .md 和拖入文件上传到 WebDAV。</p>
+			</div>
+			<EditorRoot client:only="react" />
+			<noscript>
+				<p class="glass-card">写作室需要启用 JavaScript。</p>
+			</noscript>
+		</main>
+		<Footer />
+	</body>
+</html>
