@@ -4,7 +4,7 @@ description: '一篇随手记，借助 Nginx 的 geo 模块在 CDN 环境下拦�
 pubDate: 2026-01-08T11:59:21.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
 # heroImage: '../../assets/20.webp'
-tags: [Nginx, 安全, 随笔]
+tags: [安全, 运维, 随笔]
 category: ''
 ---
 

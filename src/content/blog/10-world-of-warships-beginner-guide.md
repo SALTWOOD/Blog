@@ -4,7 +4,7 @@ description: '从注册账号、下载游戏到安装模组、打汉化，一步
 pubDate: 2025-04-01T16:21:52.000Z
 updatedDate: 2026-04-04T14:01:27.557Z
 heroImage: '../../assets/10.webp'
-tags: [战舰世界, 游戏, 教程]
+tags: [战舰世界, 教程]
 category: ''
 ---
 

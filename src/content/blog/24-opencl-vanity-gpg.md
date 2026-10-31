@@ -3,7 +3,7 @@ title: '利用 opencl-vanity-gpg 计算 GPG Key'
 description: '借助开源项目 opencl-vanity-gpg，利用 NVIDIA GPU 算出一个带靓号指纹的 GPG Key 用于 GitHub 提交签名。'
 pubDate: 2026-10-31T17:31:20.194Z
 updatedDate: 2026-10-31T17:31:20.194Z
-tags: [GPG, GPU, 教程]
+tags: [GPG, 教程]
 category: ''
 ---
 

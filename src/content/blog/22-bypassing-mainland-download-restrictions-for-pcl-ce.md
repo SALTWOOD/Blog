@@ -7,7 +7,6 @@ tags:
   - PCL
   - 逆向
   - .NET
-  - C#
 pinned: 1
 ---
 

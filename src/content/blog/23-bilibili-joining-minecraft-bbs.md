@@ -6,7 +6,6 @@ heroImage: '../../assets/23.webp'
 category: ""
 tags:
   - Minecraft
-  - 社区
   - 随笔
 ---
 

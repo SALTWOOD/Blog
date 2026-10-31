@@ -4,7 +4,7 @@ description: "通过腾讯位置服务与天气 API，用 WordPress 简码实现
 pubDate: 2025-02-26T13:10:35.000Z
 updatedDate: 2026-03-28T12:57:12.173Z
 # heroImage: '../../assets/6.webp'
-tags: [WordPress, 天气, PHP]
+tags: [WordPress, 天气]
 category: ""
 ---
 

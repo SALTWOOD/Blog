@@ -4,7 +4,7 @@ description: '人工烤肉，翻译战舰世界莱服 25.8 封闭测试开发者
 pubDate: 2025-07-13T03:12:54.000Z
 updatedDate: 2026-03-21T16:14:38.184Z
 # heroImage: '../../assets/18.jpg'
-tags: [战舰世界, 游戏, 烤肉]
+tags: [战舰世界, 烤肉]
 category: ''
 ---
 
