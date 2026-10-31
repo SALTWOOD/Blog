@@ -1,0 +1,267 @@
+---
+// Easter egg — typing "kazdel", "sarkaz" or "qlim" rewrites every CJK
+// ideograph (and CJK punctuation/symbol) through the site's substitution
+// cipher. The whole page is then set in the BlogFont logotype; Latin letters,
+// digits and non-CJK symbols keep their characters — they are simply rendered
+// in the same face. Typing any trigger word again restores the page; the mode
+// follows client-side navigation and newly inserted content while active.
+---
+
+<script is:inline>
+	(function () {
+		if (window.__cipherEgg) return;
+		window.__cipherEgg = true;
+
+		var CIPHER = 'gkamztlbdqiyfucxbhsjoprnweygtjmevchdxsanqolkrvwiypjzquhe';
+		var TRIGGERS = ['nota'];
+		var BLOCK_ATTR = 'data-cipher-block';
+		var SKIP =
+			'script,style,noscript,template,textarea,svg,math,[contenteditable],.sr-only,[' +
+			BLOCK_ATTR +
+			']';
+
+		var active = false;
+		var records = [];
+		var observer = null;
+		var buffer = '';
+		var STORAGE_KEY = 'cipher-egg';
+
+		function remember(on) {
+			try {
+				if (on) sessionStorage.setItem(STORAGE_KEY, '1');
+				else sessionStorage.removeItem(STORAGE_KEY);
+			} catch (e) {}
+		}
+
+		// CJK ideographs plus the punctuation/symbol blocks that belong to the
+		// same typographic system. Kana, Hangul, Latin and digits stay intact.
+		function isCjk(cp) {
+			return (
+				(cp >= 0x2e80 && cp <= 0x2fff) ||
+				(cp >= 0x3001 && cp <= 0x303f) ||
+				(cp >= 0x31c0 && cp <= 0x31ef) ||
+				(cp >= 0x3400 && cp <= 0x4dbf) ||
+				(cp >= 0x4e00 && cp <= 0x9fff) ||
+				(cp >= 0xf900 && cp <= 0xfaff) ||
+				(cp >= 0xfe10 && cp <= 0xfe1f) ||
+				(cp >= 0xfe30 && cp <= 0xfe4f) ||
+				(cp >= 0x20000 && cp <= 0x3ffff) ||
+				(cp >= 0xff01 && cp <= 0xff0f) ||
+				(cp >= 0xff1a && cp <= 0xff20) ||
+				(cp >= 0xff3b && cp <= 0xff40) ||
+				(cp >= 0xff5b && cp <= 0xff65)
+			);
+		}
+
+		function encodeChar(ch) {
+			return CIPHER[ch.codePointAt(0) % CIPHER.length];
+		}
+
+		function rune(text) {
+			var el = document.createElement('span');
+			el.className = 'cipher-rune';
+			el.textContent = text;
+			return el;
+		}
+
+		// Replace one text node with a wrapper holding plain runs verbatim and
+		// encoded CJK runs inside .cipher-rune spans. The original string is kept
+		// so toggling the egg off restores the exact node content.
+		function encodeTextNode(node) {
+			var parent = node.parentElement;
+			if (!parent || parent.closest(SKIP)) return;
+			var text = node.nodeValue;
+			if (!text) return;
+
+			var wrapper = document.createElement('span');
+			wrapper.setAttribute(BLOCK_ATTR, '');
+			var buf = '';
+			var inRune = false;
+			var flush = function () {
+				if (!buf) return;
+				wrapper.appendChild(inRune ? rune(buf) : document.createTextNode(buf));
+				buf = '';
+			};
+
+			var changed = false;
+			for (var i = 0; i < text.length; i++) {
+				var cp = text.codePointAt(i);
+				var ch = String.fromCodePoint(cp);
+				if (cp > 0xffff) i++;
+				var isRune = isCjk(cp);
+				if (isRune) changed = true;
+				if (isRune !== inRune) {
+					flush();
+					inRune = isRune;
+				}
+				buf += isRune ? encodeChar(ch) : ch;
+			}
+			flush();
+			if (!changed) return;
+
+			records.push({ node: wrapper, original: text });
+			node.replaceWith(wrapper);
+		}
+
+		function encodeTree(root) {
+			if (!root) return;
+			if (root.nodeType === Node.TEXT_NODE) {
+				encodeTextNode(root);
+				return;
+			}
+			if (root.nodeType !== Node.ELEMENT_NODE && root.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) return;
+			if (root.nodeType === Node.ELEMENT_NODE && root.closest(SKIP)) return;
+
+			var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+			var nodes = [];
+			var node;
+			while ((node = walker.nextNode())) nodes.push(node);
+			for (var i = 0; i < nodes.length; i++) encodeTextNode(nodes[i]);
+		}
+
+		// The glitch title keeps its ghost copies in data-text; encode those too
+		// so the burst shows the same runes as the visible text.
+		function encodeGlitchText(on) {
+			var marks = document.querySelectorAll('.glitch[data-text]');
+			for (var i = 0; i < marks.length; i++) {
+				var el = marks[i];
+				if (on) {
+					if (el.dataset.cipherSource === undefined) {
+						el.dataset.cipherSource = el.getAttribute('data-text') || '';
+					}
+					var source = el.dataset.cipherSource;
+					var out = '';
+					for (var j = 0; j < source.length; j++) {
+						var cp = source.codePointAt(j);
+						var ch = String.fromCodePoint(cp);
+						if (cp > 0xffff) j++;
+						out += isCjk(cp) ? encodeChar(ch) : ch;
+					}
+					el.setAttribute('data-text', out);
+				} else if (el.dataset.cipherSource !== undefined) {
+					el.setAttribute('data-text', el.dataset.cipherSource);
+					delete el.dataset.cipherSource;
+				}
+			}
+		}
+
+		function observe() {
+			if (observer) observer.disconnect();
+			observer = new MutationObserver(function (mutations) {
+				if (!active) return;
+				for (var i = 0; i < mutations.length; i++) {
+					var mutation = mutations[i];
+					if (mutation.type === 'childList') {
+						for (var j = 0; j < mutation.addedNodes.length; j++) {
+							encodeTree(mutation.addedNodes[j]);
+						}
+					} else if (mutation.type === 'characterData') {
+						encodeTextNode(mutation.target);
+					}
+				}
+			});
+			observer.observe(document.body, {
+				childList: true,
+				subtree: true,
+				characterData: true,
+			});
+		}
+
+		function apply() {
+			document.documentElement.classList.add('cipher-active');
+			encodeTree(document.body);
+			encodeGlitchText(true);
+			observe();
+		}
+
+		function activate() {
+			if (active) return;
+			active = true;
+			records = [];
+			remember(true);
+			apply();
+		}
+
+		function restore() {
+			active = false;
+			remember(false);
+			if (observer) {
+				observer.disconnect();
+				observer = null;
+			}
+			document.documentElement.classList.remove('cipher-active');
+			for (var i = 0; i < records.length; i++) {
+				var rec = records[i];
+				if (rec.node.parentNode) {
+					rec.node.replaceWith(document.createTextNode(rec.original));
+				}
+			}
+			records = [];
+			encodeGlitchText(false);
+		}
+
+		function toggle() {
+			if (active) restore();
+			else activate();
+		}
+
+		document.addEventListener('keydown', function (event) {
+			if (event.ctrlKey || event.metaKey || event.altKey) return;
+			if (event.key.length !== 1) return;
+			var target = event.target;
+			if (
+				target &&
+				(target.isContentEditable ||
+					/^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName || ''))
+			) {
+				return;
+			}
+			buffer = (buffer + event.key.toLowerCase()).slice(-16);
+			for (var i = 0; i < TRIGGERS.length; i++) {
+				if (buffer.slice(-TRIGGERS[i].length) === TRIGGERS[i]) {
+					buffer = '';
+					toggle();
+					return;
+				}
+			}
+		});
+
+		// ClientRouter replaces the whole <body>; re-apply to the fresh one and
+		// keep watching it. Records from the old body are dropped with it.
+		document.addEventListener('astro:after-swap', function () {
+			buffer = '';
+			if (!active) return;
+			records = [];
+			apply();
+		});
+
+		// A full reload starts a fresh document: reapply if the egg was left on
+		// earlier in this tab (the trigger words still switch it off).
+		var persisted = false;
+		try {
+			persisted = sessionStorage.getItem(STORAGE_KEY) === '1';
+		} catch (e) {}
+		if (persisted) {
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', activate);
+			} else {
+				activate();
+			}
+		}
+	})();
+</script>
+
+<style is:global>
+	html.cipher-active body {
+		overflow-wrap: anywhere;
+	}
+	/* The cipher only rewrites CJK runs, but the entire page is then set in the
+	   logotype face — Latin, digits and non-CJK symbols keep their own
+	   characters and simply inherit the same font. */
+	html.cipher-active body,
+	html.cipher-active body * {
+		font-family: var(--font-brand) !important;
+		font-weight: 400 !important;
+		font-style: normal !important;
+	}
+</style>

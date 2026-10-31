@@ -10,6 +10,7 @@ import { ClientRouter } from 'astro:transitions';
 import UmamiPV from './UmamiPV.astro';
 import KonamiGlass from './KonamiGlass.astro';
 import ConsoleBanner from './ConsoleBanner.astro';
+import CipherEgg from './CipherEgg.astro';
 
 interface Props {
 	title: string;
@@ -97,11 +98,21 @@ const umamiEnabled = umami.enabled && !!umami.src && !!umami.websiteId;
 
 <Font cssVariable="--font-accent" />
 <Font cssVariable="--font-body" preload />
+<!-- The logotype is only used by the cipher easter egg now; warm it up on load
+     so the encoded page appears in runes rather than a brief fallback face. -->
+<link
+	rel="preload"
+	href="https://blog-uploads.ski.ink/BlogFont-Regular.woff2"
+	as="font"
+	type="font/woff2"
+	crossorigin="anonymous"
+/>
 
 <!-- Client-side navigation: in-site links swap <body> without a full reload.
      The <html> element (and so data-theme) persists across swaps; the
      background is a static global <style>, so it persists too. -->
 <ClientRouter />
+<CipherEgg />
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />

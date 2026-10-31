@@ -31,6 +31,7 @@ import { TRAVELLINGS } from '../config/footer';
 import { SITE_ALTERNATE_NAME, SITE_DESCRIPTION, SITE_KICKER, SITE_TITLE } from '../consts';
 import { authorPerson } from '../lib/schema';
 import '../styles/glass.css';
+import '../styles/glitch.css';
 
 const posts = (await getCollection('blog'))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -387,7 +388,10 @@ function brandColor(hex: string) {
 			<section class="hero">
 				<h1>
 					<span class="kicker">{SITE_KICKER}</span>
-					{SITE_TITLE}
+					<span class="glitch-wrap" aria-hidden="true">
+						<span class="glitch" data-text={SITE_TITLE}>{SITE_TITLE}</span>
+					</span>
+					<span class="sr-only">{SITE_TITLE}</span>
 				</h1>
 				<p class="lede">欢迎光临，这里是盐木的小破窝~</p>
 				<p class="sub">{SITE_DESCRIPTION}</p>
