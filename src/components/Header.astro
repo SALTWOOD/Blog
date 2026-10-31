@@ -1,5 +1,7 @@
 ---
-import { SITE_TITLE, SITE_WORDMARK } from '../consts';
+import signature from '../assets/signature.png';
+
+import { SITE_TITLE } from '../consts';
 import { TRAVELLINGS } from '../config/footer';
 import HeaderLink from './HeaderLink.astro';
 import ThemeToggle from './ThemeToggle.astro';
@@ -23,10 +25,7 @@ const isActive = (href: string) =>
 	<nav>
 		<h2>
 			<a href="/" aria-label={SITE_TITLE}>
-				<span class="wordmark" aria-hidden="true">
-					<span class="wordmark__zh" data-text={SITE_TITLE}>{SITE_TITLE}</span>
-					<span class="wordmark__en" data-text={SITE_WORDMARK}>{SITE_WORDMARK}</span>
-				</span>
+				<span class="brand__signature" style={`--signature:url("${signature.src}")`}></span>
 			</a>
 		</h2>
 		<div class="internal-links">
@@ -127,11 +126,7 @@ const isActive = (href: string) =>
 	}
 	h2 {
 		margin: 0;
-		font-family: var(--font-accent);
-		font-size: 1.15rem;
-		font-weight: 600;
 		line-height: 1;
-		letter-spacing: -0.01em;
 	}
 	h2 a {
 		display: inline-flex;
@@ -139,316 +134,16 @@ const isActive = (href: string) =>
 		text-decoration: none;
 		color: rgb(var(--ink));
 	}
-	.wordmark {
-		display: inline-grid;
-		place-items: center start;
-		overflow: hidden;
-	}
-	.wordmark__zh,
-	.wordmark__en {
-		grid-area: 1 / 1;
-		position: relative;
+	/* The signature PNG is transparent with black brushwork; use its alpha as
+	   a mask over currentColor so it follows the ink colour in both themes. */
+	.brand__signature {
 		display: block;
-		white-space: nowrap;
-	}
-	.wordmark__en {
-		font-family: var(--font-brand);
-		font-size: 1.75rem;
-		font-weight: 400;
-		line-height: 1;
-		letter-spacing: 0.04em;
-		opacity: 0;
-	}
-	.wordmark__zh::before,
-	.wordmark__zh::after,
-	.wordmark__en::before,
-	.wordmark__en::after {
-		content: attr(data-text);
-		position: absolute;
-		inset: 0;
-		overflow: hidden;
-		white-space: nowrap;
-		pointer-events: none;
-		opacity: 0;
-	}
-	.wordmark__zh::before,
-	.wordmark__en::before {
-		color: var(--signal);
-	}
-	.wordmark__zh::after,
-	.wordmark__en::after {
-		color: var(--sea);
-	}
-	.wordmark__zh {
-		animation: wm-zh 10s step-end infinite;
-	}
-	.wordmark__en {
-		animation: wm-en 10s step-end infinite;
-	}
-	.wordmark__zh::before,
-	.wordmark__en::before {
-		animation: wm-ghost-red 10s step-end infinite;
-	}
-	.wordmark__zh::after,
-	.wordmark__en::after {
-		animation: wm-ghost-blue 10s step-end infinite;
-	}
-	@keyframes wm-zh {
-		0%,
-		46% {
-			opacity: 1;
-			transform: none;
-		}
-		46.5% {
-			opacity: 0.88;
-			transform: translate(1px, -1px);
-		}
-		47.25% {
-			opacity: 1;
-			transform: translate(-1px, 1px);
-		}
-		47.75% {
-			opacity: 0;
-			transform: none;
-		}
-		75.75% {
-			opacity: 1;
-			transform: translate(1px, 1px);
-		}
-		76.25% {
-			opacity: 0.85;
-			transform: translate(-1px, 0);
-		}
-		77% {
-			opacity: 1;
-			transform: translate(1px, -1px);
-		}
-		77.5%,
-		100% {
-			opacity: 1;
-			transform: none;
-		}
-	}
-	@keyframes wm-en {
-		0% {
-			opacity: 0;
-			transform: none;
-		}
-		47.75% {
-			opacity: 1;
-			transform: translate(1px, -1px);
-		}
-		48.25% {
-			opacity: 0.9;
-			transform: translate(-1px, 1px);
-		}
-		49% {
-			opacity: 1;
-			transform: translate(1px, -1px);
-		}
-		49.5%,
-		74% {
-			opacity: 1;
-			transform: none;
-		}
-		74.5% {
-			opacity: 0.9;
-			transform: translate(1px, 1px);
-		}
-		75.25% {
-			opacity: 1;
-			transform: translate(-1px, -1px);
-		}
-		75.75% {
-			opacity: 0;
-			transform: none;
-		}
-		100% {
-			opacity: 0;
-			transform: none;
-		}
-	}
-	@keyframes wm-ghost-red {
-		0%,
-		46% {
-			opacity: 0;
-			transform: none;
-			clip-path: inset(0);
-		}
-		46.5% {
-			opacity: 0.8;
-			transform: translate(-2px, -2px);
-			clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
-		}
-		47.25% {
-			opacity: 0.55;
-			transform: translate(2px, 1px);
-			clip-path: polygon(0 35%, 100% 35%, 100% 70%, 0 70%);
-		}
-		47.75% {
-			opacity: 0.9;
-			transform: translate(-1px, 2px);
-			clip-path: polygon(0 68%, 100% 68%, 100% 100%, 0 100%);
-		}
-		48.25% {
-			opacity: 0.7;
-			transform: translate(2px, -1px);
-			clip-path: polygon(0 0, 100% 0, 100% 22%, 0 22%);
-		}
-		48.75% {
-			opacity: 0.5;
-			transform: translate(-2px, 1px);
-			clip-path: polygon(0 45%, 100% 45%, 100% 78%, 0 78%);
-		}
-		49.25% {
-			opacity: 0.35;
-			transform: translate(1px, -2px);
-			clip-path: polygon(0 12%, 100% 12%, 100% 40%, 0 40%);
-		}
-		49.5% {
-			opacity: 0;
-			transform: none;
-			clip-path: inset(0);
-		}
-		74% {
-			opacity: 0;
-			transform: none;
-			clip-path: inset(0);
-		}
-		74.5% {
-			opacity: 0.75;
-			transform: translate(2px, -2px);
-			clip-path: polygon(0 8%, 100% 8%, 100% 42%, 0 42%);
-		}
-		75.25% {
-			opacity: 0.85;
-			transform: translate(-2px, 1px);
-			clip-path: polygon(0 40%, 100% 40%, 100% 74%, 0 74%);
-		}
-		75.75% {
-			opacity: 0.9;
-			transform: translate(1px, 2px);
-			clip-path: polygon(0 66%, 100% 66%, 100% 100%, 0 100%);
-		}
-		76.25% {
-			opacity: 0.55;
-			transform: translate(-1px, -1px);
-			clip-path: polygon(0 0, 100% 0, 100% 28%, 0 28%);
-		}
-		76.75% {
-			opacity: 0.35;
-			transform: translate(2px, 1px);
-			clip-path: polygon(0 52%, 100% 52%, 100% 84%, 0 84%);
-		}
-		77.25%,
-		100% {
-			opacity: 0;
-			transform: none;
-			clip-path: inset(0);
-		}
-	}
-	@keyframes wm-ghost-blue {
-		0%,
-		46% {
-			opacity: 0;
-			transform: none;
-			clip-path: inset(0);
-		}
-		46.5% {
-			opacity: 0.6;
-			transform: translate(2px, 1px);
-			clip-path: polygon(0 20%, 100% 20%, 100% 58%, 0 58%);
-		}
-		47.25% {
-			opacity: 0.45;
-			transform: translate(-2px, -1px);
-			clip-path: polygon(0 0, 100% 0, 100% 30%, 0 30%);
-		}
-		47.75% {
-			opacity: 0.7;
-			transform: translate(2px, -2px);
-			clip-path: polygon(0 55%, 100% 55%, 100% 92%, 0 92%);
-		}
-		48.25% {
-			opacity: 0.55;
-			transform: translate(-1px, 2px);
-			clip-path: polygon(0 30%, 100% 30%, 100% 64%, 0 64%);
-		}
-		48.75% {
-			opacity: 0.4;
-			transform: translate(2px, -1px);
-			clip-path: polygon(0 70%, 100% 70%, 100% 100%, 0 100%);
-		}
-		49.25% {
-			opacity: 0.3;
-			transform: translate(-2px, -2px);
-			clip-path: polygon(0 0, 100% 0, 100% 18%, 0 18%);
-		}
-		49.5% {
-			opacity: 0;
-			transform: none;
-			clip-path: inset(0);
-		}
-		74% {
-			opacity: 0;
-			transform: none;
-			clip-path: inset(0);
-		}
-		74.5% {
-			opacity: 0.6;
-			transform: translate(-2px, 1px);
-			clip-path: polygon(0 30%, 100% 30%, 100% 66%, 0 66%);
-		}
-		75.25% {
-			opacity: 0.7;
-			transform: translate(2px, -2px);
-			clip-path: polygon(0 0, 100% 0, 100% 36%, 0 36%);
-		}
-		75.75% {
-			opacity: 0.75;
-			transform: translate(-1px, -2px);
-			clip-path: polygon(0 45%, 100% 45%, 100% 82%, 0 82%);
-		}
-		76.25% {
-			opacity: 0.45;
-			transform: translate(2px, 2px);
-			clip-path: polygon(0 70%, 100% 70%, 100% 100%, 0 100%);
-		}
-		76.75% {
-			opacity: 0.3;
-			transform: translate(-1px, -1px);
-			clip-path: polygon(0 10%, 100% 10%, 100% 44%, 0 44%);
-		}
-		77.25%,
-		100% {
-			opacity: 0;
-			transform: none;
-			clip-path: inset(0);
-		}
-	}
-	/* Motion-sensitive readers keep the resting CJK name and skip the loop. */
-	@media (prefers-reduced-motion: reduce) {
-		.wordmark__zh,
-		.wordmark__en,
-		.wordmark__zh::before,
-		.wordmark__zh::after,
-		.wordmark__en::before,
-		.wordmark__en::after {
-			animation: none;
-		}
-		.wordmark__zh {
-			opacity: 1;
-			transform: none;
-		}
-		.wordmark__en {
-			opacity: 0;
-		}
-		.wordmark__zh::before,
-		.wordmark__zh::after,
-		.wordmark__en::before,
-		.wordmark__en::after {
-			display: none;
-		}
+		width: 8.75rem;
+		height: 2.625rem;
+		transform: translateY(3px);
+		background-color: currentColor;
+		-webkit-mask: var(--signature) center / contain no-repeat;
+		mask: var(--signature) center / contain no-repeat;
 	}
 	nav {
 		display: flex;
