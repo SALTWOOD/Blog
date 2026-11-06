@@ -47,7 +47,6 @@ export const homeSidebar: SidebarBlock[] = [
 		items: [
 			{ label: '标签', href: '/tags' },
 			{ label: '友链', href: '/friends' },
-			{ label: '工具', href: '/tools' },
 			{ label: 'GitHub', href: 'https://github.com/SALTWOOD', external: true },
 			{ label: '开往 · travellings', href: TRAVELLINGS.href, external: true },
 		],
