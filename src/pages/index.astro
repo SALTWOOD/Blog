@@ -1,35 +1,14 @@
 ---
 import { getCollection } from 'astro:content';
-import {
-	siBun,
-	siCplusplus,
-	siDocker,
-	siDotnet,
-	siFsharp,
-	siGo,
-	siHtml5,
-	siJavascript,
-	siMariadb,
-	siMysql,
-	siNodedotjs,
-	siOpenjdk,
-	siPhp,
-	siPostgresql,
-	siPython,
-	siRedis,
-	siRust,
-	siTypescript,
-	siVuedotjs,
-	siVuetify,
-} from 'simple-icons';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { ICON_BODIES } from '../components/ui/icons';
+import { CONTACTS, TECHS } from '../config/home';
 import { isExternal, labelFor, navFor } from '../config/nav';
-import { SITE_ALTERNATE_NAME, SITE_DESCRIPTION, SITE_KICKER, SITE_TITLE } from '../consts';
-import { authorPerson } from '../lib/schema';
+import { websiteJsonLd } from '../config/seo';
+import { SITE_DESCRIPTION, SITE_KICKER, SITE_TITLE } from '../config/site';
 import '../styles/glass.css';
 import '../styles/glitch.css';
 
@@ -37,29 +16,7 @@ const posts = (await getCollection('blog'))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 	.slice(0, 5);
 
-const websiteJsonLd = {
-	'@context': 'https://schema.org',
-	'@type': 'WebSite',
-	name: SITE_TITLE,
-	alternateName: SITE_ALTERNATE_NAME,
-	url: new URL('/', Astro.site).href,
-	description: SITE_DESCRIPTION,
-	inLanguage: 'zh-CN',
-	publisher: authorPerson(Astro.site),
-};
-
-const contacts = [
-	{ label: '邮箱', href: 'mailto:admin@ski.ink', icon: 'mail', external: false },
-	{ label: '博客', href: '/blog', icon: 'book-open', external: false },
-	{ label: 'GitHub', href: 'https://github.com/SALTWOOD', icon: 'github', external: true },
-	{ label: 'RSS', href: '/rss.xml', icon: 'rss', external: false },
-	{
-		label: '请给我钱',
-		href: 'monero:47AUhaafGKJKEiycvvSWtL4uYR3MKcWDbV9nWX6QzuXhMRvdjayxD4ELGwArcZYdPuJe6KgFc7tzsZYWbtTmcUChJagiWcZ',
-		icon: 'coins',
-		external: false,
-	},
-];
+const websiteJsonLdData = websiteJsonLd(Astro.site);
 
 // 入口统一在 config/nav.ts 维护，这里只取首页「去逛逛」需要的那一份。
 const sites = navFor('home').map((destination) => ({
@@ -68,29 +25,6 @@ const sites = navFor('home').map((destination) => ({
 	icon: destination.icon ?? 'arrow-right',
 	external: isExternal(destination.href),
 }));
-
-const techs = [
-	{ label: 'TypeScript', icon: siTypescript },
-	{ label: '.NET', icon: siDotnet },
-	{ label: 'F#', icon: siFsharp },
-	{ label: 'Python', icon: siPython },
-	{ label: 'PHP', icon: siPhp },
-	{ label: 'JavaScript', icon: siJavascript },
-	{ label: 'Java', icon: siOpenjdk },
-	{ label: 'Vue.js', icon: siVuedotjs },
-	{ label: 'Node.js', icon: siNodedotjs },
-	{ label: 'HTML5', icon: siHtml5 },
-	{ label: 'Bun', icon: siBun },
-	{ label: 'Go', icon: siGo },
-	{ label: 'Rust', icon: siRust },
-	{ label: 'Vuetify', icon: siVuetify },
-	{ label: 'Docker', icon: siDocker },
-	{ label: 'C++', icon: siCplusplus },
-	{ label: 'PostgreSQL', icon: siPostgresql },
-	{ label: 'MySQL', icon: siMysql },
-	{ label: 'MariaDB', icon: siMariadb },
-	{ label: 'Redis', icon: siRedis },
-];
 
 function brandColor(hex: string) {
 	const r = parseInt(hex.slice(0, 2), 16);
@@ -104,7 +38,7 @@ function brandColor(hex: string) {
 <html lang="zh-CN">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
+		<script type="application/ld+json" set:html={JSON.stringify(websiteJsonLdData)} />
 		<style>
 			main.home {
 				width: 1080px;
@@ -436,7 +370,7 @@ function brandColor(hex: string) {
 					</div>
 					<div class="contacts">
 						{
-							contacts.map((item) => (
+							CONTACTS.map((item) => (
 								<a class="glass-btn" href={item.href} target={item.external ? '_blank' : undefined} rel={item.external ? 'noopener' : undefined}>
 									<svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON_BODIES[item.icon]} />
 									{item.label}
@@ -495,7 +429,7 @@ function brandColor(hex: string) {
 					</div>
 					<ul class="tech-list">
 						{
-							techs.map((tech) => (
+							TECHS.map((tech) => (
 								<li class="tech-chip" style={`--brand:${brandColor(tech.icon.hex)}`}>
 									<svg viewBox="0 0 24 24" aria-hidden="true">
 										<path d={tech.icon.path} fill="currentColor" />

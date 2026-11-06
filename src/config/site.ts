@@ -1,6 +1,3 @@
-// Place any global data in this file.
-// You can import this data from anywhere in your site by using the `import` keyword.
-
 export const SITE_TITLE = '盐林格勒';
 export const SITE_WORDMARK = 'SALTWOOD';
 export const SITE_KICKER = 'Салтлинград';
@@ -12,8 +9,6 @@ export const SITE_BIO = '咕咕咕……';
 export const BACKGROUND_IMAGE_LIGHT = '/background-light.webp';
 export const BACKGROUND_IMAGE_DARK = '/background-dark.webp';
 
-// Visitor analytics. Flip `umami.enabled` to turn tracking on/off site-wide;
-// when off, no analytics script is injected and no outbound requests are made.
 export interface UmamiStatsDisplay {
 	enabled: boolean;
 	token: string;

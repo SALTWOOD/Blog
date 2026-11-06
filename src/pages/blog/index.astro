@@ -7,7 +7,7 @@ import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
 import Sidebar from '../../components/Sidebar.astro';
 import { homeSidebar } from '../../config/sidebar';
-import { ANALYTICS, SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { ANALYTICS, SITE_DESCRIPTION, SITE_TITLE } from '../../config/site';
 import { readingStats } from '../../lib/reading';
 
 const all = await getCollection('blog');

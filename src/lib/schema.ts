@@ -1,4 +1,4 @@
-import { SITE_AUTHOR, SITE_AUTHOR_ALTERNATE_NAME } from '../consts';
+import { SITE_AUTHOR, SITE_AUTHOR_ALTERNATE_NAME } from '../config/site';
 
 /**
  * schema.org Person representing the site author, reused as both
