@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /artworks/
 
 Sitemap: https://ski.ink/sitemap-index.xml

@@ -27,6 +27,13 @@ export const NAV: NavDestination[] = [
 		place: { header: 10, mobile: 10, home: 10 },
 	},
 	{
+		id: 'artworks',
+		label: '作品',
+		href: '/artworks',
+		icon: 'palette',
+		place: { header: 15, mobile: 15, sidebar: 15, home: 15 },
+	},
+	{
 		id: 'tags',
 		label: '标签',
 		href: '/tags',

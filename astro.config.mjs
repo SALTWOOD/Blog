@@ -22,7 +22,13 @@ export default defineConfig({
 	redirects: {
 		'/about': '/#about',
 	},
-	integrations: [mdx(), sitemap(), pagefind()],
+	integrations: [
+		mdx(),
+		sitemap({
+			filter: (page) => !new URL(page).pathname.startsWith('/artworks'),
+		}),
+		pagefind(),
+	],
 	vite: {
 		plugins: [tailwindcss()],
 	},
