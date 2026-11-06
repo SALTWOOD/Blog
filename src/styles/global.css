@@ -454,15 +454,15 @@ hr::after {
 	padding-bottom: 1rem;
 	border-bottom: 1px solid rgba(255, 255, 255, 0.24);
 }
-.page-head .eyebrow {
+.page-head .eyebrow,
+.page-intro .eyebrow {
 	display: block;
-	font-family: var(--font-mono);
-	font-size: 0.76rem;
+	font-family: 'BlogFont', var(--font-mono);
+	font-size: 1.15rem;
 	letter-spacing: 0.16em;
-	text-transform: uppercase;
-	color: var(--brass-soft);
+	color: rgba(255, 255, 255, 0.55);
 	text-shadow: var(--text-veil);
-	margin-bottom: 0.6rem;
+	margin-bottom: 0.2rem;
 }
 .page-head h1 {
 	margin: 0;
