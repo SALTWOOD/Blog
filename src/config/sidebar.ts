@@ -13,7 +13,7 @@
 //
 // 新增一种卡片：在 Sidebar.astro 里加一个 type 分支即可。
 
-import { TRAVELLINGS } from './footer';
+import { isExternal, labelFor, navFor } from './nav';
 
 export interface NavItem {
 	label: string;
@@ -44,12 +44,12 @@ export const homeSidebar: SidebarBlock[] = [
 	{
 		type: 'nav',
 		title: '导航',
-		items: [
-			{ label: '标签', href: '/tags' },
-			{ label: '友链', href: '/friends' },
-			{ label: 'GitHub', href: 'https://github.com/SALTWOOD', external: true },
-			{ label: '开往 · travellings', href: TRAVELLINGS.href, external: true },
-		],
+		// 入口统一在 config/nav.ts 维护，这里只取侧栏需要的那一份。
+		items: navFor('sidebar').map((destination) => ({
+			label: labelFor(destination, 'sidebar'),
+			href: destination.href,
+			external: isExternal(destination.href),
+		})),
 	},
 	// { type: 'tags', title: '热门标签', limit: 14 },
 ];

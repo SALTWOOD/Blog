@@ -27,7 +27,7 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { ICON_BODIES } from '../components/ui/icons';
-import { TRAVELLINGS } from '../config/footer';
+import { isExternal, labelFor, navFor } from '../config/nav';
 import { SITE_ALTERNATE_NAME, SITE_DESCRIPTION, SITE_KICKER, SITE_TITLE } from '../consts';
 import { authorPerson } from '../lib/schema';
 import '../styles/glass.css';
@@ -61,12 +61,13 @@ const contacts = [
 	},
 ];
 
-const sites = [
-	{ label: '博客', href: '/blog', icon: 'book-open' },
-	{ label: '友链', href: '/friends', icon: 'users' },
-	{ label: '服务状态', href: 'https://saltwood.top:3001/status/all', icon: 'activity' },
-	{ label: '开往', href: TRAVELLINGS.href, icon: 'train-front' },
-];
+// 入口统一在 config/nav.ts 维护，这里只取首页「去逛逛」需要的那一份。
+const sites = navFor('home').map((destination) => ({
+	label: labelFor(destination, 'home'),
+	href: destination.href,
+	icon: destination.icon ?? 'arrow-right',
+	external: isExternal(destination.href),
+}));
 
 const techs = [
 	{ label: 'TypeScript', icon: siTypescript },
@@ -453,7 +454,7 @@ function brandColor(hex: string) {
 					<div class="glass-grid">
 						{
 							sites.map((site) => (
-								<a class="glass-btn" href={site.href} target={site.href.startsWith('http') ? '_blank' : undefined} rel={site.href.startsWith('http') ? 'noopener' : undefined}>
+								<a class="glass-btn" href={site.href} target={site.external ? '_blank' : undefined} rel={site.external ? 'noopener' : undefined}>
 									<svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON_BODIES[site.icon]} />
 									{site.label}
 								</a>

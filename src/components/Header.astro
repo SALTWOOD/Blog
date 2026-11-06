@@ -2,22 +2,14 @@
 import signature from '../assets/signature.png';
 
 import { SITE_TITLE } from '../consts';
-import { TRAVELLINGS } from '../config/footer';
+import { isNavActive, labelFor, navFor } from '../config/nav';
 import HeaderLink from './HeaderLink.astro';
 import ThemeToggle from './ThemeToggle.astro';
 
-// Replicate HeaderLink's active logic for the plain <a> used in the mobile menu.
 const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
-const subpath = pathname.match(/[^/]+/g);
-const mobileLinks = [
-	{ href: '/search', label: '搜索' },
-	{ href: '/blog', label: '文章' },
-	{ href: '/tags', label: '标签' },
-	{ href: TRAVELLINGS.href, label: '开往' },
-	{ href: '/friends', label: '友链' },
-];
-const isActive = (href: string) =>
-	href === pathname || href === `/${subpath?.[0] || ''}`;
+const headerLinks = navFor('header');
+const mobileLinks = navFor('mobile');
+const isActive = (href: string) => isNavActive(pathname, href);
 ---
 
 <header>
@@ -28,10 +20,9 @@ const isActive = (href: string) =>
 			</a>
 		</h2>
 		<div class="internal-links">
-			<HeaderLink href="/blog">文章</HeaderLink>
-			<HeaderLink href="/tags">标签</HeaderLink>
-			<HeaderLink href={TRAVELLINGS.href}>开往</HeaderLink>
-			<HeaderLink href="/friends">友链</HeaderLink>
+			{headerLinks.map((link) => (
+				<HeaderLink href={link.href}>{labelFor(link, 'header')}</HeaderLink>
+			))}
 		</div>
 		<div class="social-links">
 			<a href="/search" title="搜索">
@@ -92,7 +83,7 @@ const isActive = (href: string) =>
 	<div id="mobile-menu" class="mobile-menu" hidden>
 		{mobileLinks.map((link) => (
 			<a href={link.href} class:list={['mobile-link', { active: isActive(link.href) }]}>
-				{link.label}
+				{labelFor(link, 'mobile')}
 			</a>
 		))}
 		<div class="mobile-actions">
