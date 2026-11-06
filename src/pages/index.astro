@@ -4,7 +4,8 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
-import { ICON_BODIES } from '../components/ui/icons';
+import Icon from '../components/Icon.astro';
+import { ICONS } from '../components/ui/icons';
 import { CONTACTS, TECHS } from '../config/home';
 import { isExternal, labelFor, navFor } from '../config/nav';
 import { websiteJsonLd } from '../config/seo';
@@ -26,7 +27,9 @@ const sites = navFor('home').map((destination) => ({
 	external: isExternal(destination.href),
 }));
 
-function brandColor(hex: string) {
+function brandColor(color?: string) {
+	const hex = (color ?? '').replace(/^#/, '');
+	if (hex.length !== 6) return 'rgb(var(--ink))';
 	const r = parseInt(hex.slice(0, 2), 16);
 	const g = parseInt(hex.slice(2, 4), 16);
 	const b = parseInt(hex.slice(4, 6), 16);
@@ -122,7 +125,7 @@ function brandColor(hex: string) {
 				animation: cue-bounce 2s ease-in-out infinite;
 			}
 
-			.scroll-cue svg {
+			.scroll-cue :global(svg) {
 				width: 1.35rem;
 				height: 1.35rem;
 			}
@@ -263,7 +266,7 @@ function brandColor(hex: string) {
 				line-height: 1.4;
 			}
 
-			.tech-chip svg {
+			.tech-chip :global(svg) {
 				width: 0.95rem;
 				height: 0.95rem;
 				flex-shrink: 0;
@@ -285,7 +288,7 @@ function brandColor(hex: string) {
 				text-decoration: underline;
 			}
 
-			.more-link svg {
+			.more-link :global(svg) {
 				width: 0.95rem;
 				height: 0.95rem;
 			}
@@ -331,16 +334,16 @@ function brandColor(hex: string) {
 				<p class="sub">{SITE_DESCRIPTION}</p>
 				<div class="hero-cta">
 					<a class="glass-btn solid" href="/blog">
-						<svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON_BODIES['book-open']} />
+						<Icon name="book-open" />
 						浏览文章
 					</a>
 					<a class="glass-btn" href="#about">
-						<svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON_BODIES.info} />
+						<Icon name="info" />
 						关于我
 					</a>
 				</div>
 				<a class="scroll-cue" href="#content" aria-label="向下浏览">
-					<svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON_BODIES['chevron-down']} />
+					<Icon name="chevron-down" />
 				</a>
 			</section>
 
@@ -372,7 +375,7 @@ function brandColor(hex: string) {
 						{
 							CONTACTS.map((item) => (
 								<a class="glass-btn" href={item.href} target={item.external ? '_blank' : undefined} rel={item.external ? 'noopener' : undefined}>
-									<svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON_BODIES[item.icon]} />
+									<Icon name={item.icon} />
 									{item.label}
 								</a>
 							))
@@ -389,7 +392,7 @@ function brandColor(hex: string) {
 						{
 							sites.map((site) => (
 								<a class="glass-btn" href={site.href} target={site.external ? '_blank' : undefined} rel={site.external ? 'noopener' : undefined}>
-									<svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON_BODIES[site.icon]} />
+									<Icon name={site.icon} />
 									{site.label}
 								</a>
 							))
@@ -415,7 +418,7 @@ function brandColor(hex: string) {
 					</div>
 					<a class="more-link" href="/blog">
 						全部文章
-						<svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON_BODIES['arrow-right']} />
+						<Icon name="arrow-right" />
 					</a>
 				</section>
 
@@ -430,10 +433,8 @@ function brandColor(hex: string) {
 					<ul class="tech-list">
 						{
 							TECHS.map((tech) => (
-								<li class="tech-chip" style={`--brand:${brandColor(tech.icon.hex)}`}>
-									<svg viewBox="0 0 24 24" aria-hidden="true">
-										<path d={tech.icon.path} fill="currentColor" />
-									</svg>
+								<li class="tech-chip" style={`--brand:${brandColor(ICONS[tech.icon]?.color)}`}>
+									<Icon name={tech.icon} />
 									<span>{tech.label}</span>
 								</li>
 							))

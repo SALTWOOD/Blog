@@ -6,6 +6,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import Icon from '../components/Icon.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import Comments from '../components/Comments.astro';
 import Sidebar from '../components/Sidebar.astro';
@@ -224,7 +225,7 @@ const breadcrumbLd = {
 				gap: 0.3em;
 				color: rgb(var(--ink-soft));
 			}
-			.entry-head .meta .pv svg {
+			.entry-head .meta .pv :global(svg) {
 				width: 1em;
 				height: 1em;
 			}
@@ -303,7 +304,7 @@ const breadcrumbLd = {
 									<>
 										<span class="dot">/</span>
 										<span class="pv" title="浏览量">
-											<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>
+											<Icon name="eye" />
 											<span data-umami-pv={`/blog/${currentId}/`}>…</span>
 										</span>
 									</>

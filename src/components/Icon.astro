@@ -1,0 +1,30 @@
+---
+import { ICONS } from './ui/icons';
+
+interface Props {
+	name: string;
+	class?: string;
+	width?: number | string;
+	height?: number | string;
+}
+
+const { name, class: className, width, height } = Astro.props;
+const icon = ICONS[name];
+
+if (!icon) {
+	throw new Error(`Unknown icon: ${name}`);
+}
+---
+<svg
+	viewBox="0 0 24 24"
+	fill="none"
+	stroke="currentColor"
+	stroke-width="2"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	width={width}
+	height={height}
+	class={className}
+	aria-hidden="true"
+	set:html={icon.body}
+/>

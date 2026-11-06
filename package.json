@@ -29,6 +29,7 @@
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.8",
     "astro-pagefind": "^2.0.1",
+    "lucide-static": "^1.69.0",
     "remark-github-blockquote-alert": "^2.1.0",
     "sharp": "^0.35.5",
     "simple-icons": "^16.34.0",

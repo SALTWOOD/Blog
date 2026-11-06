@@ -5,6 +5,7 @@ import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
+import Icon from '../../components/Icon.astro';
 import Sidebar from '../../components/Sidebar.astro';
 import { homeSidebar } from '../../config/sidebar';
 import { ANALYTICS, SITE_DESCRIPTION, SITE_TITLE } from '../../config/site';
@@ -173,7 +174,7 @@ const showPv = ANALYTICS.umami.enabled && !!ANALYTICS.umami.websiteId && !!umami
 				text-transform: uppercase;
 				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
 			}
-			.featured-card .pin-badge svg {
+			.featured-card .pin-badge :global(svg) {
 				width: 0.82em;
 				height: 0.82em;
 			}
@@ -243,7 +244,7 @@ const showPv = ANALYTICS.umami.enabled && !!ANALYTICS.umami.websiteId && !!umami
 				gap: 0.3em;
 				color: rgb(var(--ink-soft));
 			}
-			.entry-meta .pv svg {
+			.entry-meta .pv :global(svg) {
 				width: 1em;
 				height: 1em;
 			}
@@ -323,10 +324,7 @@ const showPv = ANALYTICS.umami.enabled && !!ANALYTICS.umami.websiteId && !!umami
 										<li>
 											<a class="featured-card" href={`/blog/${post.id}/`}>
 												<span class="pin-badge">
-													<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-														<line x1="12" y1="17" x2="12" y2="22" />
-														<path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z" />
-													</svg>
+													<Icon name="pin" />
 													置顶
 												</span>
 												{post.data.heroImage && (
@@ -343,7 +341,7 @@ const showPv = ANALYTICS.umami.enabled && !!ANALYTICS.umami.websiteId && !!umami
 													<span class="dot">/</span>
 													<span>{stats.get(post.id)?.minutes ?? 1} 分钟</span>
 													<span class="dot">/</span>
-													<span>{stats.get(post.id)?.wordCount ?? 0} 字</span>{showPv && (<> <span class="dot">/</span><span class="pv" title="浏览量"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg><span data-umami-pv={`/blog/${post.id}/`}>…</span></span> </>)}
+													<span>{stats.get(post.id)?.wordCount ?? 0} 字</span>{showPv && (<> <span class="dot">/</span><span class="pv" title="浏览量"><Icon name="eye" /><span data-umami-pv={`/blog/${post.id}/`}>…</span></span> </>)}
 												</div>
 												<h2 class="title">{post.data.encrypted ? `🔒 ${post.data.title}` : post.data.title}</h2>
 												{post.data.description && <p class="desc">{post.data.description}</p>}
@@ -382,7 +380,7 @@ const showPv = ANALYTICS.umami.enabled && !!ANALYTICS.umami.websiteId && !!umami
 											<span class="dot">/</span>
 											<span>{stats.get(post.id)?.minutes ?? 1} 分钟</span>
 											<span class="dot">/</span>
-											<span>{stats.get(post.id)?.wordCount ?? 0} 字</span>{showPv && (<> <span class="dot">/</span><span class="pv" title="浏览量"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg><span data-umami-pv={`/blog/${post.id}/`}>…</span></span> </>)}
+											<span>{stats.get(post.id)?.wordCount ?? 0} 字</span>{showPv && (<> <span class="dot">/</span><span class="pv" title="浏览量"><Icon name="eye" /><span data-umami-pv={`/blog/${post.id}/`}>…</span></span> </>)}
 										</div>
 										<h2 class="title">{post.data.encrypted ? `🔒 ${post.data.title}` : post.data.title}</h2>
 										{post.data.description && <p class="desc">{post.data.description}</p>}

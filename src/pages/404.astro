@@ -2,6 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import Icon from '../components/Icon.astro';
 import { SITE_TITLE } from '../config/site';
 
 // A 404 is a dead-end for crawlers — don't index it.
@@ -288,12 +289,12 @@ import { SITE_TITLE } from '../config/site';
 			.cta:active {
 				transform: scale(0.97);
 			}
-			.cta svg {
+			.cta :global(svg) {
 				width: 1.05em;
 				height: 1.05em;
 				transition: transform 0.2s ease;
 			}
-			.cta:hover svg {
+			.cta:hover :global(svg) {
 				transform: translateX(-3px);
 			}
 			.quiet {
@@ -377,10 +378,7 @@ import { SITE_TITLE } from '../config/site';
 				</p>
 				<div class="actions">
 					<a class="cta" href="/">
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-							<line x1="19" y1="12" x2="5" y2="12"></line>
-							<polyline points="12 19 5 12 12 5"></polyline>
-						</svg>
+						<Icon name="arrow-left" />
 						返回港口
 					</a>
 					<a class="quiet" href="/search">翻阅海图</a>
