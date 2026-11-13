@@ -110,6 +110,9 @@ private async getOrCreateStagingUserId(): Promise<string> {
 }
 ```
 
+> （按 AI 的建议摆个说明）
+> 以上代码来自 electron-updater 6.8.9，版权归 electron-userland/electron-builder 贡献者所有，依 MIT License 使用。
+
 简单来说，根据官方 yaml 里填写的数值，本机的 electron-updater 会根据一个通常情况下不会变动的 ID，来判断自身是否处于灰度范围内。如果在就会提示有更新。
 
 值得注意的是，这段逻辑 DeepSeek 官方完全没有复写，用的就是 electron-updater 的原逻辑
