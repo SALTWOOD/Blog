@@ -1,75 +1,52 @@
 ---
-// ========================================
-// REMARK42 CONFIGURATION
-// Docs: https://remark42.com/docs/getting-started/installation/
-//
-// These values must match your Remark42 backend:
-//   - REMARK_URL:  the --url passed to the remark42 server (REMARK_URL)
-//   - REMARK_SITE_ID: the --site passed to the remark42 server ("remark" by default)
-//
-// Make sure "ski" (or whatever you set below) is included in the backend's
-// --site/--sites list, otherwise comments won't load.
-// ========================================
-const REMARK_URL = 'https://comments.ski.ink';
-const REMARK_SITE_ID = 'blog';
+const COMMENT_SCRIPT = 'https://comments-new.ski.ink/comment.js';
+const COMMENT_SITE_ID = 'e9ae98c1-3aed-4144-9407-fd18aec0bfae';
 ---
 
 <section class="comments" data-pagefind-ignore>
-	<h2 class="comments-title">评论</h2>
-	<div id="remark42">Comments loading...</div>
-	<script is:inline define:vars={{ REMARK_URL, REMARK_SITE_ID }} data-astro-rerun>
-		// Refresh remark_config on every arrival (incl. client-side swaps via
-		// <ClientRouter />) so the widget picks up the current theme.
-		window.remark_config = {
-			host: REMARK_URL,
-			site_id: REMARK_SITE_ID,
-			components: ['embed'],
-			theme: document.documentElement.dataset.theme || 'light',
-			locale: 'zh',
-		};
+	<div id="comment-now-section"></div>
+	<script is:inline defer src={COMMENT_SCRIPT} data-site-id={COMMENT_SITE_ID} data-astro-rerun></script>
+	<script is:inline>
+		if (!window.__commentThemeBridge) {
+			window.__commentThemeBridge = true;
 
-		(function () {
-			var node = document.getElementById('remark42');
-			if (!node) return;
-			// SPA navigation: the library is already loaded, so mount a fresh
-			// widget into the new (empty) #remark42 node instead of re-injecting
-			// the loader script.
-			if (window.REMARK42 && typeof window.REMARK42.createWidget === 'function') {
-				node.innerHTML = '';
-				window.REMARK42.createWidget({ node: node, component: 'embed' });
-				return;
+			function syncCommentTheme() {
+				var host = document.querySelector('#comment-now-section [data-comment-now-interactive]');
+				var root = host && host.shadowRoot;
+				var base = root && root.querySelector('style:not([data-site-theme])');
+				if (!base) return;
+
+				var css = base.textContent || '';
+				var light = /:host\s*\{([^}]*--cn-bg[^}]*)\}/.exec(css);
+				var dark = /prefers-color-scheme:\s*dark[^{]*\{[^{]*:host\s*\{([^}]*)\}/.exec(css);
+				if (!light || !dark) return;
+
+				var site = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+				var os = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+				var extra = site === os ? '' : ':host {' + (site === 'dark' ? dark[1] : light[1]) + '}';
+
+				var style = root.querySelector('style[data-site-theme]');
+				if (!style) {
+					style = document.createElement('style');
+					style.setAttribute('data-site-theme', '');
+					root.appendChild(style);
+				}
+				if (style.textContent !== extra) style.textContent = extra;
 			}
-			// First load: inject the Remark42 embed script, which auto-creates
-			// the widget once it finishes loading.
-			!(function (e, n) {
-				for (var o = 0; o < e.length; o++) {
-					var r = n.createElement('script'),
-						c = '.js',
-						d = n.head || n.body;
-					if ('noModule' in r) {
-						r.type = 'module';
-						c = '.mjs';
-					} else {
-						r.async = true;
-					}
-					r.defer = true;
-					r.src = remark_config.host + '/web/' + e[o] + c;
-					d.appendChild(r);
-				}
-			})(remark_config.components || ['embed'], document);
-		})();
-	</script>
-	<script is:inline data-astro-rerun>
-		// Sync Remark42 theme with the site's theme system. Registered once —
-		// the listener lives on window, which survives client-side swaps.
-		if (!window.__remarkThemeSynced) {
-			window.__remarkThemeSynced = true;
-			window.addEventListener('theme-change', function () {
-				if (window.REMARK42 && window.REMARK42.changeTheme) {
-					var currentTheme = document.documentElement.dataset.theme || 'light';
-					window.REMARK42.changeTheme(currentTheme);
-				}
-			});
+
+			// The widget mounts asynchronously (external script), so watch the
+			// container instead of guessing a delay.
+			function observeComments() {
+				var box = document.getElementById('comment-now-section');
+				if (!box || box.__cnThemeObserved) return;
+				box.__cnThemeObserved = true;
+				new MutationObserver(syncCommentTheme).observe(box, { childList: true, subtree: true });
+				syncCommentTheme();
+			}
+
+			document.addEventListener('astro:page-load', observeComments);
+			window.addEventListener('theme-change', syncCommentTheme);
+			observeComments();
 		}
 	</script>
 </section>
@@ -79,11 +56,5 @@ const REMARK_SITE_ID = 'blog';
 		margin-top: 3em;
 		padding-top: 2em;
 		border-top: 1px solid var(--rule);
-	}
-	.comments-title {
-		font-family: var(--font-body);
-		font-size: 1.4rem;
-		font-weight: 600;
-		margin-bottom: 1em;
 	}
 </style>
